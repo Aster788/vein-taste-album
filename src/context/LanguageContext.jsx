@@ -14,11 +14,11 @@ const LanguageContext = createContext(null);
  *
  * **中国 9 城或书架 `/`**
  * - `locale`: `zh` | `en`，切换**页面内可变文案**（店名、菜系、地址、引导语等）；Phase 2/3 再在右上角挂 UI。
- * - **书脊 / 封面**：始终中英双行静态排版，**不**随 `locale` 改行内语言（切换只影响页内其它区域）。
+ * - **书脊 / 封面**：11 城统一上中文「国家·城市」、下英文「Country · City」，**不**随 `locale` 改变（见 PRD §2.5）。
  *
  * **济州岛、吉隆坡**
  * - 不展示 EN/CN；`locale` 无 UI 意义。
- * - 文案固定顺序：**本国语 → English → 中文**（用 `formatFixedTriple` 等工具拼展示字符串）。
+ * - **详情页等主体区**文案固定顺序：**本国语 → English → 中文**（用 `formatFixedTriple` 等工具拼展示字符串）；**不用于书脊/封面**。
  */
 
 /**
