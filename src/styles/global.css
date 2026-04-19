@@ -1,0 +1,140 @@
+@import "./textures.css";
+
+/* --- Reset & 全站基底（色值仅出现在本文件） --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--color-text);
+  background-color: var(--color-page-bg);
+  font-family: var(--font-body-zh);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* --- 字体变量：霞鹜文楷（本地 @font-face）+ Playfair（Google Fonts，见 index.html）+ 沐瑶（下文） --- */
+:root {
+  /* 霞鹜文楷：LXGW WenKai Regular，见下文 @font-face */
+  --font-body-zh: "LXGW WenKai", "PingFang SC", "Microsoft YaHei", serif;
+  --font-body-en: "Playfair Display", "Times New Roman", "Georgia", serif;
+  --font-handwriting: "MuYao Soft Brush", "LXGW WenKai", "PingFang SC", serif;
+
+  --color-page-bg: #ffffff;
+  --color-text: #1a1a1a;
+  --color-text-muted: #5c5c5c;
+
+  /* 未选城市 / 无 data-city 时的中性 token */
+  --city-primary: #2c2c2c;
+  --city-secondary: #e8e8e8;
+}
+
+/* --- 11 城主色 / 辅色（由路由在 documentElement 上设置 data-city 切换） --- */
+html[data-city="dalian"] {
+  --city-primary: #4a7fa5;
+  --city-secondary: #d4e4ee;
+}
+
+html[data-city="qingdao"] {
+  --city-primary: #2b6cb0;
+  --city-secondary: #f5e6c8;
+}
+
+html[data-city="shanghai"] {
+  --city-primary: #2c2c2c;
+  --city-secondary: #c9a84c;
+}
+
+html[data-city="guangzhou"] {
+  --city-primary: #c47d2e;
+  --city-secondary: #f2e8d5;
+}
+
+html[data-city="chongqing"] {
+  --city-primary: #b03a2e;
+  --city-secondary: #2d2d2d;
+}
+
+html[data-city="fuzhou"] {
+  --city-primary: #6b8e5e;
+  --city-secondary: #c4956a;
+}
+
+html[data-city="xiamen"] {
+  --city-primary: #4e8b8b;
+  --city-secondary: #f0e6d3;
+}
+
+html[data-city="quanzhou"] {
+  --city-primary: #8b6348;
+  --city-secondary: #e8d5b7;
+}
+
+html[data-city="pingtan"] {
+  --city-primary: #5b9bb5;
+  --city-secondary: #e8f4f8;
+}
+
+html[data-city="jeju"] {
+  --city-primary: #e8753a;
+  --city-secondary: #3d6b55;
+}
+
+html[data-city="kuala-lumpur"] {
+  --city-primary: #7b3fa0;
+  --city-secondary: #f4c842;
+}
+
+/* 页面级工具类（避免组件内联样式） */
+.ffj-page-shell {
+  padding: 1rem;
+}
+
+.ffj-body-text {
+  margin: 0;
+  color: var(--color-text);
+  font-family: var(--font-body-zh);
+}
+
+.ffj-city-accent {
+  margin: 0.5rem 0 0;
+  color: var(--city-primary);
+  font-family: var(--font-body-zh);
+}
+
+/* 霞鹜文楷（LXGW WenKai Regular，简体正文） */
+@font-face {
+  font-family: "LXGW WenKai";
+  src: url("../assets/fonts/LXGWWenKai/LXGWWenKai-Regular.ttf")
+    format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 沐瑶软笔：本地 TTF */
+@font-face {
+  font-family: "MuYao Soft Brush";
+  src: url("../assets/fonts/MuYao-SoftBrush.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}

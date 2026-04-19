@@ -1,0 +1,257 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-04-18T05:21:52Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "relation",
+  "id": 2398560,
+  "bounds": {
+    "minlat": 32.9104556,
+    "minlon": 125.7940999,
+    "maxlat": 34.1398060,
+    "maxlon": 127.2152291
+  },
+  "members": [
+    {
+      "type": "way",
+      "ref": 1333702669,
+      "role": "outer",
+      "geometry": [
+         { "lat": 33.7591991, "lon": 126.9153195 },
+         { "lat": 33.7112689, "lon": 126.9918548 },
+         { "lat": 33.7029435, "lon": 127.0453444 },
+         { "lat": 33.6814971, "lon": 127.1022030 },
+         { "lat": 33.6500654, "lon": 127.1492382 },
+         { "lat": 33.5968912, "lon": 127.1924969 },
+         { "lat": 33.5416390, "lon": 127.2152291 },
+         { "lat": 33.4662976, "lon": 127.2106286 }
+      ]
+    },
+    {
+      "type": "way",
+      "ref": 179605608,
+      "role": "outer",
+      "geometry": [
+         { "lat": 33.4662976, "lon": 127.2106286 },
+         { "lat": 33.4245649, "lon": 127.1962735 },
+         { "lat": 33.3876156, "lon": 127.1731291 },
+         { "lat": 33.3431643, "lon": 127.1545211 },
+         { "lat": 33.2972627, "lon": 127.1231071 },
+         { "lat": 33.2435693, "lon": 127.0723339 },
+         { "lat": 33.2226058, "lon": 127.0634076 },
+         { "lat": 33.1973576, "lon": 127.0430099 },
+         { "lat": 33.1683070, "lon": 127.0129391 },
+         { "lat": 33.1444508, "lon": 126.9782635 },
+         { "lat": 33.1191505, "lon": 126.9291684 },
+         { "lat": 33.0978696, "lon": 126.8512341 },
+         { "lat": 33.0662263, "lon": 126.8169018 },
+         { "lat": 33.0458111, "lon": 126.7846595 },
+         { "lat": 33.0200650, "lon": 126.7129308 },
+         { "lat": 33.0181642, "lon": 126.6431805 },
+         { "lat": 33.0230804, "lon": 126.5970079 },
+         { "lat": 33.0143074, "lon": 126.5571653 },
+         { "lat": 33.0115428, "lon": 126.5185543 },
+         { "lat": 33.0158896, "lon": 126.4783300 },
+         { "lat": 32.9781774, "lon": 126.4474994 },
+         { "lat": 32.9502291, "lon": 126.4142228 },
+         { "lat": 32.9206870, "lon": 126.3551026 },
+         { "lat": 32.9104556, "lon": 126.3054753 },
+         { "lat": 32.9107510, "lon": 126.2270260 },
+         { "lat": 32.9179492, "lon": 126.1926938 },
+         { "lat": 32.9384308, "lon": 126.1430922 },
+         { "lat": 32.9623572, "lon": 126.1073866 },
+         { "lat": 32.9922741, "lon": 126.0718614 },
+         { "lat": 33.0279811, "lon": 126.0491849 },
+         { "lat": 33.0555800, "lon": 126.0354992 },
+         { "lat": 33.0747720, "lon": 126.0304909 },
+         { "lat": 33.0938429, "lon": 126.0176464 },
+         { "lat": 33.1190435, "lon": 126.0102177 },
+         { "lat": 33.1407362, "lon": 125.9889318 },
+         { "lat": 33.1858724, "lon": 125.9566680 },
+         { "lat": 33.2318111, "lon": 125.9254170 }
+      ]
+    },
+    {
+      "type": "way",
+      "ref": 1340742688,
+      "role": "outer",
+      "geometry": [
+         { "lat": 33.2318111, "lon": 125.9254170 },
+         { "lat": 33.2727241, "lon": 125.9079076 },
+         { "lat": 33.3107336, "lon": 125.9019467 },
+         { "lat": 33.3463479, "lon": 125.9061995 },
+         { "lat": 33.4071428, "lon": 125.9248100 },
+         { "lat": 33.4514956, "lon": 125.9568783 },
+         { "lat": 33.4890995, "lon": 125.9977036 },
+         { "lat": 33.5066785, "lon": 126.0073149 },
+         { "lat": 33.5167821, "lon": 126.0128399 }
+      ]
+    },
+    {
+      "type": "way",
+      "ref": 172558062,
+      "role": "outer",
+      "geometry": [
+         { "lat": 33.5167821, "lon": 126.0128399 },
+         { "lat": 33.5439703, "lon": 126.0354992 },
+         { "lat": 33.5807816, "lon": 126.0813740 },
+         { "lat": 33.6190205, "lon": 126.0649168 },
+         { "lat": 33.6600676, "lon": 126.0567852 },
+         { "lat": 33.6998995, "lon": 126.0590716 }
+      ]
+    },
+    {
+      "type": "way",
+      "ref": 179605602,
+      "role": "outer",
+      "geometry": [
+         { "lat": 33.6998995, "lon": 126.0590716 },
+         { "lat": 33.7395059, "lon": 125.7940999 }
+      ]
+    },
+    {
+      "type": "way",
+      "ref": 1110502888,
+      "role": "outer",
+      "geometry": [
+         { "lat": 33.7395059, "lon": 125.7940999 },
+         { "lat": 34.0076688, "lon": 126.0857945 },
+         { "lat": 34.0114877, "lon": 126.0903489 }
+      ]
+    },
+    {
+      "type": "way",
+      "ref": 536429994,
+      "role": "outer",
+      "geometry": [
+         { "lat": 34.0114877, "lon": 126.0903489 },
+         { "lat": 34.0805951, "lon": 126.1728010 },
+         { "lat": 34.1087631, "lon": 126.2175017 },
+         { "lat": 34.1243535, "lon": 126.2517309 },
+         { "lat": 34.1398060, "lon": 126.3069115 }
+      ]
+    },
+    {
+      "type": "way",
+      "ref": 180016302,
+      "role": "outer",
+      "geometry": [
+         { "lat": 34.1398060, "lon": 126.3069115 },
+         { "lat": 34.1248935, "lon": 126.3215543 },
+         { "lat": 34.1133396, "lon": 126.3426085 },
+         { "lat": 34.0992545, "lon": 126.3669852 },
+         { "lat": 34.0206816, "lon": 126.4954641 },
+         { "lat": 33.9598918, "lon": 126.5901386 },
+         { "lat": 33.9176171, "lon": 126.7058061 },
+         { "lat": 33.8455644, "lon": 126.7976407 },
+         { "lat": 33.8005770, "lon": 126.8927401 },
+         { "lat": 33.7591991, "lon": 126.9153195 }
+      ]
+    },
+    {
+      "type": "node",
+      "ref": 358015303,
+      "role": "admin_centre",
+      "lat": 33.4998289,
+      "lon": 126.5313902
+    },
+    {
+      "type": "node",
+      "ref": 6612391850,
+      "role": "label",
+      "lat": 33.4887737,
+      "lon": 126.4987083
+    },
+    {
+      "type": "relation",
+      "ref": 5523589,
+      "role": "subarea"
+    },
+    {
+      "type": "relation",
+      "ref": 5524156,
+      "role": "subarea"
+    }
+  ],
+  "tags": {
+    "ISO3166-2": "KR-49",
+    "admin_level": "4",
+    "alt_name:en": "Jeju Special Autonomous Province",
+    "alt_name:zh": "济州道",
+    "boundary": "administrative",
+    "name": "제주특별자치도",
+    "name:ar": "مقاطعة جيجو",
+    "name:be": "Чэджуда",
+    "name:bg": "Чеджу-до",
+    "name:bn": "জেজু দ্বীপ",
+    "name:ca": "Jeju-do",
+    "name:cs": "Čedžu",
+    "name:cv": "Чеджу",
+    "name:da": "Jeju-do",
+    "name:de": "Jeju-do",
+    "name:el": "Επαρχία Τζέτζου",
+    "name:en": "Jeju",
+    "name:eo": "Jeju-do",
+    "name:es": "Jeju",
+    "name:et": "Cheju provints",
+    "name:eu": "Jejudo",
+    "name:fa": "ججو-دو",
+    "name:fi": "Jeju",
+    "name:fr": "Jeju",
+    "name:gl": "Jeju",
+    "name:he": "ג'ג'ו",
+    "name:hr": "Jeju",
+    "name:hu": "Csedzsu-sziget",
+    "name:ia": "Jeju-do",
+    "name:id": "Jeju",
+    "name:io": "Jeju insulo",
+    "name:it": "Jeju-do",
+    "name:ja": "済州特別自治道",
+    "name:jv": "Jejudo",
+    "name:ko": "제주특별자치도",
+    "name:ko-Hani": "濟州特別自治道",
+    "name:lt": "Čedžu",
+    "name:ms": "Jeju",
+    "name:nl": "Jeju-do",
+    "name:no": "Jeju",
+    "name:pl": "Czedżu",
+    "name:pt": "Jeju",
+    "name:ro": "Insula Jeju",
+    "name:ru": "Чеджудо",
+    "name:sr": "Чеџу",
+    "name:sv": "Jeju",
+    "name:sw": "Jeju-do",
+    "name:th": "จังหวัดเชจู",
+    "name:uk": "Провінція Чеджу",
+    "name:vi": "Jeju (tỉnh)",
+    "name:zh": "济州特别自治道",
+    "name:zh-Hans": "济州特別自治道",
+    "name:zh-Hant": "濟州特別自治道",
+    "official_name": "제주특별자치도",
+    "official_name:en": "Jeju Special Self-Governing Province",
+    "official_name:it": "Provincia Autonoma Speciale di Jeju",
+    "official_name:ja": "済州特別自治道",
+    "official_name:ko": "제주특별자치도",
+    "official_name:ko-Hani": "濟州特別自治道",
+    "official_name:th": "จังหวัดปกครองตนเองพิเศษเชจู",
+    "official_name:zh": "济州特別自治道",
+    "old_name:en": "Cheju-do",
+    "short_name": "제주",
+    "short_name:en": "Jeju",
+    "short_name:ja": "済州",
+    "short_name:ko": "제주",
+    "short_name:ko-Hani": "濟州",
+    "short_name:zh": "濟州",
+    "type": "boundary",
+    "wikidata": "Q41164",
+    "wikipedia": "en:Jeju Province"
+  }
+}
+
+  ]
+}
