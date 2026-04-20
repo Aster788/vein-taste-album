@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color Scheme Preview</title>
+    <style>
+      :root {
+        --page-bg: #ffffff;
+        --text: #1f2937;
+        --muted: #6b7280;
+        --line: #e5e7eb;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "LXGW WenKai", "PingFang SC", "Microsoft YaHei", sans-serif;
+        color: var(--text);
+        background: var(--page-bg);
+      }
+
+      .wrap {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 28px 24px 56px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+        font-weight: 600;
+      }
+
+      .desc {
+        margin: 0 0 20px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .legend {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(210px, 1fr));
+        gap: 12px;
+        margin-bottom: 22px;
+      }
+
+      .legend-item {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 10px 12px;
+        background: #fafafa;
+      }
+
+      .legend-item strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .legend-item span {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .city-grid {
+        display: grid;
+        gap: 14px;
+      }
+
+      .city-row {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .city-head {
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--line);
+        background: #f9fafb;
+        font-size: 15px;
+      }
+
+      .city-head .en {
+        margin-left: 8px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .card {
+        min-height: 180px;
+        border-right: 1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .card:last-child {
+        border-right: none;
+      }
+
+      .card-title {
+        padding: 8px 10px;
+        border-bottom: 1px solid var(--line);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .panel {
+        flex: 1;
+        display: grid;
+        grid-template-rows: 48px 1fr;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .topbar {
+        display: flex;
+      }
+
+      .name-block {
+        width: 45%;
+      }
+
+      .tab-block {
+        width: 27.5%;
+        border-left: 1px solid rgba(0, 0, 0, 0.08);
+      }
+
+      .tab-block.active {
+        box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.14);
+      }
+
+      .content {
+        position: relative;
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+      }
+
+      .book {
+        position: absolute;
+        left: 12px;
+        top: 12px;
+        width: 34px;
+        height: 74px;
+        border-radius: 4px;
+      }
+
+      .note {
+        position: absolute;
+        right: 12px;
+        bottom: 12px;
+        width: 70px;
+        height: 40px;
+        border-radius: 6px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        background: #ffffff;
+      }
+
+      .codes {
+        padding: 8px 10px 10px;
+        font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+        font-size: 12px;
+        color: #374151;
+        line-height: 1.55;
+      }
+
+      .codes .line {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .swatch {
+        width: 12px;
+        height: 12px;
+        border-radius: 2px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+      }
+
+      .left {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      @media (max-width: 1100px) {
+        .legend {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .cards {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .card:nth-child(2n) {
+          border-right: none;
+        }
+
+        .card:nth-child(-n + 2) {
+          border-bottom: 1px solid var(--line);
+        }
+      }
+
+      @media (max-width: 720px) {
+        .cards {
+          grid-template-columns: 1fr;
+        }
+
+        .card {
+          border-right: none;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .card:last-child {
+          border-bottom: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>配色方案可视化对比（A / C / C+A）</h1>
+      <p class="desc">
+        对比维度：每个城市展示「当前方案」「方案 A」「方案 C」「方案 C+A」4 张卡。<br />
+        方案 A = 辅色全部改白；方案 C = 主辅都转低饱和同气质；方案 C+A = 方案 C 的基础上，大面积背景再混白。
+      </p>
+
+      <div class="legend">
+        <div class="legend-item">
+          <strong>当前方案（Current）</strong>
+          <span>你现在仓库里的实际 token，作为基准。</span>
+        </div>
+        <div class="legend-item">
+          <strong>方案 A</strong>
+          <span>只改辅色为白色，主色不动，改动最小。</span>
+        </div>
+        <div class="legend-item">
+          <strong>方案 C</strong>
+          <span>主色降饱和+提亮，辅色改同色系浅色。</span>
+        </div>
+        <div class="legend-item">
+          <strong>方案 C+A</strong>
+          <span>保留 C 的主辅色，但大面积背景改为更接近白。</span>
+        </div>
+      </div>
+
+      <div class="city-grid" id="cityGrid"></div>
+    </div>
+
+    <script>
+      const cities = [
+        {
+          zh: "大连",
+          en: "Dalian",
+          current: { p: "#4A7FA5", s: "#D4E4EE" },
+          a: { p: "#4A7FA5", s: "#FFFFFF" },
+          c: { p: "#6F93AE", s: "#D3DEE5" },
+          ca: { p: "#6F93AE", s: "#EAF0F4" }
+        },
+        {
+          zh: "青岛",
+          en: "Qingdao",
+          current: { p: "#2B6CB0", s: "#F5E6C8" },
+          a: { p: "#2B6CB0", s: "#FFFFFF" },
+          c: { p: "#5F84B0", s: "#DDD5C4" },
+          ca: { p: "#5F84B0", s: "#F0EDE7" }
+        },
+        {
+          zh: "上海",
+          en: "Shanghai",
+          current: { p: "#2C2C2C", s: "#C9A84C" },
+          a: { p: "#2C2C2C", s: "#FFFFFF" },
+          c: { p: "#505050", s: "#BCA36A" },
+          ca: { p: "#505050", s: "#ECE7D9" }
+        },
+        {
+          zh: "广州",
+          en: "Guangzhou",
+          current: { p: "#C47D2E", s: "#F2E8D5" },
+          a: { p: "#C47D2E", s: "#FFFFFF" },
+          c: { p: "#B18A59", s: "#DFD4C0" },
+          ca: { p: "#B18A59", s: "#F3EFE7" }
+        },
+        {
+          zh: "重庆",
+          en: "Chongqing",
+          current: { p: "#B03A2E", s: "#2D2D2D" },
+          a: { p: "#B03A2E", s: "#FFFFFF" },
+          c: { p: "#B0664D", s: "#474747" },
+          ca: { p: "#B0664D", s: "#F0E0D8" }
+        },
+        {
+          zh: "福州",
+          en: "Fuzhou",
+          current: { p: "#6B8E5E", s: "#C4956A" },
+          a: { p: "#6B8E5E", s: "#FFFFFF" },
+          c: { p: "#7D9570", s: "#BEA487" },
+          ca: { p: "#7D9570", s: "#ECE5DC" }
+        },
+        {
+          zh: "厦门",
+          en: "Xiamen",
+          current: { p: "#4E8B8B", s: "#F0E6D3" },
+          a: { p: "#4E8B8B", s: "#FFFFFF" },
+          c: { p: "#6E9496", s: "#D9D2C4" },
+          ca: { p: "#6E9496", s: "#EEEAE3" }
+        },
+        {
+          zh: "泉州",
+          en: "Quanzhou",
+          current: { p: "#8B6348", s: "#E8D5B7" },
+          a: { p: "#8B6348", s: "#FFFFFF" },
+          c: { p: "#967662", s: "#D7C8B1" },
+          ca: { p: "#967662", s: "#F0EBE4" }
+        },
+        {
+          zh: "平潭",
+          en: "Pingtan",
+          current: { p: "#5B9BB5", s: "#E8F4F8" },
+          a: { p: "#5B9BB5", s: "#FFFFFF" },
+          c: { p: "#7EA5B3", s: "#D7E2E6" },
+          ca: { p: "#7EA5B3", s: "#ECF2F4" }
+        },
+        {
+          zh: "济州岛",
+          en: "Jeju",
+          current: { p: "#E8753A", s: "#3D6B55" },
+          a: { p: "#E8753A", s: "#FFFFFF" },
+          c: { p: "#D98F65", s: "#4F7F66" },
+          ca: { p: "#D98F65", s: "#F5EAE1" }
+        },
+        {
+          zh: "吉隆坡",
+          en: "Kuala Lumpur",
+          current: { p: "#7B3FA0", s: "#F4C842" },
+          a: { p: "#7B3FA0", s: "#FFFFFF" },
+          c: { p: "#9368B8", s: "#D8C480" },
+          ca: { p: "#9368B8", s: "#F2EDE4" }
+        }
+      ];
+
+      const schemes = [
+        { key: "current", label: "当前方案" },
+        { key: "a", label: "方案 A" },
+        { key: "c", label: "方案 C" },
+        { key: "ca", label: "方案 C+A" }
+      ];
+
+      function buildCard(schemeLabel, p, s) {
+        const panelBg = mixWhite(s, 0.75);
+        const tabBg = mixBlack(p, 0.06);
+        const bookBg = mixBlack(p, 0.12);
+        return `
+          <div class="card">
+            <div class="card-title">${schemeLabel}</div>
+            <div class="panel">
+              <div class="topbar">
+                <div class="name-block" style="background:${p}"></div>
+                <div class="tab-block active" style="background:${tabBg}"></div>
+                <div class="tab-block" style="background:${tabBg}"></div>
+              </div>
+              <div class="content" style="background:${panelBg}">
+                <div class="book" style="background:${bookBg}"></div>
+                <div class="note"></div>
+              </div>
+            </div>
+            <div class="codes">
+              <div class="line">
+                <span class="left"><i class="swatch" style="background:${p}"></i>primary</span>
+                <span>${p}</span>
+              </div>
+              <div class="line">
+                <span class="left"><i class="swatch" style="background:${s}"></i>secondary</span>
+                <span>${s}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function mixWhite(hex, ratio) {
+        return mixColor(hex, "#FFFFFF", ratio);
+      }
+
+      function mixBlack(hex, ratio) {
+        return mixColor(hex, "#000000", ratio);
+      }
+
+      function mixColor(hexA, hexB, ratioB) {
+        const a = hexToRgb(hexA);
+        const b = hexToRgb(hexB);
+        const r = Math.round(a.r * (1 - ratioB) + b.r * ratioB);
+        const g = Math.round(a.g * (1 - ratioB) + b.g * ratioB);
+        const bVal = Math.round(a.b * (1 - ratioB) + b.b * ratioB);
+        return rgbToHex(r, g, bVal);
+      }
+
+      function hexToRgb(hex) {
+        const value = hex.replace("#", "");
+        return {
+          r: parseInt(value.slice(0, 2), 16),
+          g: parseInt(value.slice(2, 4), 16),
+          b: parseInt(value.slice(4, 6), 16)
+        };
+      }
+
+      function rgbToHex(r, g, b) {
+        return (
+          "#" +
+          [r, g, b]
+            .map((n) => n.toString(16).padStart(2, "0"))
+            .join("")
+            .toUpperCase()
+        );
+      }
+
+      const cityGrid = document.getElementById("cityGrid");
+      cityGrid.innerHTML = cities
+        .map((city) => {
+          const cards = schemes
+            .map((scheme) => {
+              const token = city[scheme.key];
+              return buildCard(scheme.label, token.p, token.s);
+            })
+            .join("");
+
+          return `
+            <section class="city-row">
+              <div class="city-head">
+                <strong>${city.zh}</strong>
+                <span class="en">${city.en}</span>
+              </div>
+              <div class="cards">${cards}</div>
+            </section>
+          `;
+        })
+        .join("");
+    </script>
+  </body>
+</html>
