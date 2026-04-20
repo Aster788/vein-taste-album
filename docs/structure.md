@@ -68,7 +68,7 @@ food-for-joy/
 │   │   │   ├── jeju.geojson
 │   │   │   └── kuala-lumpur.geojson
 │   │   │
-│   │   ├── stickers/             ← 所有 SVG 贴纸，按用途分三个子文件夹
+│   │   ├── stickers/             ← 所有 SVG 贴纸，按用途分三个子文件夹（统一要求：透明底；禁止整幅黑/白底框与大面积底卡）
 │   │   │   ├── cities/           ← 书脊城市贴纸（每个城市一个SVG）
 │   │   │   │   ├── dalian-seagull.svg
 │   │   │   │   ├── qingdao-beer.svg
@@ -84,6 +84,7 @@ food-for-joy/
 │   │   │   ├── page/           ← 网页上可能会用到的贴纸
 │   │   │   │   ├── airplane.svg
 │   │   │   │   ├── earth.svg
+│   │   │   │   ├── footprints.svg
 │   │   │   │   ├── paperclip.svg
 │   │   │   │   ├── pin.svg
 │   │   │   │   ├── star.svg
@@ -141,17 +142,17 @@ food-for-joy/
 ### 哪些文件 Agent 会创建/修改
 
 
-| 文件/目录             | Agent 操作权限             |
-| ----------------- | ---------------------- |
-| `src/pages/`      | ✅ 可创建和修改               |
-| `src/components/` | ✅ 可创建和修改               |
+| 文件/目录             | Agent 操作权限                        |
+| ----------------- | --------------------------------- |
+| `src/pages/`      | ✅ 可创建和修改                          |
+| `src/components/` | ✅ 可创建和修改                          |
 | `src/context/`    | ✅ 可创建和修改（仅全局状态，与 UI 无关的 Provider） |
-| `src/styles/`     | ✅ 可创建和修改               |
-| `src/utils/`      | ✅ 可创建和修改               |
-| `src/main.jsx`    | ✅ 仅在 Phase 1 初始化时修改一次  |
-| `src/App.jsx`     | ✅ 仅在 Phase 1 配置路由时修改一次 |
-| `package.json`    | ✅ 仅在需要新增依赖时修改，必须告知用户   |
-| `vite.config.js`  | ✅ 仅在 Phase 1 初始化时修改一次  |
+| `src/styles/`     | ✅ 可创建和修改                          |
+| `src/utils/`      | ✅ 可创建和修改                          |
+| `src/main.jsx`    | ✅ 仅在 Phase 1 初始化时修改一次             |
+| `src/App.jsx`     | ✅ 仅在 Phase 1 配置路由时修改一次            |
+| `package.json`    | ✅ 仅在需要新增依赖时修改，必须告知用户              |
+| `vite.config.js`  | ✅ 仅在 Phase 1 初始化时修改一次             |
 
 
 ### 哪些文件/目录 Agent 绝对不能修改
