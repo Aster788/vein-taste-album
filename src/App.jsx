@@ -6,7 +6,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Bookshelf />} />
-      <Route path="/:city" element={<CityDetail />} />
+      <Route path="/:citySlug" element={<CityDetail />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
