@@ -18,18 +18,17 @@ const LanguageContext = createContext(null);
  *
  * **济州岛、吉隆坡**
  * - 不展示 EN/CN；`locale` 无 UI 意义。
- * - **详情页等主体区**文案固定顺序：**中文 → 本国语 → English**
- *   （用 `formatFixedTriple` 等工具拼展示字符串）；**不用于书脊/封面**。
+ * - **详情页等主体区**文案固定顺序：**本国语 → English → 中文**（用 `formatFixedTriple` 等工具拼展示字符串）；**不用于书脊/封面**。
  */
 
 /**
- * @param {string | null | undefined} zh
  * @param {string | null | undefined} native
  * @param {string | null | undefined} en
+ * @param {string | null | undefined} zh
  * @returns {string}
  */
-export function formatFixedTriple(zh, native, en) {
-  return [zh, native, en]
+export function formatFixedTriple(native, en, zh) {
+  return [native, en, zh]
     .map((s) => (s == null ? "" : String(s).trim()))
     .filter((s) => s.length > 0)
     .join(" / ");

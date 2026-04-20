@@ -33,25 +33,6 @@ export default function Bookshelf() {
   const [isTypingDone, setIsTypingDone] = useState(false);
   const [typingPhase, setTypingPhase] = useState("cn");
 
-  const scrollBookToCenter = (bookIndex) => {
-    const scroller = scrollRef.current;
-    const track = trackRef.current;
-    if (!scroller || !track) return;
-    const slots = track.querySelectorAll(".ffj-bookshelf-book-slot");
-    const targetSlot = slots[bookIndex];
-    if (!targetSlot) return;
-    const targetCenter = targetSlot.offsetLeft + targetSlot.offsetWidth / 2;
-    const maxScrollLeft = Math.max(0, scroller.scrollWidth - scroller.clientWidth);
-    const nextScrollLeft = Math.min(
-      maxScrollLeft,
-      Math.max(0, targetCenter - scroller.clientWidth / 2),
-    );
-    scroller.scrollTo({
-      left: nextScrollLeft,
-      behavior: "smooth",
-    });
-  };
-
   useEffect(() => {
     setCitySlug(null);
     delete document.documentElement.dataset.city;
@@ -454,19 +435,14 @@ export default function Bookshelf() {
           ))}
         </ul>
       </div>
-      <div className="ffj-bookshelf-footprints" aria-label="书架脚印导航" role="navigation">
+      <div className="ffj-bookshelf-footprints" aria-hidden="true">
         {cities.map((city, index) => (
-          <button
-            type="button"
+          <span
             key={`${city.slug}-footprint`}
             className={`ffj-footprint${index === activeBookIndex ? " is-active" : ""}`}
-            aria-label={`将${city.city_zh || city.city_en}定位到中间`}
-            onClick={() => {
-              scrollBookToCenter(index);
-            }}
           >
             <img src={footprintsStickerUrl} alt="" decoding="async" />
-          </button>
+          </span>
         ))}
       </div>
     </main>
