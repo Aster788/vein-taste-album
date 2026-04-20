@@ -22,6 +22,10 @@ export const NON_CHINA_CITY_SLUGS = Object.freeze(["jeju", "kuala-lumpur"]);
 /**
  * 书脊城市贴纸文件名（位于 `src/assets/stickers/cities/`，与 `docs/structure.md` 一致）。
  * 键顺序与上方 `CITY_SLUGS` 一致，便于对照维护。
+ *
+ * **贴纸 SVG 规范**：不得含整幅 viewBox 黑框/白框或大块纯色底（导出器常见）；仅保留透明底上的图形，
+ *   否则 `<img>` 书脊上会露出黑/白矩形。换图后用浏览器看一眼书脊即可自检。
+ *
  * @type {Readonly<Record<(typeof CITY_SLUGS)[number], string>>}
  */
 export const CITY_STICKER_FILENAME_BY_SLUG = Object.freeze({

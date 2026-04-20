@@ -91,7 +91,7 @@ src/assets/photos/{city-folder}/{store-folder}/{菜名}.jpg
 - Phase 5：板块②杂志详情
 - Phase 6：打磨与扩展
 
-**当前正在做：Phase 2**
+**当前正在做：Phase 2（整页联调与验收）**
 
 ---
 
@@ -102,6 +102,7 @@ src/assets/photos/{city-folder}/{store-folder}/{菜名}.jpg
 3. **不要修改 JSON 文件的字段名**，字段名一旦改变会破坏整个数据关联逻辑
 4. **不要把颜色值写死在组件里**，必须引用 `global.css` 中的 CSS 变量
 5. **不要自行决定字体**，字体规范见 prd.md 第二节
+6. **所有贴纸 SVG（`stickers/cities`、`stickers/page`、`stickers/cuisine`）必须透明底**：禁止整幅 viewBox 黑/白底框、禁止大面积纯色卡纸底；否则会在书脊/Slogan/筛选/拍立得区域出现黑白方块
 
 ---
 

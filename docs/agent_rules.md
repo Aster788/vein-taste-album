@@ -81,6 +81,7 @@
 ### 3.5 资源与路径核验（避免误判文件是否存在）
 - 涉及 **`src/assets/`**（含 `fonts/`、`photos/`、`geojson/`、`stickers/`）、**`.env`** 等：在结论为「不存在 / 未放入 / 是空文件」之前，**必须用终端核对**（如 PowerShell：`Test-Path` 或 `Get-ChildItem -LiteralPath <目录> -Force`），**不得仅凭 Glob/搜索/Read 下结论**（索引、忽略规则、二进制均可能不准）。
 - 若需说明「文件为空」：须写明**路径 + 字节大小**；Read 显示空不等于磁盘一定为空，以终端为准。
+- 涉及 **任意贴纸 SVG**（`src/assets/stickers/cities/`、`page/`、`cuisine/`）：在汇报“可用”前，必须核查是否含整幅 viewBox 黑/白底框或大面积底卡 path；如存在，先清理再接入，避免在书脊/Slogan/筛选/拍立得出现黑白方块。
 
 ---
 

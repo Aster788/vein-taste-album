@@ -159,6 +159,157 @@ html[data-city="kuala-lumpur"],
   justify-content: center;
 }
 
+/* Slogan 静态：沐瑶 + Playfair；旁侧地球贴纸（PRD §1.2、§3.1；动画后续 Phase） */
+.ffj-bookshelf-slogan {
+  position: relative;
+  display: flex;
+  width: auto;
+  max-width: min(52rem, 100%);
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.ffj-bookshelf-slogan-earth {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: 0;
+  translate: 0 -50%;
+  width: clamp(2.35rem, 5.5vw, 3.5rem);
+  height: auto;
+  opacity: 0.94;
+  animation: ffj-sticker-orbit-ccw 8s linear infinite;
+}
+
+.ffj-bookshelf-slogan-lines {
+  flex: 0 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  /* 右侧预留压缩到贴纸宽 + 约半个汉字，视觉更贴近 */
+  padding-inline-end: calc(clamp(2.35rem, 5.5vw, 3.5rem) + 0.5ch);
+  /* 英文行字号 = 中文 60%（PRD §3.2） */
+  --slogan-cn: clamp(1.28rem, 3.4vw, 1.95rem);
+  will-change: transform;
+}
+
+.ffj-bookshelf-slogan-lines.is-floating {
+  animation: ffj-slogan-float 5.2s ease-in-out infinite;
+}
+
+.ffj-bookshelf-slogan-cn {
+  position: relative;
+  margin: 0;
+  color: #545d67;
+  font-family: var(--font-handwriting);
+  font-size: var(--slogan-cn);
+  line-height: 1.32;
+  letter-spacing: 0.03em;
+  min-height: 1.32em;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ffj-bookshelf-slogan-cn::after {
+  content: none;
+  display: none;
+}
+
+.ffj-bookshelf-slogan-cn.is-typed::after {
+  opacity: 0;
+  animation: none;
+}
+
+.ffj-bookshelf-slogan-en {
+  position: relative;
+  margin: 0.28rem 0 0;
+  max-width: min(38rem, 88vw);
+  padding-inline: 0.25rem;
+  color: #545d67;
+  font-family: var(--font-handwriting);
+  font-size: calc(var(--slogan-cn) * 0.6);
+  line-height: 1.42;
+  font-weight: 400;
+  letter-spacing: 0.015em;
+  min-height: 1.42em;
+  opacity: 0;
+  transform: translateY(2px);
+  transition: opacity 360ms ease, transform 360ms ease;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ffj-slogan-line-ghost {
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.ffj-slogan-line-live {
+  position: absolute;
+  inset: 0;
+  white-space: nowrap;
+}
+
+.ffj-bookshelf-slogan-en.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ffj-bookshelf-slogan-en::after {
+  content: none;
+  display: none;
+}
+
+.ffj-bookshelf-slogan-en.is-typing::after {
+  content: none;
+  display: none;
+}
+
+@keyframes ffj-slogan-caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ffj-slogan-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-0.35deg);
+  }
+  15% {
+    transform: translate3d(2px, -2px, 0) rotate(0.45deg);
+  }
+  32% {
+    transform: translate3d(-2px, -1px, 0) rotate(-0.5deg);
+  }
+  50% {
+    transform: translate3d(2px, 2px, 0) rotate(0.4deg);
+  }
+  68% {
+    transform: translate3d(-2px, 2px, 0) rotate(-0.42deg);
+  }
+  84% {
+    transform: translate3d(1px, -1px, 0) rotate(0.32deg);
+  }
+}
+
+@keyframes ffj-sticker-orbit-ccw {
+  0% {
+    transform: rotate(0deg) translateX(5px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg) translateX(5px) rotate(360deg);
+  }
+}
+
 .ffj-bookshelf-scroll {
   /* 由 Bookshelf.jsx 按几何测量写入，补足 rotateX 后画出滚动区上沿的像素量 */
   --ffj-bookshelf-top-bleed: 0px;
@@ -171,8 +322,12 @@ html[data-city="kuala-lumpur"],
   align-items: stretch;
   min-width: 0;
   width: 100%;
+  /* 书架 3D：透视放在横向滚动容器上（槽位不设 perspective，见 .ffj-bookshelf-book-slot 注释） */
+  perspective: clamp(960px, 118vw, 2000px);
+  perspective-origin: 50% 55%;
   overflow-x: auto;
   overflow-y: hidden;
+  scrollbar-width: none;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
@@ -181,6 +336,10 @@ html[data-city="kuala-lumpur"],
     clamp(2.5rem, 7vmin, 5.5rem),
     var(--ffj-bookshelf-top-bleed)
   );
+}
+
+.ffj-bookshelf-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 .ffj-bookshelf-track {
@@ -194,6 +353,7 @@ html[data-city="kuala-lumpur"],
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: flex-end;
+  transform-style: preserve-3d;
   box-sizing: border-box;
   /* Stripe Press 式书脊陈列：间隔须大于单槽在 3D 下的视觉占地，避免「糊成一片」 */
   gap: clamp(3rem, 8vw, 6.5rem);
@@ -205,6 +365,44 @@ html[data-city="kuala-lumpur"],
   padding-block-end: clamp(0.75rem, 2vh, 1.5rem);
   padding-inline: 50%;
   list-style: none;
+}
+
+.ffj-bookshelf-footprints {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.45rem, 1.2vw, 1rem);
+  width: 100%;
+  min-height: clamp(2rem, 5vh, 2.7rem);
+  margin-block-start: clamp(0.25rem, 0.9vh, 0.65rem);
+}
+
+.ffj-footprint {
+  position: relative;
+  width: clamp(0.95rem, 1.6vw, 1.2rem);
+  height: clamp(1.5rem, 2.35vw, 1.85rem);
+  transform: rotate(-16deg);
+  opacity: 1;
+}
+
+.ffj-footprint > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: grayscale(1) brightness(1.28) contrast(0.68);
+  opacity: 0.5;
+  transition: filter 160ms ease, opacity 160ms ease;
+}
+
+.ffj-footprint.is-active {
+  transform: rotate(-16deg);
+}
+
+.ffj-footprint.is-active > img {
+  filter: grayscale(1) brightness(0.42) contrast(1.08);
+  opacity: 0.96;
 }
 
 .ffj-bookshelf-book-slot {
@@ -219,6 +417,26 @@ html[data-city="kuala-lumpur"],
   border-radius: clamp(3px, 0.35rem, 6px);
   /* 书脊本体仍用 .ffj-book__spine 的圆角裁切；槽位不设 perspective，避免与祖先 overflow-y 叠加产生合成裁切（顶圆角变直线） */
   overflow: visible;
+  transform-style: preserve-3d;
+  /* Bookshelf.jsx：仅滚动驱动 yaw（无 transition）；抽出由 :hover 触发 */
+  --ffj-book-yaw-scroll: 0deg;
+  --ffj-book-front-vis: 0;
+  --ffj-book-back-vis: 0;
+}
+
+.ffj-bookshelf-book-hit {
+  display: block;
+  height: 100%;
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
+  border-radius: inherit;
+  transform-style: preserve-3d;
+}
+
+.ffj-bookshelf-book-hit:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-text) 38%, transparent);
+  outline-offset: 3px;
 }
 
 /* --- 单本书 3D：书脊 + 书口（厚度）+ 封面（Phase 2 结构） --- */
@@ -234,20 +452,39 @@ html[data-city="kuala-lumpur"],
   transform-style: preserve-3d;
 }
 
+/* 仅滚动驱动 yaw：无 transition，避免滞后与生硬感 */
+.ffj-book__yaw-scroll {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform-origin: 50% 100%;
+  transform: rotateY(var(--ffj-book-yaw-scroll, 0deg));
+  will-change: transform;
+}
+
+/* 仅 hover 到该书时抽出：仅 translateZ 使用 300ms ease-out */
+.ffj-book__yaw-hover {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform-origin: 50% 100%;
+  transform: translateZ(0);
+  transition: transform 300ms ease-out;
+  will-change: transform;
+}
+
+.ffj-bookshelf-book-hit:is(:hover, :focus-visible) .ffj-book__yaw-hover {
+  transform: translateZ(12px);
+}
+
 .ffj-book__assembly {
   position: relative;
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  /* 书架：仅书脊朝前（参考 Stripe Press），略向后仰；角度略小可少占「头顶」溢出，配合轨道/滚动区上 padding */
-  transform: rotateY(0deg) rotateX(3deg);
+  /* 书架：略向后仰，支点在底边中点（立于架面） */
+  transform: rotateX(3deg);
   transform-origin: 50% 100%;
-}
-
-/* 书架行不展示封面与书口，避免 3D 外沿侵占邻书、吃掉 gap */
-.ffj-bookshelf-book-slot .ffj-book__cover,
-.ffj-bookshelf-book-slot .ffj-book__pages {
-  display: none;
 }
 
 /* 外壳统一用城市主色：书脊与封面同一材质，仅用高光/阴影塑体积；纸质噪声见 textures.css */
@@ -258,6 +495,11 @@ html[data-city="kuala-lumpur"],
   transform: translateZ(0);
   backface-visibility: hidden;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-block-start: clamp(0.28rem, 0.9vh, 0.5rem);
   /* 书脊上的 ffj-paper-noise 默认 isolation:isolate，易与 3D 合成冲突 */
   isolation: auto;
   /* 多层背景：首项绘于最上。手工纸纤维 / 做旧 / 压痕 / 毛边感均只用 token + color-mix，避免光滑塑料感 */
@@ -339,17 +581,40 @@ html[data-city="kuala-lumpur"],
     inset 5px 0 16px color-mix(in srgb, var(--color-page-bg) 22%, transparent);
 }
 
+/* 贴纸资源统一约束（适用于书脊/Slogan/筛选/拍立得等所有区域）：
+   SVG 必须透明底，禁止整幅 viewBox 黑/白底框与大面积底卡；否则会出现黑白方块。 */
+/* 书脊顶部城市贴纸（PRD §2.4）：`citySlugs` 映射 + Vite URL；透明底 SVG 以 img 呈现原色 */
+.ffj-book__spine-sticker {
+  flex: 0 0 auto;
+  z-index: 1;
+  display: block;
+  width: clamp(1.05rem, min(3.1vw, 4.8vh), 1.82rem);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  margin-block-end: clamp(0.12rem, 0.55vh, 0.32rem);
+  pointer-events: none;
+}
+
+/* 广州塔 SVG 为 1024 画幅、主体相对留白多，略放大书脊贴纸以免过小 */
+.ffj-bookshelf-book-slot[data-city="guangzhou"] .ffj-book__spine-sticker {
+  width: clamp(1.45rem, min(4.6vw, 7.2vh), 2.45rem);
+}
+
 /* 书脊竖排文案（PRD §2.5、§3.3）：两行叠放，上中文「国家·城市」、下英文「Country · City」，11 城统一 */
 .ffj-book__spine-text {
   position: relative;
   z-index: 1;
   box-sizing: border-box;
   width: 100%;
-  height: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(0.55rem, 2.2vh, 1rem) clamp(0.12rem, 0.35vw, 0.28rem);
+  padding: clamp(0.35rem, 1.4vh, 0.72rem) clamp(0.12rem, 0.35vw, 0.28rem)
+    clamp(0.55rem, 2.2vh, 1rem);
 }
 
 .ffj-book__spine-stack {
@@ -460,6 +725,57 @@ html[data-city="kuala-lumpur"],
       color-mix(in srgb, var(--color-text) 8%, transparent),
     inset 10px 0 22px color-mix(in srgb, var(--color-text) 14%, transparent),
     6px 12px 22px color-mix(in srgb, var(--color-text) 16%, transparent);
+  opacity: var(--ffj-book-front-vis, 0);
+  transition: opacity 320ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.ffj-book__back {
+  position: absolute;
+  top: 0;
+  right: 100%;
+  width: var(--bb-cover-w);
+  height: 100%;
+  transform-origin: right center;
+  transform: rotateY(-52deg) translateZ(1px);
+  backface-visibility: hidden;
+  border-radius: var(--bb-corner);
+  background:
+    linear-gradient(
+      155deg,
+      color-mix(in srgb, var(--color-page-bg) 12%, transparent) 0%,
+      transparent 44%
+    ),
+    linear-gradient(
+      235deg,
+      color-mix(in srgb, var(--color-text) 13%, var(--city-primary)),
+      color-mix(in srgb, var(--city-primary) 88%, black) 55%,
+      color-mix(in srgb, var(--color-text) 20%, var(--city-primary))
+    );
+  box-shadow:
+    inset 0 0 0 var(--bb-board)
+      color-mix(in srgb, var(--color-page-bg) 28%, var(--city-primary)),
+    inset 0 0 0 calc(var(--bb-board) + 0.5px)
+      color-mix(in srgb, var(--color-text) 14%, transparent),
+    inset -8px 0 18px color-mix(in srgb, var(--color-text) 15%, transparent),
+    -5px 10px 18px color-mix(in srgb, var(--color-text) 14%, transparent);
+  opacity: var(--ffj-book-back-vis, 0);
+  transition: opacity 340ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* 书架封面临时：纯色 = 书脊主色（PRD §3.3 阶段性规则） */
+.ffj-bookshelf-book-slot .ffj-book__cover--bookshelf-solid {
+  background: var(--city-primary);
+  box-shadow:
+    inset 0 0 0 var(--bb-board)
+      color-mix(in srgb, var(--color-page-bg) 42%, var(--city-primary)),
+    inset 0 0 0 calc(var(--bb-board) + 0.5px)
+      color-mix(in srgb, var(--color-text) 9%, transparent),
+    inset 8px 0 18px color-mix(in srgb, var(--color-text) 12%, transparent),
+    5px 10px 18px color-mix(in srgb, var(--color-text) 14%, transparent);
+}
+
+.ffj-bookshelf-book-slot .ffj-book__back--bookshelf-solid {
+  background: var(--city-primary);
 }
 
 /* 霞鹜文楷（LXGW WenKai Regular，简体正文） */

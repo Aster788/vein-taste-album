@@ -105,7 +105,7 @@ export function cityEnFromBookshelfSlug(slug) {
  * @property {string} city_native 非中国城：本国语城市名（供详情页三语文案等，**不用于书脊**）；中国城：空字符串
  * @property {boolean} is_china 同上 `is_china`，无数据时由 slug 是否属非中国区推导
  * @property {string} stickerFileName `stickers/cities/` 下文件名
- * @property {string} stickerHref Vite 解析后的贴纸 URL，供 `<img src>` 等使用
+ * @property {string} stickerHref Vite 解析后的贴纸 URL，供 `<img src>` 等使用（SVG 须无整幅黑/白底，见 `citySlugs.js`）
  * @property {Readonly<{ primary: string; secondary: string }>} colorTokens 全局配色变量名（值由 `data-city` 与 `global.css` 决定）
  */
 
