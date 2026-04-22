@@ -10,6 +10,15 @@ import {
   isValidCitySlug,
   normalizeCitySlug,
 } from "../utils/citySlugs.js";
+import MapPanel from "../components/MapPanel.jsx";
+import spoonAndForkStickerUrl from "../assets/stickers/page/spoon-and-fork.svg?url";
+import locationStickerUrl from "../assets/stickers/page/location.svg?url";
+import {
+  cityEnFromBookshelfSlug,
+  getDishNoteText,
+  getDishPriceText,
+  getDishesByCity,
+} from "../utils/dataLoader.js";
 
 export default function CityDetail() {
   const { citySlug } = useParams();
@@ -43,7 +52,6 @@ export default function CityDetail() {
   const nativeOpenMenuText = isKoreanNativeCity
     ? "전환 드롭다운 메뉴 열기"
     : "Open switch dropdown menu";
-  const nativeSectionPrefixText = isKoreanNativeCity ? "전환" : "Switch";
   const nativeSectionMenuText = isKoreanNativeCity ? "전환 메뉴" : "Switch menu";
   const nativeContentAreaText = isKoreanNativeCity
     ? "도시 상세 콘텐츠 영역"
@@ -53,10 +61,6 @@ export default function CityDetail() {
     : "Open-book spread container";
   const nativeLeftPageText = isKoreanNativeCity ? "왼쪽 페이지 자리" : "Left page placeholder";
   const nativeRightPageText = isKoreanNativeCity ? "오른쪽 페이지 자리" : "Right page placeholder";
-  const nativeMapLeftPlaceholderText =
-    isKoreanNativeCity
-      ? "지도 왼쪽 페이지 자리(지도 영역)"
-      : "Map left-page placeholder (map area)";
   const nativeCuisineLeftPlaceholderText =
     isKoreanNativeCity
       ? "요리 왼쪽 페이지 자리(요리 필터)"
@@ -93,6 +97,10 @@ export default function CityDetail() {
   const activeSectionLabel =
     sectionOptions.find((option) => option.id === activeSection)?.label ??
     sectionOptions[0].label;
+  const cityDishes = useMemo(
+    () => getDishesByCity(cityEnFromBookshelfSlug(slug)).slice(0, 8),
+    [slug]
+  );
 
   useEffect(() => {
     if (!valid) return;
@@ -139,6 +147,39 @@ export default function CityDetail() {
     setActiveSection(nextSection);
     setSectionMenuOpen(false);
   };
+  const renderSectionIcon = (sectionId) => {
+    if (sectionId === "map") {
+      return (
+        <img
+          className="ffj-city-section-current-icon-img"
+          src={locationStickerUrl}
+          alt=""
+          aria-hidden="true"
+          draggable={false}
+        />
+      );
+    }
+
+    return (
+      <img
+        className="ffj-city-section-current-icon-img"
+        src={spoonAndForkStickerUrl}
+        alt=""
+        aria-hidden="true"
+        draggable={false}
+      />
+    );
+  };
+  const renderSelectedOptionMarker = () => (
+    <svg
+      className="ffj-city-section-option-marker-svg"
+      viewBox="0 0 24 24"
+      role="presentation"
+      focusable="false"
+    >
+      <path d="M3.2 2.8L20.5 10L12.6 12.6L10 20.6L3.2 2.8Z" />
+    </svg>
+  );
 
   if (!valid) {
     return <Navigate to="/" replace />;
@@ -194,16 +235,26 @@ export default function CityDetail() {
               onClick={() => setSectionMenuOpen((open) => !open)}
             >
               <span
-                className={`ffj-city-section-caret ${
+                className={`ffj-city-switch-icon ${
                   isSectionMenuOpen ? "is-open" : ""
                 }`}
                 aria-hidden="true"
-              />
-              <span className="ffj-city-section-prefix">
-                {pickUiText("切换", "Switch", nativeSectionPrefixText)}
+              >
+                <svg
+                  className="ffj-city-switch-icon-svg"
+                  viewBox="0 0 24 24"
+                  role="presentation"
+                  focusable="false"
+                >
+                  <path d="M5 7L9 3M5 7H19" />
+                  <path d="M19 17L15 21M5 17H19" />
+                </svg>
               </span>
             </button>
 
+            <span className="ffj-city-section-current-icon" aria-hidden="true">
+              {renderSectionIcon(activeSection)}
+            </span>
             <p className="ffj-city-section-current">{activeSectionLabel}</p>
 
             {isSectionMenuOpen ? (
@@ -228,7 +279,12 @@ export default function CityDetail() {
                     }`}
                     onClick={() => handleSelectSection(option.id)}
                   >
-                    {option.label}
+                    <span>{option.label}</span>
+                    {activeSection === option.id ? (
+                      <span className="ffj-city-section-option-marker" aria-hidden="true">
+                        {renderSelectedOptionMarker()}
+                      </span>
+                    ) : null}
                   </button>
                 ))}
               </div>
@@ -242,30 +298,55 @@ export default function CityDetail() {
         aria-label={pickUiText("城市详情内容区", "City detail content area", nativeContentAreaText)}
       >
         <div
-          className="ffj-city-book-spread"
+          className={`ffj-city-book-spread ffj-city-book-spread--map ${
+            activeSection === "map" ? "" : "is-hidden"
+          }`}
           aria-label={pickUiText("书本双页容器", "Open-book spread container", nativeBookSpreadText)}
+          aria-hidden={activeSection !== "map"}
+        >
+          <article
+            className="ffj-city-book-page ffj-city-book-page--left ffj-city-book-page--map"
+            aria-label={pickUiText("左页占位", "Left page placeholder", nativeLeftPageText)}
+          >
+            <MapPanel citySlug={slug} cityLabel={cityDisplay} isVisible={activeSection === "map"} />
+          </article>
+
+          <div className="ffj-city-book-gutter" aria-hidden="true" />
+
+          <article
+            className="ffj-city-book-page ffj-city-book-page--note"
+            aria-label={pickUiText("右页占位", "Right page placeholder", nativeRightPageText)}
+          >
+            <p className="ffj-body-text">
+              {pickUiText(
+                "地图右页占位（地图详情区）",
+                "Map right-page placeholder (map details)",
+                nativeMapRightPlaceholderText
+              )}
+            </p>
+          </article>
+
+          <aside className="ffj-city-book-page ffj-city-book-page--sticker" aria-hidden="true">
+            <p className="ffj-body-text">{pickUiText("便签筛选区占位", "Sticker filter placeholder")}</p>
+          </aside>
+        </div>
+
+        <div
+          className={`ffj-city-book-spread ${activeSection === "cuisine" ? "" : "is-hidden"}`}
+          aria-label={pickUiText("书本双页容器", "Open-book spread container", nativeBookSpreadText)}
+          aria-hidden={activeSection !== "cuisine"}
         >
           <article
             className="ffj-city-book-page ffj-city-book-page--left"
             aria-label={pickUiText("左页占位", "Left page placeholder", nativeLeftPageText)}
           >
-            {activeSection === "map" ? (
-              <p className="ffj-body-text">
-                {pickUiText(
-                  "地图左页占位（地图区）",
-                  "Map left-page placeholder (map area)",
-                  nativeMapLeftPlaceholderText
-                )}
-              </p>
-            ) : (
-              <p className="ffj-body-text">
-                {pickUiText(
-                  "菜品左页占位（菜品筛选区）",
-                  "Cuisine left-page placeholder (cuisine filters)",
-                  nativeCuisineLeftPlaceholderText
-                )}
-              </p>
-            )}
+            <p className="ffj-body-text">
+              {pickUiText(
+                "菜品左页占位（菜品筛选区）",
+                "Cuisine left-page placeholder (cuisine filters)",
+                nativeCuisineLeftPlaceholderText
+              )}
+            </p>
           </article>
 
           <div className="ffj-city-book-gutter" aria-hidden="true" />
@@ -274,15 +355,7 @@ export default function CityDetail() {
             className="ffj-city-book-page ffj-city-book-page--right"
             aria-label={pickUiText("右页占位", "Right page placeholder", nativeRightPageText)}
           >
-            {activeSection === "map" ? (
-              <p className="ffj-body-text">
-                {pickUiText(
-                  "地图右页占位（地图详情区）",
-                  "Map right-page placeholder (map details)",
-                  nativeMapRightPlaceholderText
-                )}
-              </p>
-            ) : (
+            {cityDishes.length === 0 ? (
               <p className="ffj-body-text">
                 {pickUiText(
                   "菜品右页占位（菜品详情区）",
@@ -290,6 +363,32 @@ export default function CityDetail() {
                   nativeCuisineRightPlaceholderText
                 )}
               </p>
+            ) : (
+              <div className="ffj-city-dish-preview-list">
+                {cityDishes.map((dish, index) => {
+                  const dishName = pickUiText(
+                    dish.name_zh || "",
+                    dish.name_en || dish.name_zh || "",
+                    dish.name_local || dish.name_en || dish.name_zh || ""
+                  );
+                  const priceText = getDishPriceText(dish);
+                  const noteText = getDishNoteText(dish);
+                  return (
+                    <article
+                      key={`${dish.store_name_zh}-${dish.name_zh}-${index}`}
+                      className="ffj-city-dish-preview-card"
+                    >
+                      <h3 className="ffj-city-dish-preview-name">{dishName}</h3>
+                      {priceText !== "" ? (
+                        <p className="ffj-city-dish-preview-price">{priceText}</p>
+                      ) : null}
+                      {noteText !== "" ? (
+                        <p className="ffj-city-dish-preview-note">{noteText}</p>
+                      ) : null}
+                    </article>
+                  );
+                })}
+              </div>
             )}
           </article>
         </div>

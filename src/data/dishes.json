@@ -1,262 +1,314 @@
 [
   {
     "store_name_zh": "仙生生寿司专门店(中山店)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "鹅肝寿司",
     "name_en": null,
     "name_local": null,
     "price": "19/个",
-    "taste": 5
+    "taste": 5,
+    "note": null
   },
   {
     "store_name_zh": "仙生生寿司专门店(中山店)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "柚子比目鱼寿司",
     "name_en": null,
     "name_local": null,
     "price": "16/个",
-    "taste": 4
+    "taste": 4,
+    "note": null
   },
   {
     "store_name_zh": "仙生生寿司专门店(中山店)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "星鳗一本",
     "name_en": null,
     "name_local": null,
     "price": "36/个",
-    "taste": 1
+    "taste": 1,
+    "note": null
   },
   {
     "store_name_zh": "仙生生寿司专门店(中山店)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "炙烤蓝鳍中腹寿司",
     "name_en": null,
     "name_local": null,
     "price": "36/对",
-    "taste": 3
+    "taste": 3,
+    "note": null
   },
   {
     "store_name_zh": "仙生生寿司专门店(中山店)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "芥末章鱼军舰",
     "name_en": null,
     "name_local": null,
     "price": "18/对",
-    "taste": 3
+    "taste": 3,
+    "note": null
   },
   {
     "store_name_zh": "仙生生寿司专门店(中山店)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "茶碗蒸",
     "name_en": null,
     "name_local": null,
     "price": "10/份",
-    "taste": 4
+    "taste": 4,
+    "note": null
   },
   {
     "store_name_zh": "皇家面点(顺阳街)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "红豆开口笑",
     "name_en": null,
     "name_local": null,
     "price": "8/斤",
-    "taste": 3
+    "taste": 3,
+    "note": null
   },
   {
     "store_name_zh": "皇家面点(顺阳街)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "黄米糕",
     "name_en": null,
     "name_local": null,
     "price": "10/斤",
-    "taste": 3
+    "taste": 3,
+    "note": null
   },
   {
     "store_name_zh": "日月昇海鲜码头(民主广场店)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "海肠捞饭",
     "name_en": null,
     "name_local": null,
     "price": "128",
-    "taste": 3
+    "taste": 3,
+    "note": null
   },
   {
     "store_name_zh": "日月昇海鲜码头(民主广场店)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "辣炒蚬子",
     "name_en": null,
     "name_local": null,
     "price": "38",
-    "taste": 2
+    "taste": 2,
+    "note": null
   },
   {
     "store_name_zh": "日月昇海鲜码头(民主广场店)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "老醋六样",
     "name_en": null,
     "name_local": null,
     "price": "42",
-    "taste": 4
+    "taste": 4,
+    "note": null
   },
   {
     "store_name_zh": "日月昇海鲜码头(民主广场店)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "三鲜焖子",
     "name_en": null,
     "name_local": null,
     "price": "49",
-    "taste": 1
+    "taste": 1,
+    "note": null
   },
   {
     "store_name_zh": "日月昇海鲜码头(民主广场店)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "蛎羹汤",
     "name_en": null,
     "name_local": null,
     "price": "24",
-    "taste": 2
+    "taste": 2,
+    "note": null
   },
   {
     "store_name_zh": "日月昇海鲜码头(民主广场店)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "奶皮子酸奶",
     "name_en": null,
     "name_local": null,
-    "price": 8,
-    "taste": 4
+    "price": "8",
+    "taste": 4,
+    "note": null
   },
   {
     "store_name_zh": "WUYOO冰奶大连中山店",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "青苹果甘蓝酸奶碎冰冰",
     "name_en": null,
     "name_local": null,
-    "price": 17.8,
-    "taste": 4
+    "price": "17.8",
+    "taste": 4,
+    "note": null
   },
   {
     "store_name_zh": "WUYOO冰奶大连中山店",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "海盐茉莉冰奶",
     "name_en": null,
     "name_local": null,
-    "price": 14.8,
-    "taste": 2
+    "price": "14.8",
+    "taste": 2,
+    "note": null
   },
   {
     "store_name_zh": "阿水的生鱼饭旗舰店(长江路店)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "三文鱼拼甜虾饭",
     "name_en": null,
     "name_local": null,
-    "price": 49,
-    "taste": 4
+    "price": "49",
+    "taste": 4,
+    "note": null
   },
   {
     "store_name_zh": "阿水的生鱼饭旗舰店(长江路店)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "柚子醋生蚝",
     "name_en": null,
     "name_local": null,
-    "price": 12,
-    "taste": 1
+    "price": "12",
+    "taste": 1,
+    "note": null
   },
   {
     "store_name_zh": "鹅记好吃店",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "红豆包",
     "name_en": null,
     "name_local": null,
-    "price": 15,
-    "taste": 4
+    "price": "15",
+    "taste": 4,
+    "note": null
   },
   {
     "store_name_zh": "奉天玖福记沈阳鸡架(奥林匹克店)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "单人餐",
     "name_en": null,
     "name_local": null,
-    "price": 17.2,
-    "taste": 3
+    "price": "17.2",
+    "taste": 3,
+    "note": null
   },
   {
     "store_name_zh": "奉天玖福记沈阳鸡架(奥林匹克店)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "招牌拌面",
     "name_en": null,
     "name_local": null,
-    "price": 21.3,
-    "taste": 3
+    "price": "21.3",
+    "taste": 3,
+    "note": null
   },
   {
     "store_name_zh": "東北灵丹·SUP(南山路超级萃取店)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "大佛普拉斯",
     "name_en": null,
     "name_local": null,
-    "price": 42,
-    "taste": 5
+    "price": "42",
+    "taste": 5,
+    "note": null
   },
   {
     "store_name_zh": "王慧洁开口虾水饺·地道东北菜(银泰城店)",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "鲜汁海胆水饺",
     "name_en": null,
     "name_local": null,
-    "price": 66,
-    "taste": 3
+    "price": "66",
+    "taste": 3,
+    "note": null
   },
   {
     "store_name_zh": "DIVECOFFEE2.0 南山店",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "酸嘢 dirty",
     "name_en": null,
     "name_local": null,
-    "price": 35,
-    "taste": 3
+    "price": "35",
+    "taste": 3,
+    "note": null
   },
   {
     "store_name_zh": "岐迹正宗无水南瓜糕",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "无水南瓜糕",
     "name_en": null,
     "name_local": null,
     "price": "11/斤",
-    "taste": 2
+    "taste": 2,
+    "note": null
   },
   {
     "store_name_zh": "岐迹正宗无水南瓜糕",
+    "store_name_en": null,
     "store_name_local": null,
     "city_en": "dalian",
     "name_zh": "核桃枣糕",
     "name_en": null,
     "name_local": null,
     "price": "17/斤",
-    "taste": 3
+    "taste": 3,
+    "note": null
   }
 ]

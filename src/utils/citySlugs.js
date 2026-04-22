@@ -1,5 +1,5 @@
 /**
- * PRD 11 城 URL 段（小写 + 连字符），与 geojson 文件名、global.css `html[data-city]` 一致。
+ * PRD 10 城 URL 段（小写 + 连字符），与 geojson 文件名、global.css `html[data-city]` 一致。
  * 书架横向成书顺序与本数组顺序相同（`getBookshelfCities` 使用 `CITY_SLUGS.map`）。
  */
 export const CITY_SLUGS = Object.freeze([
@@ -10,7 +10,6 @@ export const CITY_SLUGS = Object.freeze([
   "jeju",
   "kuala-lumpur",
   "fuzhou",
-  "pingtan",
   "quanzhou",
   "xiamen",
   "dalian",
@@ -36,7 +35,6 @@ export const CITY_STICKER_FILENAME_BY_SLUG = Object.freeze({
   jeju: "jeju-orange.svg",
   "kuala-lumpur": "kl-petronas-twin-tower.svg",
   fuzhou: "fuzhou-banyan-tree.svg",
-  pingtan: "pingtan-wave.svg",
   quanzhou: "quanzhou-anchor.svg",
   xiamen: "xiamen-piano.svg",
   dalian: "dalian-seagull.svg",
@@ -110,14 +108,6 @@ export const BOOKSHELF_CITY_DISPLAY_BY_SLUG = Object.freeze({
     country_en: "China",
     city_zh: "泉州",
     city_en: "Quanzhou",
-    city_native: "",
-    is_china: true,
-  },
-  pingtan: {
-    country_zh: "中国",
-    country_en: "China",
-    city_zh: "平潭",
-    city_en: "Pingtan",
     city_native: "",
     is_china: true,
   },

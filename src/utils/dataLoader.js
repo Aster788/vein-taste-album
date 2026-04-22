@@ -10,6 +10,18 @@ import {
 const restaurants = restaurantsData;
 const dishes = dishesData;
 
+function normalizeRecordScope(recordScope) {
+  return String(recordScope ?? "")
+    .trim()
+    .toLowerCase() === "brand"
+    ? "brand"
+    : "branch";
+}
+
+function hasValidCoordinates(row) {
+  return Number.isFinite(row?.lng) && Number.isFinite(row?.lat);
+}
+
 /**
  * 统一城市键：大小写不敏感（`Dalian` / `dalian` 一致）。
  * @param {string | undefined | null} cityEn
@@ -19,6 +31,18 @@ export function normalizeCityEn(cityEn) {
   return String(cityEn ?? "")
     .trim()
     .toLowerCase();
+}
+
+function normalizeNameKey(value) {
+  return String(value ?? "")
+    .trim()
+    .toLowerCase();
+}
+
+function nonEmptyNameKeys(...values) {
+  return values
+    .map((value) => normalizeNameKey(value))
+    .filter((value) => value !== "");
 }
 
 /**
@@ -32,6 +56,17 @@ export function getRestaurantsByCity(cityEn) {
 }
 
 /**
+ * 仅返回可上地图的具体门店（branch 且坐标完整）。
+ * @param {string} cityEn
+ * @returns {typeof restaurants}
+ */
+export function getMappableRestaurantsByCity(cityEn) {
+  return getRestaurantsByCity(cityEn).filter(
+    (row) => normalizeRecordScope(row.record_scope) === "branch" && hasValidCoordinates(row),
+  );
+}
+
+/**
  * 按城市筛选菜品（`dishes.json` 的 `city_en`）。
  * @param {string} cityEn
  * @returns {typeof dishes}
@@ -39,6 +74,30 @@ export function getRestaurantsByCity(cityEn) {
 export function getDishesByCity(cityEn) {
   const key = normalizeCityEn(cityEn);
   return dishes.filter((d) => normalizeCityEn(d.city_en) === key);
+}
+
+/**
+ * 菜品价格：空值时返回空字符串，便于 UI 侧按“有值才显示”处理。
+ * @param {typeof dishes[number]} dish
+ * @returns {string}
+ */
+export function getDishPriceText(dish) {
+  const value = dish?.price;
+  if (value == null) return "";
+  const text = String(value).trim();
+  return text === "" ? "" : text;
+}
+
+/**
+ * 菜品备注：空值时返回空字符串，便于 UI 侧按“有值才显示”处理。
+ * @param {typeof dishes[number]} dish
+ * @returns {string}
+ */
+export function getDishNoteText(dish) {
+  const value = dish?.note;
+  if (value == null) return "";
+  const text = String(value).trim();
+  return text === "" ? "" : text;
 }
 
 /**
@@ -51,15 +110,26 @@ export function dishBelongsToRestaurant(dish, restaurant) {
   if (normalizeCityEn(dish.city_en) !== normalizeCityEn(restaurant.city_en)) {
     return false;
   }
-  if (restaurant.is_china) {
-    return dish.store_name_zh === restaurant.name_zh;
+
+  const dishKeys = new Set(
+    nonEmptyNameKeys(
+      dish.store_name_zh,
+      dish.store_name_en,
+      dish.store_name_local,
+    ),
+  );
+  const restaurantKeys = new Set(
+    nonEmptyNameKeys(
+      restaurant.name_zh,
+      restaurant.name_en,
+      restaurant.name_local,
+    ),
+  );
+
+  for (const key of dishKeys) {
+    if (restaurantKeys.has(key)) return true;
   }
-  const dLocal = dish.store_name_local;
-  const rLocal = restaurant.name_local;
-  if (dLocal != null && dLocal !== "" && rLocal != null && rLocal !== "") {
-    return dLocal === rLocal;
-  }
-  return dish.store_name_zh === restaurant.name_zh;
+  return false;
 }
 
 /**
@@ -110,7 +180,7 @@ export function cityEnFromBookshelfSlug(slug) {
  */
 
 /**
- * 书架 11 城：`CITY_SLUGS.map` 生成槽位顺序；展示名优先取该城在 `restaurants.json` 中的首条店铺。
+ * 书架 10 城：`CITY_SLUGS.map` 生成槽位顺序；展示名优先取该城在 `restaurants.json` 中的首条店铺。
  * @returns {ReadonlyArray<BookshelfCityRow>}
  */
 export function getBookshelfCities() {

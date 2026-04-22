@@ -55,7 +55,7 @@ food-for-joy/
 │   │   │   │       └── 갈치조림.jpg   ← 图片文件名：本国语言菜名（非中国城市）
 │   │   │   └── （其余城市同结构）
 │   │   │
-│   │   ├── geojson/              ← 行政区划边界数据，每个城市一个文件
+│   │   ├── geojson/              ← 行政区划边界，每城一文件；中国城市默认 DataV 区级；非中国城市分区选型见 prd.md §5.3「非中国城市」条
 │   │   │   ├── dalian.geojson
 │   │   │   ├── qingdao.geojson
 │   │   │   ├── shanghai.geojson
@@ -64,7 +64,6 @@ food-for-joy/
 │   │   │   ├── fuzhou.geojson
 │   │   │   ├── xiamen.geojson
 │   │   │   ├── quanzhou.geojson
-│   │   │   ├── pingtan.geojson
 │   │   │   ├── jeju.geojson
 │   │   │   └── kuala-lumpur.geojson
 │   │   │
@@ -78,7 +77,6 @@ food-for-joy/
 │   │   │   │   ├── fuzhou-banyan-tree.svg
 │   │   │   │   ├── xiamen-piano.svg
 │   │   │   │   ├── quanzhou-anchor.svg
-│   │   │   │   ├── pingtan-wave.svg
 │   │   │   │   ├── jeju-orange.svg
 │   │   │   │   └── kl-petronas-twin-tower.svg
 │   │   │   ├── page/           ← 网页上可能会用到的贴纸
