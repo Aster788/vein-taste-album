@@ -399,6 +399,7 @@ html[data-city="kuala-lumpur"],
   --ffj-map-col-ratio: 7fr;
   --ffj-note-col-ratio: 2fr;
   --ffj-sticker-col-ratio: 1fr;
+  position: relative;
   flex: 1 1 auto;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
@@ -421,6 +422,15 @@ html[data-city="kuala-lumpur"],
     auto
     minmax(0, var(--ffj-note-col-ratio))
     minmax(0, var(--ffj-sticker-col-ratio));
+}
+
+.ffj-city-book-spread--cuisine {
+  --ffj-cuisine-left-col-ratio: 2fr;
+  --ffj-cuisine-right-col-ratio: 3fr;
+  grid-template-columns:
+    minmax(0, var(--ffj-cuisine-left-col-ratio))
+    auto
+    minmax(0, var(--ffj-cuisine-right-col-ratio));
 }
 
 .ffj-city-book-page {
@@ -449,6 +459,7 @@ html[data-city="kuala-lumpur"],
 
 .ffj-city-book-page--note {
   border-radius: 0;
+  padding: 0;
 }
 
 .ffj-city-book-page--sticker {
@@ -498,6 +509,11 @@ html[data-city="kuala-lumpur"],
   background: #f7f3ee;
 }
 
+.ffj-city-book-spread--map,
+.ffj-city-book-spread--map * {
+  cursor: none !important;
+}
+
 .ffj-map-canvas {
   position: absolute;
   inset: 0;
@@ -511,6 +527,34 @@ html[data-city="kuala-lumpur"],
   justify-content: center;
   background: color-mix(in srgb, #f7f3ee 88%, transparent);
   pointer-events: none;
+}
+
+.ffj-map-error {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(0.8rem, 2.2vw, 1.2rem);
+  transform: translateX(-50%);
+  z-index: 4;
+  width: min(92%, 34rem);
+  padding: 0.72rem 0.9rem;
+  border-radius: 0.68rem;
+  border: 1px solid color-mix(in srgb, #a14636 38%, transparent);
+  background: color-mix(in srgb, #fff7f5 94%, transparent);
+  box-shadow: 0 10px 22px color-mix(in srgb, #4d2e25 12%, transparent);
+}
+
+.ffj-map-error .ffj-body-text {
+  margin: 0;
+  color: #7d2f23;
+}
+
+.ffj-map-error-detail {
+  margin: 0.2rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: #8e4a3d;
+  opacity: 0.95;
+  word-break: break-word;
 }
 
 .ffj-map-panel--fallback {
@@ -556,11 +600,265 @@ html[data-city="kuala-lumpur"],
   box-shadow:
     0 2px 5px rgba(50, 40, 32, 0.18),
     0 0 0 1px rgba(90, 72, 58, 0.1);
+  border: none;
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    opacity 140ms ease,
+    filter 140ms ease,
+    background-color 140ms ease;
+}
+
+.ffj-map-tag-bubble.is-dimmed {
+  opacity: 0.46;
+  filter: grayscale(0.24);
 }
 
 .ffj-map-tag-triangle {
   fill: rgba(255, 255, 255, 0.97);
   filter: drop-shadow(0 1px 1px rgba(42, 34, 28, 0.14));
+  pointer-events: none;
+}
+
+.ffj-map-cursor {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+  background: var(--city-primary);
+  -webkit-mask-image: var(--ffj-map-cursor-mask);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-image: var(--ffj-map-cursor-mask);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  filter: drop-shadow(0 0 0.2px color-mix(in srgb, var(--city-primary) 85%, black));
+}
+
+.ffj-note-panel {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: clamp(1.15rem, 2.1vw, 1.8rem) clamp(1.05rem, 1.95vw, 1.55rem)
+    clamp(1.45rem, 2.6vw, 2.15rem);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--city-surface-muted) 86%, var(--color-page-bg)),
+      color-mix(in srgb, var(--color-page-bg) 96%, var(--city-secondary))
+    );
+}
+
+.ffj-note-panel-lines {
+  display: none;
+}
+
+.ffj-note-panel-guide {
+  margin: 0;
+  max-width: min(22ch, 88%);
+  text-align: center;
+  white-space: pre-line;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--city-primary) 72%, var(--color-text-muted));
+  font-family: var(--font-handwriting);
+  font-size: clamp(1rem, 1.45vw, 1.35rem);
+  letter-spacing: 0.01em;
+  position: relative;
+  z-index: 1;
+}
+
+.ffj-note-card {
+  width: 100%;
+  max-width: min(42ch, 100%);
+  position: relative;
+  z-index: 1;
+  padding-top: clamp(0.35rem, 0.85vw, 0.7rem);
+  padding-bottom: clamp(0.35rem, 0.85vw, 0.7rem);
+}
+
+.ffj-note-store-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin: 0 0 0.85rem;
+}
+
+.ffj-note-store-name {
+  margin: 0;
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--color-text) 90%, var(--city-primary));
+  white-space: pre-line;
+}
+
+.ffj-note-map-link {
+  inline-size: 2.4rem;
+  block-size: 2.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: color-mix(in srgb, var(--city-primary) 76%, #1f1f1f);
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--city-primary) 26%, transparent);
+  background: color-mix(in srgb, var(--color-page-bg) 84%, var(--city-secondary));
+  box-shadow: 0 1px 2px rgba(36, 30, 24, 0.12);
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+  text-decoration: none;
+  flex: 0 0 auto;
+}
+
+.ffj-note-map-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(36, 30, 24, 0.18);
+}
+
+.ffj-note-map-link:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--city-primary) 58%, transparent);
+  outline-offset: 2px;
+}
+
+.ffj-note-map-link.is-disabled {
+  opacity: 0.48;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.ffj-note-map-link-icon-svg {
+  inline-size: 1.1rem;
+  block-size: 1.1rem;
+  pointer-events: none;
+}
+
+.ffj-note-map-link-fallback {
+  margin: 0.55rem 0 0;
+  color: color-mix(in srgb, var(--color-text-muted) 82%, var(--city-primary));
+  font-size: 0.78rem;
+}
+
+.ffj-note-fields {
+  margin: 0;
+}
+
+.ffj-note-field {
+  display: grid;
+  grid-template-columns: 7.2em 1fr;
+  gap: 0.75rem;
+  align-items: baseline;
+  padding: 0.62rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--city-primary) 36%, transparent);
+}
+
+.ffj-note-field dt,
+.ffj-note-field dd {
+  margin: 0;
+}
+
+.ffj-note-field dt {
+  color: color-mix(in srgb, var(--color-text-muted) 82%, var(--city-primary));
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+
+.ffj-note-field dd {
+  color: color-mix(in srgb, var(--color-text) 92%, black);
+  line-height: 1.45;
+}
+
+.ffj-note-field-value--multiline {
+  white-space: pre-line;
+}
+
+.ffj-note-radar-wrap {
+  inline-size: min(100%, 360px);
+  block-size: clamp(160px, 19vw, 230px);
+  margin-inline: auto;
+}
+
+.ffj-note-radar-section {
+  margin-top: 0.8rem;
+  display: flex;
+  justify-content: center;
+}
+
+.ffj-cuisine-filter-stack {
+  width: 100%;
+  max-width: 11rem;
+  display: grid;
+  align-content: flex-start;
+  justify-items: stretch;
+  gap: 0.62rem;
+}
+
+.ffj-cuisine-filter-btn {
+  border: none;
+  border-radius: 12px;
+  padding: 0.58rem 0.62rem 0.54rem;
+  min-height: 2.4rem;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-page-bg) 92%, var(--city-secondary)),
+      color-mix(in srgb, var(--city-secondary) 22%, var(--color-page-bg))
+    );
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--color-text) 11%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--city-primary) 16%, transparent);
+  color: color-mix(in srgb, var(--color-text) 90%, var(--city-primary));
+  font-family: var(--font-body-zh);
+  font-size: 0.92rem;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition:
+    transform 140ms ease,
+    opacity 140ms ease,
+    box-shadow 140ms ease,
+    filter 140ms ease;
+}
+
+.ffj-cuisine-filter-btn:hover {
+  transform: translateY(-1px);
+}
+
+.ffj-cuisine-filter-btn.is-active {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--city-primary) 28%, var(--color-page-bg)),
+      color-mix(in srgb, var(--city-primary) 17%, var(--color-page-bg))
+    );
+  box-shadow:
+    0 2px 6px color-mix(in srgb, var(--city-primary) 24%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--city-primary) 44%, transparent);
+}
+
+.ffj-cuisine-filter-stack.is-filtering .ffj-cuisine-filter-btn:not(.is-active) {
+  opacity: 0.44;
+  filter: grayscale(0.28);
+}
+
+.ffj-cuisine-filter-btn:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--city-primary) 55%, transparent);
+  outline-offset: 2px;
+}
+
+.ffj-note-radar-empty {
+  margin: 0;
+  min-height: 4.25rem;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-size: 0.82rem;
+  color: color-mix(in srgb, var(--color-text-muted) 84%, var(--city-primary));
 }
 
 .ffj-city-dish-preview-list {
@@ -579,6 +877,7 @@ html[data-city="kuala-lumpur"],
   font-size: 1rem;
   line-height: 1.35;
   color: rgba(44, 35, 27, 0.9);
+  white-space: pre-line;
 }
 
 .ffj-city-dish-preview-price,
