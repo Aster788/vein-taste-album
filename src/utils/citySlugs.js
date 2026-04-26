@@ -43,7 +43,7 @@ export const CITY_STICKER_FILENAME_BY_SLUG = Object.freeze({
 /**
  * 书架书脊/封面用城市文案兜底（与 PRD §1.5、§2.5「国家·城市」一致；`restaurants.json` 有该城数据时以 JSON 覆盖）。
  * 书脊双行：上中文 `country_zh·city_zh`，下英文 `country_en · city_en`。
- * `city_native` 供详情页等三语文案使用，**不用于书脊**。
+ * `city_native` 供详情页等城市文案使用，**不用于书脊**（语言切换与展示策略见 `prd.md` §2.5）。
  * @type {Readonly<Record<(typeof CITY_SLUGS)[number], { country_zh: string; country_en: string; city_zh: string; city_en: string; city_native: string; is_china: boolean }>>}
  */
 export const BOOKSHELF_CITY_DISPLAY_BY_SLUG = Object.freeze({

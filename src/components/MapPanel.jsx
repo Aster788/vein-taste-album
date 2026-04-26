@@ -326,14 +326,36 @@ function buildRestaurantPointsGeoJson(citySlug) {
     .map((row) => {
       const point = lngLatForMapbox(row);
       if (!Number.isFinite(point?.lng) || !Number.isFinite(point?.lat)) return null;
+      const displayName = pickRestaurantDisplayName(row);
       return {
         type: "Feature",
         properties: {
           name_zh: row.name_zh,
+          name_en: row.name_en,
+          name_local: row.name_local,
+          display_name: displayName,
           cuisine: row.cuisine,
           city_en: row.city_en,
           score_overall: row.score_overall,
-          store_key: `${String(row.city_en ?? "").trim()}-${String(row.name_zh ?? "").trim()}`,
+          score_taste: row.score_taste,
+          score_environment: row.socre_environment ?? row.score_environment,
+          score_service: row.score_service,
+          score_queue: row.score_queue,
+          score_packaging: row.score_packaging,
+          score_delivery: row.score_delivery,
+          score_personal: row.score_personal,
+          address: row.address,
+          price_per_person: row.price_per_person,
+          currency: row.currency,
+          hours: row.hours,
+          phone: row.phone,
+          map_platform: row.map_platform,
+          map_url: row.map_url,
+          dining_type: row.dining_type,
+          store_key:
+            String(row.store_slug ?? "").trim() !== ""
+              ? `${String(row.city_en ?? "").trim()}-${String(row.store_slug ?? "").trim()}`
+              : `${String(row.city_en ?? "").trim()}-${displayName}`,
         },
         geometry: {
           type: "Point",
@@ -346,6 +368,16 @@ function buildRestaurantPointsGeoJson(citySlug) {
     type: "FeatureCollection",
     features,
   };
+}
+
+function pickRestaurantDisplayName(properties) {
+  const zh = String(properties?.name_zh ?? "").trim();
+  if (zh !== "") return zh;
+
+  const en = String(properties?.name_en ?? "").trim();
+  if (en !== "") return en;
+
+  return String(properties?.name_local ?? "").trim();
 }
 
 const MAP_TAG_EDGE_MARGIN_PX = 14;
@@ -627,18 +659,21 @@ function buildRestaurantTagLayouts(map, pointGeoJson) {
       if (!Number.isFinite(lng) || !Number.isFinite(lat)) return null;
 
       const projected = map.project([lng, lat]);
-      const storeName = String(feature?.properties?.name_zh ?? "").trim();
+      const storeName =
+        String(feature?.properties?.display_name ?? "").trim() ||
+        pickRestaurantDisplayName(feature?.properties);
       const desiredMaxChars = getRestaurantTagMaxChars(zoom, storeName.length);
       if (storeName === "") return null;
 
       return {
         key:
           String(feature?.properties?.store_key ?? "").trim() ||
-          `${String(feature?.properties?.name_zh ?? "store").trim()}-${index}`,
+          `${storeName || "store"}-${index}`,
         projectedX: projected.x,
         projectedY: projected.y,
         storeName,
         desiredMaxChars,
+        selectedStore: toSelectedStore(feature?.properties),
       };
     })
     .filter(Boolean)
@@ -805,10 +840,60 @@ function growRestaurantTagLayouts(baseLayouts, zoom, visualMetrics, containerWid
   return grownLayouts;
 }
 
-export default function MapPanel({ citySlug, cityLabel, isVisible = true }) {
+function readNumber(value) {
+  if (typeof value === "string" && value.trim() === "") return null;
+  if (value == null) return null;
+  const numberValue = Number(value);
+  return Number.isFinite(numberValue) ? numberValue : null;
+}
+
+function readText(value) {
+  const text = String(value ?? "").trim();
+  if (text === "" || text.toLowerCase() === "null") return "";
+  return text;
+}
+
+function toSelectedStore(properties) {
+  return {
+    storeKey: readText(properties?.store_key),
+    nameZh: readText(properties?.name_zh),
+    nameEn: readText(properties?.name_en),
+    nameLocal: readText(properties?.name_local),
+    displayName: readText(properties?.display_name),
+    cuisine: readText(properties?.cuisine),
+    address: readText(properties?.address),
+    scoreOverall: readNumber(properties?.score_overall),
+    scoreTaste: readNumber(properties?.score_taste),
+    scoreEnvironment: readNumber(
+      properties?.score_environment ?? properties?.socre_environment,
+    ),
+    scoreService: readNumber(properties?.score_service),
+    scoreQueue: readNumber(properties?.score_queue),
+    scorePackaging: readNumber(properties?.score_packaging),
+    scoreDelivery: readNumber(properties?.score_delivery),
+    scorePersonal: readNumber(properties?.score_personal),
+    pricePerPerson: readNumber(properties?.price_per_person),
+    currency: readText(properties?.currency),
+    hours: readText(properties?.hours),
+    phone: readText(properties?.phone),
+    mapPlatform: readText(properties?.map_platform),
+    mapUrl: readText(properties?.map_url),
+    diningType: readText(properties?.dining_type),
+  };
+}
+
+export default function MapPanel({
+  citySlug,
+  cityLabel,
+  isVisible = true,
+  activeCuisine = "",
+  onSelectStore,
+  onInteractiveHoverChange,
+}) {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const [isMapReady, setIsMapReady] = useState(false);
+  const [mapInitError, setMapInitError] = useState("");
   const [restaurantTagLayouts, setRestaurantTagLayouts] = useState([]);
 
   const cityView = useMemo(() => getCityView(citySlug), [citySlug]);
@@ -820,6 +905,7 @@ export default function MapPanel({ citySlug, cityLabel, isVisible = true }) {
     }
 
     mapboxgl.accessToken = MAPBOX_TOKEN;
+    setMapInitError("");
 
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
@@ -834,6 +920,10 @@ export default function MapPanel({ citySlug, cityLabel, isVisible = true }) {
       overrideMapPaperPalette(map);
       hideBaseAdminNoiseLayers(map);
       setIsMapReady(true);
+    });
+    map.on("error", (event) => {
+      const message = String(event?.error?.message ?? "").trim();
+      setMapInitError(message || "Mapbox 初始化失败，请检查 Token 与网络连接。");
     });
     mapRef.current = map;
 
@@ -956,6 +1046,7 @@ export default function MapPanel({ citySlug, cityLabel, isVisible = true }) {
 
     const pointGeoJson = buildRestaurantPointsGeoJson(citySlug);
     const { primary: cityPrimaryColor } = getCityMapLineColors(citySlug);
+    const normalizedCuisine = String(activeCuisine ?? "").trim();
     setRestaurantTagLayouts([]);
     removeRestaurantPointLayers(map);
 
@@ -969,11 +1060,40 @@ export default function MapPanel({ citySlug, cityLabel, isVisible = true }) {
       source: RESTAURANT_POINTS_SOURCE_ID,
       paint: {
         "circle-radius": ["interpolate", ["linear"], ["zoom"], 8, 3.2, 11, 4.7, 14, 6.2],
-        "circle-color": cityPrimaryColor,
+        "circle-color":
+          normalizedCuisine === ""
+            ? cityPrimaryColor
+            : [
+                "case",
+                ["==", ["coalesce", ["get", "cuisine"], ""], normalizedCuisine],
+                cityPrimaryColor,
+                "rgba(120, 108, 96, 0.34)",
+              ],
+        "circle-opacity":
+          normalizedCuisine === ""
+            ? 1
+            : [
+                "case",
+                ["==", ["coalesce", ["get", "cuisine"], ""], normalizedCuisine],
+                1,
+                0.56,
+              ],
         "circle-stroke-color": "rgba(247, 243, 238, 0.96)",
         "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 8, 1.75, 11, 2.2, 14, 2.6],
       },
     });
+
+    const handlePointClick = (event) => {
+      const feature = event.features?.[0];
+      if (!feature) return;
+      onSelectStore?.(toSelectedStore(feature.properties));
+    };
+    const setPointerCursor = () => {
+      onInteractiveHoverChange?.(true);
+    };
+    const resetPointerCursor = () => {
+      onInteractiveHoverChange?.(false);
+    };
 
     let frameId = 0;
     const syncTagLayouts = () => {
@@ -991,10 +1111,21 @@ export default function MapPanel({ citySlug, cityLabel, isVisible = true }) {
           map.getContainer()?.clientWidth ?? 0,
           getRestaurantPointRadiusPx(map.getZoom()),
         );
-        setRestaurantTagLayouts(nextLayouts);
+        const filteredLayouts =
+          normalizedCuisine === ""
+            ? nextLayouts
+            : nextLayouts.map((layout) => ({
+                ...layout,
+                isDimmed:
+                  String(layout.selectedStore?.cuisine ?? "").trim() !== normalizedCuisine,
+              }));
+        setRestaurantTagLayouts(filteredLayouts);
       });
     };
     syncTagLayouts();
+    map.on("click", RESTAURANT_POINTS_LAYER_ID, handlePointClick);
+    map.on("mouseenter", RESTAURANT_POINTS_LAYER_ID, setPointerCursor);
+    map.on("mouseleave", RESTAURANT_POINTS_LAYER_ID, resetPointerCursor);
     map.on("move", syncTagLayouts);
     map.on("resize", syncTagLayouts);
 
@@ -1002,11 +1133,14 @@ export default function MapPanel({ citySlug, cityLabel, isVisible = true }) {
       if (frameId !== 0) {
         cancelAnimationFrame(frameId);
       }
+      map.off("click", RESTAURANT_POINTS_LAYER_ID, handlePointClick);
+      map.off("mouseenter", RESTAURANT_POINTS_LAYER_ID, setPointerCursor);
+      map.off("mouseleave", RESTAURANT_POINTS_LAYER_ID, resetPointerCursor);
       map.off("move", syncTagLayouts);
       map.off("resize", syncTagLayouts);
       setRestaurantTagLayouts([]);
     };
-  }, [citySlug, isMapReady]);
+  }, [citySlug, isMapReady, onSelectStore, onInteractiveHoverChange, activeCuisine]);
 
   if (missingToken) {
     return (
@@ -1023,7 +1157,7 @@ export default function MapPanel({ citySlug, cityLabel, isVisible = true }) {
       data-city-slug={citySlug}
     >
       <div ref={mapContainerRef} className="ffj-map-canvas" />
-      <div className="ffj-map-tag-overlay" aria-hidden="true">
+      <div className="ffj-map-tag-overlay">
         <svg className="ffj-map-tag-lines" preserveAspectRatio="none">
           {restaurantTagLayouts.map((layout) => (
             <polygon
@@ -1038,9 +1172,14 @@ export default function MapPanel({ citySlug, cityLabel, isVisible = true }) {
           ))}
         </svg>
         {restaurantTagLayouts.map((layout) => (
-          <div
+          <button
             key={layout.key}
-            className="ffj-map-tag-bubble"
+            type="button"
+            className={`ffj-map-tag-bubble ${layout.isDimmed ? "is-dimmed" : ""}`}
+            onClick={() => onSelectStore?.(layout.selectedStore)}
+            onMouseEnter={() => onInteractiveHoverChange?.(true)}
+            onMouseLeave={() => onInteractiveHoverChange?.(false)}
+            aria-label={`查看 ${layout.storeName} 的店铺信息`}
             style={{
               left: `${layout.bubbleLeft}px`,
               top: `${layout.bubbleTop}px`,
@@ -1051,12 +1190,18 @@ export default function MapPanel({ citySlug, cityLabel, isVisible = true }) {
             }}
           >
             {layout.labelText}
-          </div>
+          </button>
         ))}
       </div>
       {!isMapReady ? (
         <div className="ffj-map-loading">
           <p className="ffj-body-text">地图加载中...</p>
+        </div>
+      ) : null}
+      {mapInitError !== "" ? (
+        <div className="ffj-map-error" role="alert" aria-live="polite">
+          <p className="ffj-body-text">地图加载失败，请检查 Mapbox Token 或网络连接。</p>
+          <p className="ffj-map-error-detail">{mapInitError}</p>
         </div>
       ) : null}
     </section>

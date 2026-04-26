@@ -191,6 +191,12 @@ function hasChineseChars(text) {
   return /[\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF]/u.test(String(text ?? ""));
 }
 
+function isPureEnglishText(text) {
+  const value = String(text ?? "").trim();
+  if (!value) return false;
+  return /^[A-Za-z0-9\s'’\-&.,/()]+$/.test(value);
+}
+
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -384,7 +390,8 @@ async function main() {
 
       const zhCandidate = multilingualNames.zh || fallbackNames.zh;
       const finalZhName = hasChineseChars(zhCandidate) ? zhCandidate : "";
-      const finalEnName = multilingualNames.en || fallbackNames.en;
+      const enCandidate = multilingualNames.en || fallbackNames.en;
+      const finalEnName = isPureEnglishText(enCandidate) ? enCandidate : "";
       const finalLocalName = multilingualNames.local || fallbackNames.local;
 
       if (!isManualLocked(targetRow, "name_zh")) {

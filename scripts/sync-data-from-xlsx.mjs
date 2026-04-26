@@ -59,14 +59,13 @@ function normalizeRestaurant(row) {
   const cityEn = normalizeOptionalString(picked.city_en);
   const cityZh = normalizeOptionalString(picked.city_zh);
   const cuisine = normalizeOptionalString(picked.cuisine);
+  const storeSlug = normalizeNullableString(picked.store_slug);
   const nameZh = normalizeNullableString(picked.name_zh);
   const nameEn = normalizeNullableString(picked.name_en);
   const nameLocal = normalizeNullableString(picked.name_local);
 
   if (
-    cityEn === "" ||
-    cityZh === "" ||
-    cuisine === "" ||
+    storeSlug == null ||
     !hasAnyNonNull([nameZh, nameEn, nameLocal])
   ) {
     return null;
@@ -82,6 +81,7 @@ function normalizeRestaurant(row) {
     country_zh: normalizeOptionalString(picked.country_zh),
     country_en: normalizeOptionalString(picked.country_en),
     is_china: isChina === "false" ? false : true,
+    store_slug: storeSlug,
     record_scope: recordScope,
     name_zh: nameZh,
     name_en: nameEn,
@@ -113,6 +113,7 @@ function normalizeRestaurant(row) {
 function normalizeDish(row) {
   const picked = pickFields(row, DISHES_HEADERS);
   const cityEn = normalizeOptionalString(picked.city_en).toLowerCase();
+  const storeSlug = normalizeNullableString(picked.store_slug);
   const storeNameZh = normalizeNullableString(picked.store_name_zh);
   const storeNameLocal = normalizeNullableString(picked.store_name_local);
   const storeNameEn = normalizeNullableString(picked.store_name_en);
@@ -121,22 +122,23 @@ function normalizeDish(row) {
   const dishNameLocal = normalizeNullableString(picked.dish_name_local);
 
   if (
-    cityEn === "" ||
-    !hasAnyNonNull([storeNameZh, storeNameEn, storeNameLocal]) ||
+    storeSlug == null ||
     !hasAnyNonNull([dishNameZh, dishNameEn, dishNameLocal])
   ) {
     return null;
   }
 
   return {
+    store_slug: storeSlug,
     store_name_zh: storeNameZh,
     store_name_en: storeNameEn,
     store_name_local: storeNameLocal,
     city_en: cityEn,
-    name_zh: dishNameZh,
-    name_en: dishNameEn,
-    name_local: dishNameLocal,
+    dish_name_zh: dishNameZh,
+    dish_name_en: dishNameEn,
+    dish_name_local: dishNameLocal,
     price: normalizeNullableString(picked.price),
+    currency: normalizeOptionalString(picked.currency),
     taste: normalizeOptionalNumber(picked.taste),
     note: normalizeNullableString(picked.note),
   };

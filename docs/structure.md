@@ -19,7 +19,7 @@ food-for-joy/
 │   ├── App.jsx                   ← 路由配置，只定义页面路由，不写 UI
 │   │
 │   ├── context/                  ← 全局 React Context（语言等跨路由状态）；仅 Provider + hook，不放页面或展示组件
-│   │   └── LanguageContext.jsx   ← LanguageProvider、useLanguage；`locale`/`citySlug`/`showEnCnToggle`；同文件导出 `formatFixedTriple`、`pickByLocale`
+│   │   └── LanguageContext.jsx   ← LanguageProvider、useLanguage；维护 `detailLocale`/`citySlug` 与语言切换 UI 状态（中国城：`EN/CN`；非中国城：读取 `src/data/city_meta.json`）；同文件导出 `pickByLocale`、`pickByDetailLocale` 等纯函数工具
 │   │
 │   ├── pages/                    ← 页面级组件，每个文件对应一个完整页面
 │   │   ├── Bookshelf.jsx         ← 第一页：书架页面
@@ -29,7 +29,7 @@ food-for-joy/
 │   │   ├── Book.jsx              ← 单本书组件（书脊+封面+3D效果+悬停动效）
 │   │   ├── MapPanel.jsx          ← 板块①左侧：Mapbox 地图 + GeoJSON边界 + 标注点
 │   │   ├── NotePanel.jsx         ← 板块①右侧：笔记本样式店铺信息区
-│   │   ├── RadarChart.jsx        ← 雷达图组件（Chart.js，堂食/外卖维度自动切换）
+│   │   ├── RadarChart.jsx        ← 雷达图组件（Chart.js；评分字段有值即显示、空值维度隐藏；不显示 tooltip）
 │   │   ├── StoreList.jsx         ← 板块②左页：菜系筛选标签 + 店铺列表
 │   │   ├── PhotoPanel.jsx        ← 板块②右页：拍立得图片轮播
 │   │   └── DishInfo.jsx          ← 板块②右页：菜名 + 评价文字区（与图片并列）
@@ -41,18 +41,20 @@ food-for-joy/
 │   │
 │   ├── data/                     ← 本地数据文件，只存放 JSON，不存放其他类型文件
 │   │   ├── restaurants.json      ← 所有城市所有店铺数据（唯一数据源）
-│   │   └── dishes.json           ← 所有城市所有菜品数据（唯一数据源；不含 `review` 字段，见 prd.md §5.2）
+│   │   ├── dishes.json           ← 所有城市所有菜品数据（唯一数据源；不含 `review` 字段，见 prd.md §5.2）
+│   │   ├── city_meta.json        ← 城市级语言 UI 配置（非中国城市详情页按钮模式、ISO 639-1 代码、按钮文案等）
+│   │   └── translations.static.json ← 静态翻译落盘文件（脚本批量生成，运行时优先读取）
 │   │
 │   ├── assets/                   ← 静态媒体资源，代码不在此目录下写任何逻辑
 │   │   │
 │   │   ├── photos/               ← 美食实拍图片，按城市→店铺两级组织
-│   │   │   ├── dalian/           ← 城市文件夹：拼音小写
-│   │   │   │   └── hai-yue/      ← 店铺文件夹：拼音小写+连字符
-│   │   │   │       ├── 红烧带鱼.jpg   ← 图片文件名：中文菜名（中国城市）
-│   │   │   │       └── 蒜蓉扇贝.jpg
+│   │   │   ├── dalian/           ← 城市文件夹：city_en slug（中国城市通常为拼音小写）
+│   │   │   │   └── xssss/        ← 店铺文件夹：store_slug（[a-z0-9-]+）
+│   │   │   │       ├── 鹅肝寿司.jpg   ← 图片文件名：可为 dish_name_local / dish_name_en / dish_name_zh 任一
+│   │   │   │       └── 星鳗一本.jpg
 │   │   │   ├── jeju/
 │   │   │   │   └── store-name/
-│   │   │   │       └── 갈치조림.jpg   ← 图片文件名：本国语言菜名（非中国城市）
+│   │   │   │       └── 갈치조림.jpg   ← 匹配顺序：dish_name_local → dish_name_en → dish_name_zh
 │   │   │   └── （其余城市同结构）
 │   │   │
 │   │   ├── geojson/              ← 行政区划边界，每城一文件；中国城市默认 DataV 区级；非中国城市分区选型见 prd.md §5.3「非中国城市」条
@@ -106,6 +108,7 @@ food-for-joy/
 │   │
 │   └── utils/                    ← 工具函数，只存放纯函数，不含任何 JSX 或样式
 │       ├── citySlugs.js          ← 合法城市 URL 段（slug）、`isChinaCitySlug`（书架/语言/坐标语义）
+│       ├── cityMeta.js           ← 读取/规范化 `city_meta.json`，输出详情页语言切换配置
 │       ├── coordTransform.js     ← GCJ-02→WGS-84 坐标转换（仅供 MapPanel.jsx 调用）
 │       ├── dataLoader.js         ← JSON 数据读取与筛选函数（按城市筛选、按菜系筛选等）
 │       └── formatDishTasteStars.js   ← dishes.json 的 `taste`（1～5 整数）→ 星标展示字符串，全站唯一实现（板块②等调用）
@@ -114,6 +117,7 @@ food-for-joy/
 │   ├── prd.md                 ← 产品需求文档（功能与设计唯一标准）
 │   ├── agent_rules.md            ← Agent 行为约束（自检流程、汇报格式）
 │   ├── project_rules.md          ← 项目背景与技术决策说明
+│   ├── data-workflow.md          ← 数据与翻译固定流程手册（操作顺序与检查清单）
 │   ├── phase1-self-check.md      ← Phase 1 收尾自检记录（对照 agent_rules §三）
 │   └── structure.md              ← 本文件
 │
@@ -122,11 +126,15 @@ food-for-joy/
 │                                    内容：
 │                                    VITE_MAPBOX_TOKEN=pk.eyJ1...
 │                                    VITE_AMAP_KEY=你的高德Key
+│                                    VITE_ENABLE_MT=false（可选：true 开启机器翻译补齐）
+│                                    VITE_GOOGLE_TRANSLATE_API_KEY=你的 Google Translate API Key（可选）
 │
 ├── .env.example                  ← 环境变量模板（可上传GitHub，供参考）
 │                                    内容：
 │                                    VITE_MAPBOX_TOKEN=your_token_here
 │                                    VITE_AMAP_KEY=your_key_here
+│                                    VITE_ENABLE_MT=false
+│                                    VITE_GOOGLE_TRANSLATE_API_KEY=your_google_translate_api_key
 │
 ├── .gitignore                    ← 必须包含 .env，防止 Key 泄露
 ├── package.json                  ← 依赖管理，由 Cursor 维护，不手动修改

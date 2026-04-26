@@ -85,7 +85,23 @@ export function getDishPriceText(dish) {
   const value = dish?.price;
   if (value == null) return "";
   const text = String(value).trim();
-  return text === "" ? "" : text;
+  if (text === "") return "";
+
+  // dishes.xlsx: `currency` is the unit for `price`.
+  const currency = String(dish?.currency ?? "").trim().toUpperCase();
+  if (currency === "") return text;
+
+  // If authors already typed a currency symbol/text in `price`, keep it as-is.
+  if (/[¥₩$]|RM|CNY|KRW|MYR/i.test(text)) return text;
+
+  // Only prepend symbol for plain numeric values; descriptive prices stay untouched.
+  const isPlainNumber = /^-?\d+(?:\.\d+)?$/.test(text);
+  if (!isPlainNumber) return text;
+
+  if (currency === "CNY") return `¥${text}`;
+  if (currency === "KRW") return `₩${text}`;
+  if (currency === "MYR") return `RM ${text}`;
+  return text;
 }
 
 /**

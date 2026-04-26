@@ -4,6 +4,7 @@ export const RESTAURANTS_HEADERS = Object.freeze([
   "country_zh",
   "country_en",
   "is_china",
+  "store_slug",
   "record_scope",
   "name_zh",
   "name_en",
@@ -30,6 +31,7 @@ export const RESTAURANTS_HEADERS = Object.freeze([
 ]);
 
 export const DISHES_HEADERS = Object.freeze([
+  "store_slug",
   "store_name_zh",
   "store_name_local",
   "store_name_en",
@@ -42,6 +44,7 @@ export const DISHES_HEADERS = Object.freeze([
   "name_en",
   "name_local",
   "price",
+  "currency",
   "taste",
   "note",
 ]);
