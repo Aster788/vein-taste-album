@@ -274,13 +274,19 @@ export default function Bookshelf() {
         const fr = Math.min(1, Math.max(0, absT / Math.max(1, band)));
         const u = 1 - smoothstep01(fr);
         const centerSpineZonePx = 12;
+        const visBand = Math.max(1, band * 0.32);
         const side = Math.abs(t) <= centerSpineZonePx ? 0 : Math.sign(t);
-        const sideFront = side < 0 ? 1 : 0;
-        const sideBack = side > 0 ? 1 : 0;
+        const visProgress = Math.min(
+          1,
+          Math.max(0, (absT - centerSpineZonePx) / visBand),
+        );
+        const sideVis = smoothstep01(visProgress);
+        const sideFront = side < 0 ? sideVis : 0;
+        const sideBack = side > 0 ? sideVis : 0;
         targetYawRef.current[i] =
           side < 0 ? maxFrontYawDeg * u : side > 0 ? -maxBackYawDeg * u : 0;
-        targetFrontVisRef.current[i] = sideFront ? 1 : 0;
-        targetBackVisRef.current[i] = sideBack ? 1 : 0;
+        targetFrontVisRef.current[i] = sideFront;
+        targetBackVisRef.current[i] = sideBack;
       }
     };
 

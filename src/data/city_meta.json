@@ -1,0 +1,10 @@
+{
+  "jeju": {
+    "detail_locale_mode": "en_native_zh",
+    "native_iso639_1": "ko",
+    "native_button_label": "KO"
+  },
+  "kuala-lumpur": {
+    "detail_locale_mode": "en_zh"
+  }
+}

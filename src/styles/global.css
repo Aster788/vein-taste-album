@@ -58,7 +58,7 @@ svg {
   );
 }
 
-/* --- 11 城主色 / 辅色（由路由在 documentElement 上设置 data-city 切换） --- */
+/* --- 10 城主色 / 辅色（由路由在 documentElement 上设置 data-city 切换） --- */
 html[data-city="dalian"],
 .ffj-bookshelf-book-slot[data-city="dalian"] {
   --city-primary: #6f93ae;
@@ -105,12 +105,6 @@ html[data-city="quanzhou"],
 .ffj-bookshelf-book-slot[data-city="quanzhou"] {
   --city-primary: #967662;
   --city-secondary: #f0ebe4;
-}
-
-html[data-city="pingtan"],
-.ffj-bookshelf-book-slot[data-city="pingtan"] {
-  --city-primary: #7ea5b3;
-  --city-secondary: #ecf2f4;
 }
 
 html[data-city="jeju"],
@@ -227,44 +221,29 @@ html[data-city="kuala-lumpur"],
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.95rem;
+  gap: 0.72rem;
   width: max-content;
 }
 
 .ffj-city-section-trigger {
   border: none;
-  padding: 0.3rem 0.9rem 0.3rem 0.55rem;
+  padding: 0.34rem 0.84rem 0.34rem 0.6rem;
   margin-left: 0;
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
+  justify-content: center;
+  min-width: 2.5rem;
   position: relative;
   color: color-mix(in srgb, var(--color-page-bg) 96%, transparent);
-  font-family: var(--font-body-zh);
-  font-size: 1.02rem;
-  line-height: 1.2;
-  letter-spacing: 0.02em;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 999px;
   background: color-mix(in srgb, var(--city-primary) 88%, black);
   box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, var(--color-page-bg) 10%, transparent),
-    0 0.4px 0 color-mix(in srgb, black 28%, transparent);
+    inset 0 0 0 1px color-mix(in srgb, var(--color-page-bg) 14%, transparent),
+    0 0 18px color-mix(in srgb, #f0d6b4 22%, transparent),
+    0 6px 24px color-mix(in srgb, #f0d6b4 16%, transparent),
+    0 1px 0 color-mix(in srgb, black 20%, transparent);
   transition: transform 120ms ease, background-color 120ms ease;
-}
-
-.ffj-city-section-trigger::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: 0;
-  width: 1px;
-  height: 1.6rem;
-  transform: translateY(-50%);
-  background: color-mix(in srgb, var(--color-page-bg) 86%, transparent);
-  box-shadow:
-    -1px 0 0 color-mix(in srgb, black 12%, transparent),
-    1px 0 0 color-mix(in srgb, var(--color-page-bg) 24%, transparent);
 }
 
 .ffj-city-section-trigger:hover {
@@ -282,26 +261,32 @@ html[data-city="kuala-lumpur"],
   outline-offset: 2px;
 }
 
-.ffj-city-section-caret {
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 7px solid color-mix(in srgb, var(--color-page-bg) 95%, transparent);
+.ffj-city-switch-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: transform 140ms ease;
 }
 
-.ffj-city-section-caret.is-open {
-  transform: rotate(180deg);
+.ffj-city-switch-icon-svg {
+  width: 100%;
+  height: 100%;
+  stroke: color-mix(in srgb, var(--color-page-bg) 96%, transparent);
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
 }
 
-.ffj-city-section-prefix {
-  white-space: nowrap;
+.ffj-city-switch-icon.is-open {
+  transform: rotate(90deg) scale(0.96);
 }
 
 .ffj-city-section-current {
   margin: 0;
-  padding-left: 0.15rem;
+  padding-left: 0;
   color: color-mix(in srgb, var(--color-page-bg) 98%, transparent);
   font-family: var(--font-body-zh);
   font-size: clamp(1rem, 1.8vw, 1.18rem);
@@ -311,7 +296,7 @@ html[data-city="kuala-lumpur"],
 
 .ffj-city-section-menu {
   position: absolute;
-  top: calc(100% - 1px);
+  top: calc(100% + 0.35rem);
   left: 0;
   right: 0;
   z-index: 8;
@@ -321,14 +306,22 @@ html[data-city="kuala-lumpur"],
     var(--city-primary) 78%,
     var(--color-page-bg)
   );
-  border-top: none;
-  box-shadow: 0 8px 18px color-mix(in srgb, var(--city-primary) 22%, transparent);
+  border-radius: 18px;
+  overflow: clip;
+  box-shadow:
+    0 0 28px color-mix(in srgb, #f0d6b4 20%, transparent),
+    0 14px 34px color-mix(in srgb, #f0d6b4 14%, transparent),
+    0 10px 22px color-mix(in srgb, var(--city-primary) 20%, transparent);
   background: color-mix(in srgb, var(--city-primary) 94%, black);
 }
 
 .ffj-city-section-option {
   border: none;
-  padding: 0.7rem 0.85rem 0.7rem calc(0.55rem + 10px + 0.55rem);
+  padding: 0.68rem 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
   text-align: left;
   color: color-mix(in srgb, var(--color-page-bg) 90%, transparent);
   font-family: var(--font-body-zh);
@@ -337,6 +330,23 @@ html[data-city="kuala-lumpur"],
   cursor: pointer;
   background: transparent;
   transition: transform 100ms ease, background-color 120ms ease;
+}
+
+.ffj-city-section-current-icon {
+  width: 1.42rem;
+  height: 1.42rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.ffj-city-section-current-icon-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  filter: invert(1) brightness(1.05);
 }
 
 .ffj-city-section-option:hover {
@@ -353,8 +363,23 @@ html[data-city="kuala-lumpur"],
 }
 
 .ffj-city-section-option.is-active {
-  background: color-mix(in srgb, var(--color-page-bg) 20%, transparent);
-  font-weight: 600;
+  background: transparent;
+  font-weight: 400;
+}
+
+.ffj-city-section-option-marker {
+  width: 1.14rem;
+  height: 1.14rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.ffj-city-section-option-marker-svg {
+  width: 100%;
+  height: 100%;
+  fill: color-mix(in srgb, var(--color-page-bg) 99%, transparent);
 }
 
 .ffj-city-detail-content {
@@ -371,6 +396,10 @@ html[data-city="kuala-lumpur"],
 }
 
 .ffj-city-book-spread {
+  --ffj-map-col-ratio: 7fr;
+  --ffj-note-col-ratio: 2fr;
+  --ffj-sticker-col-ratio: 1fr;
+  position: relative;
   flex: 1 1 auto;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
@@ -381,6 +410,27 @@ html[data-city="kuala-lumpur"],
   position: relative;
   isolation: isolate;
   overflow: visible;
+}
+
+.ffj-city-book-spread.is-hidden {
+  display: none;
+}
+
+.ffj-city-book-spread--map {
+  grid-template-columns:
+    minmax(0, var(--ffj-map-col-ratio))
+    auto
+    minmax(0, var(--ffj-note-col-ratio))
+    minmax(0, var(--ffj-sticker-col-ratio));
+}
+
+.ffj-city-book-spread--cuisine {
+  --ffj-cuisine-left-col-ratio: 2fr;
+  --ffj-cuisine-right-col-ratio: 3fr;
+  grid-template-columns:
+    minmax(0, var(--ffj-cuisine-left-col-ratio))
+    auto
+    minmax(0, var(--ffj-cuisine-right-col-ratio));
 }
 
 .ffj-city-book-page {
@@ -407,6 +457,27 @@ html[data-city="kuala-lumpur"],
   position: relative;
 }
 
+.ffj-city-book-page--note {
+  border-radius: 0;
+  padding: 0;
+}
+
+.ffj-city-book-page--sticker {
+  border-radius: 0 0.85rem 0.85rem 0;
+  border-inline-start: 1px dashed color-mix(in srgb, var(--city-primary) 26%, transparent);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--city-surface-muted) 80%, var(--color-page-bg)),
+      color-mix(in srgb, var(--color-page-bg) 95%, var(--city-secondary))
+    );
+}
+
+.ffj-city-book-page--map {
+  padding: 0;
+  overflow: hidden;
+}
+
 .ffj-city-book-gutter {
   position: relative;
   z-index: 1;
@@ -427,6 +498,392 @@ html[data-city="kuala-lumpur"],
     color-mix(in srgb, var(--color-text) 8%, transparent) 62%,
     color-mix(in srgb, var(--color-text) 14%, transparent) 100%
   );
+}
+
+.ffj-map-panel {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 0.85rem 0 0 0.85rem;
+  overflow: hidden;
+  background: #f7f3ee;
+}
+
+.ffj-city-book-spread--map,
+.ffj-city-book-spread--map * {
+  cursor: none !important;
+}
+
+.ffj-map-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.ffj-map-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, #f7f3ee 88%, transparent);
+  pointer-events: none;
+}
+
+.ffj-map-error {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(0.8rem, 2.2vw, 1.2rem);
+  transform: translateX(-50%);
+  z-index: 4;
+  width: min(92%, 34rem);
+  padding: 0.72rem 0.9rem;
+  border-radius: 0.68rem;
+  border: 1px solid color-mix(in srgb, #a14636 38%, transparent);
+  background: color-mix(in srgb, #fff7f5 94%, transparent);
+  box-shadow: 0 10px 22px color-mix(in srgb, #4d2e25 12%, transparent);
+}
+
+.ffj-map-error .ffj-body-text {
+  margin: 0;
+  color: #7d2f23;
+}
+
+.ffj-map-error-detail {
+  margin: 0.2rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: #8e4a3d;
+  opacity: 0.95;
+  word-break: break-word;
+}
+
+.ffj-map-panel--fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.ffj-map-tag-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ffj-map-tag-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.ffj-map-tag-bubble {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0 0.85rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.97);
+  color: rgba(30, 25, 20, 0.92);
+  font-family: var(--font-body-zh);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow:
+    0 2px 5px rgba(50, 40, 32, 0.18),
+    0 0 0 1px rgba(90, 72, 58, 0.1);
+  border: none;
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    opacity 140ms ease,
+    filter 140ms ease,
+    background-color 140ms ease;
+}
+
+.ffj-map-tag-bubble.is-dimmed {
+  opacity: 0.46;
+  filter: grayscale(0.24);
+}
+
+.ffj-map-tag-triangle {
+  fill: rgba(255, 255, 255, 0.97);
+  filter: drop-shadow(0 1px 1px rgba(42, 34, 28, 0.14));
+  pointer-events: none;
+}
+
+.ffj-map-cursor {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+  background: var(--city-primary);
+  -webkit-mask-image: var(--ffj-map-cursor-mask);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-image: var(--ffj-map-cursor-mask);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  filter: drop-shadow(0 0 0.2px color-mix(in srgb, var(--city-primary) 85%, black));
+}
+
+.ffj-note-panel {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: clamp(1.15rem, 2.1vw, 1.8rem) clamp(1.05rem, 1.95vw, 1.55rem)
+    clamp(1.45rem, 2.6vw, 2.15rem);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--city-surface-muted) 86%, var(--color-page-bg)),
+      color-mix(in srgb, var(--color-page-bg) 96%, var(--city-secondary))
+    );
+}
+
+.ffj-note-panel-lines {
+  display: none;
+}
+
+.ffj-note-panel-guide {
+  margin: 0;
+  max-width: min(22ch, 88%);
+  text-align: center;
+  white-space: pre-line;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--city-primary) 72%, var(--color-text-muted));
+  font-family: var(--font-handwriting);
+  font-size: clamp(1rem, 1.45vw, 1.35rem);
+  letter-spacing: 0.01em;
+  position: relative;
+  z-index: 1;
+}
+
+.ffj-note-card {
+  width: 100%;
+  max-width: min(42ch, 100%);
+  position: relative;
+  z-index: 1;
+  padding-top: clamp(0.35rem, 0.85vw, 0.7rem);
+  padding-bottom: clamp(0.35rem, 0.85vw, 0.7rem);
+}
+
+.ffj-note-store-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin: 0 0 0.85rem;
+}
+
+.ffj-note-store-name {
+  margin: 0;
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--color-text) 90%, var(--city-primary));
+  white-space: pre-line;
+}
+
+.ffj-note-map-link {
+  inline-size: 2.4rem;
+  block-size: 2.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: color-mix(in srgb, var(--city-primary) 76%, #1f1f1f);
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--city-primary) 26%, transparent);
+  background: color-mix(in srgb, var(--color-page-bg) 84%, var(--city-secondary));
+  box-shadow: 0 1px 2px rgba(36, 30, 24, 0.12);
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+  text-decoration: none;
+  flex: 0 0 auto;
+}
+
+.ffj-note-map-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(36, 30, 24, 0.18);
+}
+
+.ffj-note-map-link:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--city-primary) 58%, transparent);
+  outline-offset: 2px;
+}
+
+.ffj-note-map-link.is-disabled {
+  opacity: 0.48;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.ffj-note-map-link-icon-svg {
+  inline-size: 1.1rem;
+  block-size: 1.1rem;
+  pointer-events: none;
+}
+
+.ffj-note-map-link-fallback {
+  margin: 0.55rem 0 0;
+  color: color-mix(in srgb, var(--color-text-muted) 82%, var(--city-primary));
+  font-size: 0.78rem;
+}
+
+.ffj-note-fields {
+  margin: 0;
+}
+
+.ffj-note-field {
+  display: grid;
+  grid-template-columns: 7.2em 1fr;
+  gap: 0.75rem;
+  align-items: baseline;
+  padding: 0.62rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--city-primary) 36%, transparent);
+}
+
+.ffj-note-field dt,
+.ffj-note-field dd {
+  margin: 0;
+}
+
+.ffj-note-field dt {
+  color: color-mix(in srgb, var(--color-text-muted) 82%, var(--city-primary));
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+
+.ffj-note-field dd {
+  color: color-mix(in srgb, var(--color-text) 92%, black);
+  line-height: 1.45;
+}
+
+.ffj-note-field-value--multiline {
+  white-space: pre-line;
+}
+
+.ffj-note-radar-wrap {
+  inline-size: min(100%, 360px);
+  block-size: clamp(160px, 19vw, 230px);
+  margin-inline: auto;
+}
+
+.ffj-note-radar-section {
+  margin-top: 0.8rem;
+  display: flex;
+  justify-content: center;
+}
+
+.ffj-cuisine-filter-stack {
+  width: 100%;
+  max-width: 11rem;
+  display: grid;
+  align-content: flex-start;
+  justify-items: stretch;
+  gap: 0.62rem;
+}
+
+.ffj-cuisine-filter-btn {
+  border: none;
+  border-radius: 12px;
+  padding: 0.58rem 0.62rem 0.54rem;
+  min-height: 2.4rem;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-page-bg) 92%, var(--city-secondary)),
+      color-mix(in srgb, var(--city-secondary) 22%, var(--color-page-bg))
+    );
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--color-text) 11%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--city-primary) 16%, transparent);
+  color: color-mix(in srgb, var(--color-text) 90%, var(--city-primary));
+  font-family: var(--font-body-zh);
+  font-size: 0.92rem;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition:
+    transform 140ms ease,
+    opacity 140ms ease,
+    box-shadow 140ms ease,
+    filter 140ms ease;
+}
+
+.ffj-cuisine-filter-btn:hover {
+  transform: translateY(-1px);
+}
+
+.ffj-cuisine-filter-btn.is-active {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--city-primary) 28%, var(--color-page-bg)),
+      color-mix(in srgb, var(--city-primary) 17%, var(--color-page-bg))
+    );
+  box-shadow:
+    0 2px 6px color-mix(in srgb, var(--city-primary) 24%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--city-primary) 44%, transparent);
+}
+
+.ffj-cuisine-filter-stack.is-filtering .ffj-cuisine-filter-btn:not(.is-active) {
+  opacity: 0.44;
+  filter: grayscale(0.28);
+}
+
+.ffj-cuisine-filter-btn:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--city-primary) 55%, transparent);
+  outline-offset: 2px;
+}
+
+.ffj-note-radar-empty {
+  margin: 0;
+  min-height: 4.25rem;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-size: 0.82rem;
+  color: color-mix(in srgb, var(--color-text-muted) 84%, var(--city-primary));
+}
+
+.ffj-city-dish-preview-list {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.ffj-city-dish-preview-card {
+  border-bottom: 1px solid rgba(89, 71, 56, 0.16);
+  padding-bottom: 10px;
+}
+
+.ffj-city-dish-preview-name {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.35;
+  color: rgba(44, 35, 27, 0.9);
+  white-space: pre-line;
+}
+
+.ffj-city-dish-preview-price,
+.ffj-city-dish-preview-note {
+  margin: 6px 0 0;
+  color: rgba(62, 50, 39, 0.78);
 }
 
 /* --- 书架页：Slogan 区 + 横向滚动书排（PRD §3.1） --- */
@@ -754,6 +1211,23 @@ html[data-city="kuala-lumpur"],
   --bb-corner: clamp(3px, 0.38rem, 7px);
   --bb-cover-w: clamp(3.85rem, 16vh, 7.25rem);
   --bb-pages-w: clamp(0.42rem, 1.15vw, 0.58rem);
+  --bb-hinge-overlap: clamp(2px, 0.22rem, 4px);
+  --bb-cover-angle: 52deg;
+  --bb-back-angle: -52deg;
+  --bb-face-z: 0.55px;
+  --bb-seam-soft: color-mix(in srgb, var(--color-text) 12%, transparent);
+  --bb-shell-base:
+    linear-gradient(
+      205deg,
+      color-mix(in srgb, var(--color-page-bg) 20%, transparent) 0%,
+      transparent 43%
+    ),
+    linear-gradient(
+      125deg,
+      color-mix(in srgb, var(--color-page-bg) 12%, var(--city-primary)),
+      var(--city-primary) 52%,
+      color-mix(in srgb, var(--color-text) 12%, var(--city-primary))
+    );
   width: 100%;
   height: 100%;
   border-radius: var(--bb-corner);
@@ -800,7 +1274,7 @@ html[data-city="kuala-lumpur"],
   position: absolute;
   inset: 0;
   border-radius: var(--bb-corner);
-  transform: translateZ(0);
+  transform: translateZ(0.35px);
   backface-visibility: hidden;
   overflow: hidden;
   display: flex;
@@ -876,9 +1350,9 @@ html[data-city="kuala-lumpur"],
       var(--city-primary) 48%,
       color-mix(in srgb, var(--color-text) 16%, var(--city-primary))
     );
+  /* 不在书脊与封面接缝侧画高光线，避免「两块板拼接」观感 */
   box-shadow:
     -0.5px 0 0 color-mix(in srgb, var(--color-text) 5%, transparent),
-    0.5px 0 0 color-mix(in srgb, var(--color-page-bg) 22%, transparent),
     0 -0.5px 0 color-mix(in srgb, var(--color-text) 4%, transparent),
     0 0.5px 0 color-mix(in srgb, var(--color-text) 5%, transparent),
     inset 0 0 0 var(--bb-board)
@@ -887,6 +1361,43 @@ html[data-city="kuala-lumpur"],
       color-mix(in srgb, var(--color-text) 9%, transparent),
     inset -10px 0 20px color-mix(in srgb, var(--color-text) 22%, transparent),
     inset 5px 0 16px color-mix(in srgb, var(--color-page-bg) 22%, transparent);
+}
+
+/* 铰链处柔化带：与书脊/封面同色相渐变，叠在接缝上消除白缝与双边线 */
+.ffj-book__hinge-blend {
+  position: absolute;
+  top: 2.5%;
+  bottom: 2.5%;
+  width: clamp(5px, 0.62rem, 10px);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  pointer-events: none;
+  opacity: 0.94;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--city-primary) 55%, var(--color-page-bg)),
+    color-mix(in srgb, var(--city-primary) 22%, var(--color-page-bg)),
+    transparent 78%
+  );
+  filter: blur(0.45px);
+}
+
+.ffj-book__hinge-blend--cover {
+  left: calc(100% - var(--bb-hinge-overlap) - clamp(2px, 0.2rem, 4px));
+  transform-origin: left center;
+  transform: rotateY(89.35deg) translateZ(1.1px);
+}
+
+.ffj-book__hinge-blend--back {
+  right: calc(100% - var(--bb-hinge-overlap) - clamp(2px, 0.2rem, 4px));
+  transform-origin: right center;
+  transform: rotateY(-89.35deg) translateZ(1.1px);
+  background: linear-gradient(
+    270deg,
+    color-mix(in srgb, var(--city-primary) 58%, black),
+    color-mix(in srgb, var(--city-primary) 28%, var(--color-page-bg)),
+    transparent 78%
+  );
 }
 
 /* 贴纸资源统一约束（适用于书脊/Slogan/筛选/拍立得等所有区域）：
@@ -910,7 +1421,7 @@ html[data-city="kuala-lumpur"],
   width: clamp(1.45rem, min(4.6vw, 7.2vh), 2.45rem);
 }
 
-/* 书脊竖排文案（PRD §2.5、§3.3）：两行叠放，上中文「国家·城市」、下英文「Country · City」，11 城统一 */
+/* 书脊竖排文案（PRD §2.5、§3.3）：两行叠放，上中文「国家·城市」、下英文「Country · City」，10 城统一 */
 .ffj-book__spine-text {
   position: relative;
   z-index: 1;
@@ -985,11 +1496,11 @@ html[data-city="kuala-lumpur"],
 .ffj-book__pages {
   position: absolute;
   top: 2.5%;
-  left: 100%;
+  left: calc(100% - var(--bb-hinge-overlap));
   width: var(--bb-pages-w);
   height: 95%;
   transform-origin: left center;
-  transform: rotateY(88deg) translateZ(0.5px);
+  transform: rotateY(90deg) translateZ(0.38px);
   backface-visibility: hidden;
   border-radius: calc(var(--bb-corner) - 1px);
   background: repeating-linear-gradient(
@@ -997,41 +1508,24 @@ html[data-city="kuala-lumpur"],
     color-mix(in srgb, var(--city-primary) 7%, #f6f1e8) 0 2px,
     color-mix(in srgb, var(--color-text-muted) 7%, #e9e1d4) 2px 4px
   );
-  box-shadow:
-    inset 0 0 0 max(1px, calc(var(--bb-board) - 0.5px))
-      color-mix(in srgb, var(--color-page-bg) 45%, transparent),
-    inset -2px 0 4px color-mix(in srgb, var(--color-text) 12%, transparent);
+  box-shadow: inset -1px 0 3px color-mix(in srgb, var(--color-text) 8%, transparent);
 }
 
 /* 封面：与书脊同色壳 + 同一包边逻辑 */
 .ffj-book__cover {
   position: absolute;
   top: 0;
-  left: 100%;
+  left: calc(100% - var(--bb-hinge-overlap));
   width: var(--bb-cover-w);
   height: 100%;
   transform-origin: left center;
-  transform: rotateY(52deg) translateZ(1px);
+  transform: rotateY(var(--bb-cover-angle)) translateZ(var(--bb-face-z));
   backface-visibility: hidden;
   border-radius: var(--bb-corner);
-  background:
-    linear-gradient(
-      205deg,
-      color-mix(in srgb, var(--color-page-bg) 22%, transparent) 0%,
-      transparent 42%
-    ),
-    linear-gradient(
-      125deg,
-      color-mix(in srgb, var(--color-page-bg) 12%, var(--city-primary)),
-      var(--city-primary) 52%,
-      color-mix(in srgb, var(--color-text) 12%, var(--city-primary))
-    );
+  background: var(--bb-shell-base);
+  /* 铰链侧不用双边 inset，避免与书脊形成硬缝 */
   box-shadow:
-    inset 0 0 0 var(--bb-board)
-      color-mix(in srgb, var(--color-page-bg) 52%, var(--city-primary)),
-    inset 0 0 0 calc(var(--bb-board) + 0.5px)
-      color-mix(in srgb, var(--color-text) 8%, transparent),
-    inset 10px 0 22px color-mix(in srgb, var(--color-text) 14%, transparent),
+    inset -10px 0 20px color-mix(in srgb, var(--color-text) 12%, transparent),
     6px 12px 22px color-mix(in srgb, var(--color-text) 16%, transparent);
   opacity: var(--ffj-book-front-vis, 0);
   transition: opacity 320ms cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -1040,11 +1534,11 @@ html[data-city="kuala-lumpur"],
 .ffj-book__back {
   position: absolute;
   top: 0;
-  right: 100%;
+  right: calc(100% - var(--bb-hinge-overlap));
   width: var(--bb-cover-w);
   height: 100%;
   transform-origin: right center;
-  transform: rotateY(-52deg) translateZ(1px);
+  transform: rotateY(var(--bb-back-angle)) translateZ(var(--bb-face-z));
   backface-visibility: hidden;
   border-radius: var(--bb-corner);
   background:
@@ -1055,16 +1549,12 @@ html[data-city="kuala-lumpur"],
     ),
     linear-gradient(
       235deg,
-      color-mix(in srgb, var(--color-text) 13%, var(--city-primary)),
-      color-mix(in srgb, var(--city-primary) 88%, black) 55%,
-      color-mix(in srgb, var(--color-text) 20%, var(--city-primary))
+      color-mix(in srgb, var(--color-text) 12%, var(--city-primary)),
+      color-mix(in srgb, var(--city-primary) 90%, black) 54%,
+      color-mix(in srgb, var(--color-text) 18%, var(--city-primary))
     );
   box-shadow:
-    inset 0 0 0 var(--bb-board)
-      color-mix(in srgb, var(--color-page-bg) 28%, var(--city-primary)),
-    inset 0 0 0 calc(var(--bb-board) + 0.5px)
-      color-mix(in srgb, var(--color-text) 14%, transparent),
-    inset -8px 0 18px color-mix(in srgb, var(--color-text) 15%, transparent),
+    inset 8px 0 18px color-mix(in srgb, var(--color-text) 12%, transparent),
     -5px 10px 18px color-mix(in srgb, var(--color-text) 14%, transparent);
   opacity: var(--ffj-book-back-vis, 0);
   transition: opacity 340ms cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -1072,18 +1562,25 @@ html[data-city="kuala-lumpur"],
 
 /* 书架封面临时：纯色 = 书脊主色（PRD §3.3 阶段性规则） */
 .ffj-bookshelf-book-slot .ffj-book__cover--bookshelf-solid {
-  background: var(--city-primary);
+  background: var(--bb-shell-base);
   box-shadow:
-    inset 0 0 0 var(--bb-board)
-      color-mix(in srgb, var(--color-page-bg) 42%, var(--city-primary)),
-    inset 0 0 0 calc(var(--bb-board) + 0.5px)
-      color-mix(in srgb, var(--color-text) 9%, transparent),
-    inset 8px 0 18px color-mix(in srgb, var(--color-text) 12%, transparent),
+    inset -8px 0 16px color-mix(in srgb, var(--color-text) 10%, transparent),
     5px 10px 18px color-mix(in srgb, var(--color-text) 14%, transparent);
 }
 
 .ffj-bookshelf-book-slot .ffj-book__back--bookshelf-solid {
-  background: var(--city-primary);
+  background:
+    linear-gradient(
+      155deg,
+      color-mix(in srgb, var(--color-page-bg) 10%, transparent) 0%,
+      transparent 42%
+    ),
+    linear-gradient(
+      235deg,
+      color-mix(in srgb, var(--color-text) 12%, var(--city-primary)),
+      color-mix(in srgb, var(--city-primary) 90%, black) 54%,
+      color-mix(in srgb, var(--color-text) 18%, var(--city-primary))
+    );
 }
 
 /* 霞鹜文楷（LXGW WenKai Regular，简体正文） */

@@ -1,5 +1,5 @@
 /**
- * PRD 11 城 URL 段（小写 + 连字符），与 geojson 文件名、global.css `html[data-city]` 一致。
+ * PRD 10 城 URL 段（小写 + 连字符），与 geojson 文件名、global.css `html[data-city]` 一致。
  * 书架横向成书顺序与本数组顺序相同（`getBookshelfCities` 使用 `CITY_SLUGS.map`）。
  */
 export const CITY_SLUGS = Object.freeze([
@@ -10,7 +10,6 @@ export const CITY_SLUGS = Object.freeze([
   "jeju",
   "kuala-lumpur",
   "fuzhou",
-  "pingtan",
   "quanzhou",
   "xiamen",
   "dalian",
@@ -36,7 +35,6 @@ export const CITY_STICKER_FILENAME_BY_SLUG = Object.freeze({
   jeju: "jeju-orange.svg",
   "kuala-lumpur": "kl-petronas-twin-tower.svg",
   fuzhou: "fuzhou-banyan-tree.svg",
-  pingtan: "pingtan-wave.svg",
   quanzhou: "quanzhou-anchor.svg",
   xiamen: "xiamen-piano.svg",
   dalian: "dalian-seagull.svg",
@@ -45,7 +43,7 @@ export const CITY_STICKER_FILENAME_BY_SLUG = Object.freeze({
 /**
  * 书架书脊/封面用城市文案兜底（与 PRD §1.5、§2.5「国家·城市」一致；`restaurants.json` 有该城数据时以 JSON 覆盖）。
  * 书脊双行：上中文 `country_zh·city_zh`，下英文 `country_en · city_en`。
- * `city_native` 供详情页等三语文案使用，**不用于书脊**。
+ * `city_native` 供详情页等城市文案使用，**不用于书脊**（语言切换与展示策略见 `prd.md` §2.5）。
  * @type {Readonly<Record<(typeof CITY_SLUGS)[number], { country_zh: string; country_en: string; city_zh: string; city_en: string; city_native: string; is_china: boolean }>>}
  */
 export const BOOKSHELF_CITY_DISPLAY_BY_SLUG = Object.freeze({
@@ -110,14 +108,6 @@ export const BOOKSHELF_CITY_DISPLAY_BY_SLUG = Object.freeze({
     country_en: "China",
     city_zh: "泉州",
     city_en: "Quanzhou",
-    city_native: "",
-    is_china: true,
-  },
-  pingtan: {
-    country_zh: "中国",
-    country_en: "China",
-    city_zh: "平潭",
-    city_en: "Pingtan",
     city_native: "",
     is_china: true,
   },

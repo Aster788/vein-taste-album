@@ -5,7 +5,7 @@ import { spineInkCssVariables } from "../utils/spineContrast.js";
  * 书架单本书：书脊 + 书口 + 封面 3D 组装；父级 `li` 写入 `--ffj-book-yaw-scroll`，抽出由 hover 样式控制（见 Bookshelf.jsx、global.css）。
  * 城市配色由外层 `li.ffj-bookshelf-book-slot[data-city]` 注入的 CSS 变量提供。
  *
- * 书脊文字（PRD §2.5「书脊与封面」、§3.3）：11 城统一两行竖排，
+ * 书脊文字（PRD §2.5「书脊与封面」、§3.3）：10 城统一两行竖排，
  * **上行中文**「国家·城市」（霞鹜文楷），**下行英文**「Country · City」（Playfair），不随 `locale` 切换。
  * 字色按 `--city-primary` 亮度自动选深/浅（`spineContrast.js`），保证与上海等深色主色对比度。
  * 书脊城市贴纸：`<img>` 直接渲染 SVG，保留资源内多色填充；透明区域透出书脊底纹。
@@ -78,6 +78,9 @@ export default function Book({ city }) {
             <div className="ffj-book__pages" aria-hidden />
             <div className="ffj-book__cover ffj-book__cover--bookshelf-solid" aria-hidden />
             <div className="ffj-book__back ffj-book__back--bookshelf-solid" aria-hidden />
+            {/* 铰链柔化：置于各面之后并略抬高 Z，叠在接缝上消缝（preserve-3d 深度排序） */}
+            <div className="ffj-book__hinge-blend ffj-book__hinge-blend--cover" aria-hidden />
+            <div className="ffj-book__hinge-blend ffj-book__hinge-blend--back" aria-hidden />
           </div>
         </div>
       </div>

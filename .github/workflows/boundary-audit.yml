@@ -1,0 +1,101 @@
+name: Boundary Offset Audit
+
+on:
+  pull_request:
+    paths:
+      - "src/assets/geojson/**/*.geojson"
+      - "src/components/MapPanel.jsx"
+      - "src/utils/coordTransform.js"
+      - "src/utils/citySlugs.js"
+      - "src/data/restaurants.json"
+      - "scripts/audit-boundary-offsets.mjs"
+      - "package.json"
+      - "package-lock.json"
+  push:
+    branches:
+      - main
+    paths:
+      - "src/assets/geojson/**/*.geojson"
+      - "src/components/MapPanel.jsx"
+      - "src/utils/coordTransform.js"
+      - "src/utils/citySlugs.js"
+      - "src/data/restaurants.json"
+      - "scripts/audit-boundary-offsets.mjs"
+      - "package.json"
+      - "package-lock.json"
+  workflow_dispatch:
+
+jobs:
+  pr-incremental-audit:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Detect changed city boundary files
+        id: detect
+        shell: bash
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          CHANGED_FILES="$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")"
+          CITY_SLUGS="$(printf '%s\n' "$CHANGED_FILES" | sed -n 's#^src/assets/geojson/\(.*\)\.geojson$#\1#p' | sort -u | paste -sd, -)"
+          echo "cities=$CITY_SLUGS" >> "$GITHUB_OUTPUT"
+          echo "changed_files<<EOF" >> "$GITHUB_OUTPUT"
+          printf '%s\n' "$CHANGED_FILES" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Run incremental audit for changed cities
+        if: steps.detect.outputs.cities != ''
+        run: >
+          node scripts/audit-boundary-offsets.mjs
+          --cities=${{ steps.detect.outputs.cities }}
+          --fail-on-regression
+          --min-delta-pct=0
+          --max-open-rings=0
+          --max-invalid-lnglat=0
+
+      - name: Run full audit when non-city map logic changed
+        if: steps.detect.outputs.cities == ''
+        run: >
+          node scripts/audit-boundary-offsets.mjs
+          --fail-on-regression
+          --min-delta-pct=0
+          --max-open-rings=0
+          --max-invalid-lnglat=0
+
+  main-full-audit:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run full boundary audit
+        run: >
+          node scripts/audit-boundary-offsets.mjs
+          --fail-on-regression
+          --min-delta-pct=0
+          --max-open-rings=0
+          --max-invalid-lnglat=0

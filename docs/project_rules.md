@@ -42,20 +42,25 @@
 | 决策                       | 原因                                           |
 | ------------------------ | -------------------------------------------- |
 | 地图用 Mapbox，不用高德/谷歌 SDK   | 避免双 SDK 冲突；高德/谷歌仅用于数据准备阶段查询经纬度               |
-| 中国城市坐标需 GCJ-02→WGS-84 转换 | 高德返回 GCJ-02，Mapbox 用 WGS-84，不转换会偏移 200-500 米 |
+| 中国城市坐标需 GCJ-02→WGS-84 转换 | 高德返回 GCJ-02，Mapbox 用 WGS-84；点图层与边界图层都必须转换，否则会出现整体偏移 |
+| 地图加载异常需可见化反馈           | 正常加载不提示；Token 为空显示缺失提示；Token/网络/样式失败显示错误提示+细节，避免长期“地图加载中” |
 | 数据用本地 JSON，不用数据库         | MVP 阶段复杂度最低，静态部署足够                           |
-| 图片文件名即菜名                 | 中国城市用中文菜名，非中国城市用本国语言菜名，代码通过文件名匹配 dishes.json |
-| 所有颜色用 CSS 变量（token）      | 11个城市各有专属配色，必须通过变量统一管理，禁止硬编码色值               |
+| 图片路径与文件名匹配             | 店铺目录统一用 `store_slug`；图片 basename 按 `dish_name_local`→`dish_name_en`→`dish_name_zh` 匹配 dishes.json；未命中也要展示（中文数字序号 basename 仅图，其他 basename 显示为名称） |
+| 所有颜色用 CSS 变量（token）      | 10个城市各有专属配色，必须通过变量统一管理，禁止硬编码色值               |
 
 
 ---
 
 ## 四、城市与语言规则
 
-- **目前共11个城市**：中国9城（大连、青岛、上海、广州、重庆、福州、厦门、泉州、平潭）+ 济州岛 + 吉隆坡
+- **目前共10个城市**：中国8城（大连、青岛、上海、广州、重庆、福州、厦门、泉州）+ 济州岛 + 吉隆坡
 - **中国城市**：页面右上角显示 EN/CN 切换按钮，用户可在中英文间切换（**不含**书脊/封面：书脊与封面统一为上中文、下英文「国家·城市」，见 `prd.md` §2.5）
-- **非中国城市**（济州岛、吉隆坡）：不显示切换按钮；**详情页等主体**固定三语（本国语言→英文→中文）；**书脊/封面**与中国城同一套上中文、下英文「国家·城市」
-- **数据字段 `is_china: true/false`**：代码以此判断坐标系转换需求和语言切换按钮显示逻辑
+- **非中国城市**（济州岛、吉隆坡；以及未来新增城市）：页面右上角显示语言切换按钮（书架页不显示；具体按钮集合见 `prd.md` §2.5，例如 `EN/KO/CN` 或 `EN/CN`）；**书脊/封面**与中国城同一套上中文、下英文「国家·城市」
+- **非中国城市配置源**：详情页语言按钮集合不写死在组件里，统一读取 `src/data/city_meta.json`
+- **新增非中国城市时必须同步补配置**：至少新增该城市的 `slug -> detail_locale_mode`；若模式为 `en_native_zh`，还必须补 `native_iso639_1` 与 `native_button_label`
+- **店铺名 / 菜品名**：始终以数据文件中的多语言字段为准（`restaurants.json`：`name_zh/name_en/name_local`；`dishes.json`：`dish_name_zh/dish_name_en/dish_name_local`），**不参与**语言切换，也**不做**机器翻译覆盖（Map 点位标签与 Cuisine 多行展示规则见 `prd.md` §2.5 / §4.2 / §4.3）
+- **其它可变文案**：允许「作者原文优先 + 缺失机器翻译补齐 + 失败回退：`目标语言 → 英文 → 中文`」（见 `prd.md` §2.5）
+- **数据字段 `is_china: true/false`**：代码以此判断坐标系转换需求和语言切换按钮显示逻辑（中国城市：点位与边界均转换；非中国城市：不转换）
 
 ---
 
@@ -64,18 +69,40 @@
 ```
 src/data/
 ├── restaurants.json   ← 所有城市所有店铺，一个数组，按 city_en 筛选
-└── dishes.json        ← 所有城市所有菜品，通过 store_name_zh / store_name_local + city_en 关联店铺（**不含 `review` 字段**，见 `prd.md` §5.2）
+├── dishes.json        ← 所有城市所有菜品，通过 `store_name_zh` / `store_name_en` / `store_name_local`（任一可匹配）+ `city_en` 关联店铺（**不含 `review` 字段**，见 `prd.md` §5.2）
+├── city_meta.json     ← 城市级语言 UI 配置；非中国城市详情页按钮模式统一在这里维护
+└── translations.static.json ← 静态翻译落盘结果（脚本批量生成；运行时优先读取）
 ```
 
-**所有页面展示内容必须从这两个 JSON 文件读取，禁止硬编码任何业务数据。**
+**所有页面展示内容必须从这些 JSON / 配置文件读取，禁止在组件里硬编码任何业务数据或城市语言特例。**
+
+数据处理强约束（执行与填表口径）：
+
+- `restaurants.xlsx` 中：
+  - 必填：`city_en`、`store_slug`、`record_scope`（`branch` / `brand`）以及至少一个店名字段（`name_zh/name_en/name_local`）。
+  - `store_slug` 规则：`[a-z0-9-]+`，至少保证 `(city_en, store_slug)` 唯一。
+  - `record_scope` 语义：`branch`=具体门店（有坐标即可上图）；`brand`=品牌层记录（不作为地图点位）。
+  - `price_per_person` 必须是数值单元格（不带货币符号，币种写 `currency`）。
+  - `score_overall` 必须是数值单元格（统一 1 位小数）。
+  - `is_china` 仅允许小写字符串 `true` / `false`。
+- 数据变更后的执行顺序：
+  - 先运行 `npm run data:sync`（xlsx -> restaurants.json/dishes.json）
+  - 如需固化 MT 结果，再运行 `npm run data:export-translations`（输出 `translations.static.json`）
+- Google Places 回填时，必须遵守 `src/data/README.md` 中的规则（多语言店名写入、hours 合并格式、手动编辑保护策略）。
 
 图片路径规则：
 
 ```
-src/assets/photos/{city-folder}/{store-folder}/{菜名}.jpg
-中国城市：菜名为中文（如 红烧带鱼.jpg）
-非中国城市：菜名为本国语言（如 갈치조림.jpg）
+src/assets/photos/{city-folder}/{store_slug}/{dish-file}.jpg
+`store_slug` 规则：[a-z0-9-]+，至少在 `(city_en, store_slug)` 维度唯一
+`dish-file` 可使用任一语言菜名；代码匹配顺序：dish_name_local → dish_name_en → dish_name_zh
 ```
+
+补充兜底规则（板块②）：
+
+- basename 未匹配到 `dishes.json` 任一菜名时，图片仍需展示在其所属店铺下（不丢图）。
+- basename 为中文数字序号（`一二三四五六七八九十`）时，仅显示图片，不显示名称文本。
+- basename 非中文数字序号时，显示 basename（不含扩展名）作为图片名称。
 
 ---
 
@@ -91,7 +118,7 @@ src/assets/photos/{city-folder}/{store-folder}/{菜名}.jpg
 - Phase 5：板块②杂志详情
 - Phase 6：打磨与扩展
 
-**当前正在做：Phase 2（整页联调与验收）**
+**当前正在做：Phase 4（板块①地图，当前推进 Task 4.10）**
 
 ---
 
@@ -114,6 +141,7 @@ src/assets/photos/{city-folder}/{store-folder}/{菜名}.jpg
 | `prd.md`                | 产品需求文档，所有功能和设计细节的唯一标准               |
 | `docs/agent_rules.md`   | Agent 行为约束，自检流程，汇报格式                |
 | `docs/project_rules.md` | 本文件，项目背景和技术决策说明                     |
+| `docs/data-workflow.md` | 数据与翻译固定流程手册（xlsx->json、MT落盘、新增城市清单） |
 | `.env`                  | API Key 和 Access Token（不得上传 GitHub） |
 
 
