@@ -3,10 +3,18 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { boundaryGeoJsonForMapbox, lngLatForMapbox } from "../utils/coordTransform.js";
 import {
+  pickByDetailLocale,
+  pickByLocale,
+  useLanguage,
+} from "../context/LanguageContext.jsx";
+import {
   cityEnFromBookshelfSlug,
   getMappableRestaurantsByCity,
 } from "../utils/dataLoader.js";
 import { isChinaCitySlug } from "../utils/citySlugs.js";
+import placeholderMapUrl from "../assets/fallback-maps/placeholder-map.svg?url";
+import dalianStaticMapUrl from "../assets/fallback-maps/dalian-static-map.png?url";
+import jejuStaticMapUrl from "../assets/fallback-maps/jeju-static-map.png?url";
 
 const FALLBACK_CITY_SLUG = "shanghai";
 const MAPBOX_STYLE = "mapbox://styles/mapbox/light-v11";
@@ -21,6 +29,10 @@ const CITY_BOUNDARY_LABEL_SOURCE_ID = "ffj-city-boundary-label-source";
 const CITY_BOUNDARY_LABEL_LAYER_ID = "ffj-city-boundary-label";
 const RESTAURANT_POINTS_SOURCE_ID = "ffj-restaurant-points-source";
 const RESTAURANT_POINTS_LAYER_ID = "ffj-restaurant-points-layer";
+const FALLBACK_MAP_IMAGE_BY_CITY_SLUG = Object.freeze({
+  dalian: dalianStaticMapUrl,
+  jeju: jejuStaticMapUrl,
+});
 
 // PRD 1.6：Mapbox 初始化城市中心（WGS-84）与推荐缩放。
 const CITY_VIEW_BY_SLUG = Object.freeze({
@@ -889,15 +901,49 @@ export default function MapPanel({
   activeCuisine = "",
   onSelectStore,
   onInteractiveHoverChange,
+  onContinueWithoutMap,
 }) {
+  // #region agent log
+  fetch('http://127.0.0.1:7912/ingest/1d8177e6-7440-400c-b3ec-b5409296808e',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'79f6c0'},body:JSON.stringify({sessionId:'79f6c0',runId:'run1',hypothesisId:'H1',location:'src/components/MapPanel.jsx:component-entry',message:'MapPanel entered',data:{citySlug},timestamp:Date.now()})}).catch(()=>{});
+  // #endregion
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const [isMapReady, setIsMapReady] = useState(false);
   const [mapInitError, setMapInitError] = useState("");
   const [restaurantTagLayouts, setRestaurantTagLayouts] = useState([]);
+  const [mapBootVersion, setMapBootVersion] = useState(0);
+  const { detailLocale, localeConfig } = useLanguage();
 
   const cityView = useMemo(() => getCityView(citySlug), [citySlug]);
   const missingToken = MAPBOX_TOKEN == null || String(MAPBOX_TOKEN).trim() === "";
+  const fallbackImageUrl = FALLBACK_MAP_IMAGE_BY_CITY_SLUG[citySlug] ?? placeholderMapUrl;
+  const pickUiText = (zhText, enText, nativeText = "") =>
+    localeConfig.isChina
+      ? pickByLocale(detailLocale, zhText, enText)
+      : pickByDetailLocale(
+          detailLocale,
+          zhText,
+          enText,
+          nativeText,
+          localeConfig.nativeIso639_1,
+        );
+  const fallbackTitle = pickUiText(
+    "嘿，看起来你当前网络有点不稳定！",
+    "Looks like your network is unstable right now!",
+    "",
+  );
+  const fallbackBody = pickUiText(
+    "地图加载失败啦（请检查网络后刷新重试：切换wifi/热点、关闭或更换代理……）",
+    "Map failed to load. Please check your network and retry (switch Wi-Fi/hotspot, disable or change proxy, etc.).",
+    "",
+  );
+  const fallbackFootnote = pickUiText(
+    "但店铺列表和图文详情还可正常浏览哦~",
+    "You can still browse the store list and food details.",
+    "",
+  );
+  const retryLabel = pickUiText("重新加载地图", "Retry map", "");
+  const continueLabel = pickUiText("继续浏览店铺内容", "Continue without map", "");
 
   useEffect(() => {
     if (missingToken || mapRef.current || !mapContainerRef.current) {
@@ -932,7 +978,7 @@ export default function MapPanel({
       map.remove();
       mapRef.current = null;
     };
-  }, [cityView.center, cityView.zoom, missingToken]);
+  }, [cityView.center, cityView.zoom, missingToken, mapBootVersion]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -1193,14 +1239,43 @@ export default function MapPanel({
           </button>
         ))}
       </div>
-      {!isMapReady ? (
+      {!isMapReady && mapInitError === "" ? (
         <div className="ffj-map-loading">
           <p className="ffj-body-text">地图加载中...</p>
         </div>
       ) : null}
       {mapInitError !== "" ? (
         <div className="ffj-map-error" role="alert" aria-live="polite">
-          <p className="ffj-body-text">地图加载失败，请检查 Mapbox Token 或网络连接。</p>
+          <img className="ffj-map-error-image" src={fallbackImageUrl} alt="" aria-hidden="true" />
+          <div className="ffj-map-error-copy">
+            <p className="ffj-body-text">{fallbackTitle}</p>
+            <p className="ffj-map-error-message">{fallbackBody}</p>
+            <p className="ffj-map-error-message">{fallbackFootnote}</p>
+          </div>
+          <div className="ffj-map-error-actions">
+            <button
+              type="button"
+              className="ffj-map-error-btn is-primary"
+              onClick={() => {
+                setMapInitError("");
+                setIsMapReady(false);
+                if (mapRef.current) {
+                  mapRef.current.remove();
+                  mapRef.current = null;
+                }
+                setMapBootVersion((value) => value + 1);
+              }}
+            >
+              {retryLabel}
+            </button>
+            <button
+              type="button"
+              className="ffj-map-error-btn is-secondary"
+              onClick={() => onContinueWithoutMap?.()}
+            >
+              {continueLabel}
+            </button>
+          </div>
           <p className="ffj-map-error-detail">{mapInitError}</p>
         </div>
       ) : null}

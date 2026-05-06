@@ -135,6 +135,7 @@ npm run data:sync
 
 ```bash
 npm run data:sync
+npm run audit:photo-magic
 npm run build
 ```
 
@@ -158,8 +159,36 @@ npm run audit:boundary-offsets
 - 板块②图片存在但菜名没显示
   - 先检查图片 basename 是否命中 `dish_name_local -> dish_name_en -> dish_name_zh`
   - 若未命中：仍应展示图片；basename 为中文数字序号（`一二三四五六七八九十`）时只显示图片，否则应显示 basename（不含扩展名）作为图片名称
+- 板块②图片显示坏图标（但文件后缀是 `.jpg/.jpeg`）
+  - 高概率是“扩展名是 JPG，但真实编码是 HEIC/HEIF”
+  - 先运行 `npm run audit:photo-magic` 检查文件头
+  - 若命中异常，先把文件转换为真实 JPEG 再放入 `src/assets/photos/`
 - 非中国城市语言按钮不对
   - 检查 `src/data/city_meta.json` 的 `detail_locale_mode` 与 `native_*` 字段
 - 翻译落盘没有变化
   - 检查 `.env` key 与 `VITE_ENABLE_MT=true` 是否开启（仅导出时临时开启）
+
+---
+
+## 8) 图片导入前格式自检（强烈建议）
+
+触发：新增任意城市图片，或批量替换 `src/assets/photos/` 素材。
+
+### 执行
+
+```bash
+npm run audit:photo-magic
+```
+
+### 通过标准
+
+- 扫描结果为 0 条异常。
+- `.jpg/.jpeg` 文件头应为 `FF D8 FF`（真实 JPEG）。
+- `.png` 文件头应为 `89 50 4E 47`。
+- `.webp` 文件头应满足 `RIFF....WEBP`。
+
+### 失败处理
+
+- 若报“HEIC disguised as JPG/JPEG”，说明文件扩展名与真实编码不一致。
+- 先在本地把该图片转换为真实 JPEG（不要只改文件后缀），再重新运行自检直到通过。
 

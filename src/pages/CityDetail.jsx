@@ -15,42 +15,177 @@ import clickCursorStickerUrl from "../assets/stickers/page/click.svg?url";
 import paperAirplaneCursorStickerUrl from "../assets/stickers/page/paper-airplane.svg?url";
 import spoonAndForkStickerUrl from "../assets/stickers/page/spoon-and-fork.svg?url";
 import locationStickerUrl from "../assets/stickers/page/location.svg?url";
-import cuisineAllStickerUrl from "../assets/stickers/cuisine/all.svg?url";
-import cuisineBakeryStickerUrl from "../assets/stickers/cuisine/bakery.svg?url";
-import cuisineChineseStickerUrl from "../assets/stickers/cuisine/chinese.svg?url";
-import cuisineDessertStickerUrl from "../assets/stickers/cuisine/dessert.svg?url";
-import cuisineDrinksStickerUrl from "../assets/stickers/cuisine/drinks.svg?url";
-import cuisineJapaneseStickerUrl from "../assets/stickers/cuisine/japanese.svg?url";
-import cuisineKoreanStickerUrl from "../assets/stickers/cuisine/korean.svg?url";
-import cuisineOtherStickerUrl from "../assets/stickers/cuisine/other.svg?url";
-import cuisineSoutheastAsianStickerUrl from "../assets/stickers/cuisine/southeast-asian.svg?url";
-import cuisineSteakStickerUrl from "../assets/stickers/cuisine/steak.svg?url";
 import {
   cityEnFromBookshelfSlug,
-  getDishNoteText,
-  getDishPriceText,
-  getDishesByCity,
   getRestaurantsByCity,
   getMappableRestaurantsByCity,
 } from "../utils/dataLoader.js";
+import DishInfo from "../components/DishInfo.jsx";
 import NotePanel from "../components/NotePanel.jsx";
+import PhotoPanel from "../components/PhotoPanel.jsx";
+
+const CUISINE_STICKER_MODULES = import.meta.glob("../assets/stickers/cuisine/*.svg", {
+  eager: true,
+  import: "default",
+});
+
+const CUISINE_STICKER_BY_SLUG = Object.fromEntries(
+  Object.entries(CUISINE_STICKER_MODULES).map(([path, href]) => {
+    const matched = path.match(/\/([^/]+)\.svg$/);
+    return [matched?.[1] ?? path, href];
+  }),
+);
 
 const CUISINE_STICKER_RULES = [
-  { test: /(中餐|中式|川菜|粤菜|湘菜|鲁菜|东北|火锅|chinese|china)/i, sticker: cuisineChineseStickerUrl },
-  { test: /(日料|寿司|烧鸟|拉面|japanese|japan)/i, sticker: cuisineJapaneseStickerUrl },
-  { test: /(韩餐|韩式|korean|korea)/i, sticker: cuisineKoreanStickerUrl },
-  { test: /(东南亚|泰餐|越南|马来|印尼|southeast|thai|vietnam|malay)/i, sticker: cuisineSoutheastAsianStickerUrl },
-  { test: /(饮品|咖啡|奶茶|酒吧|鸡尾酒|茶饮|drinks|drink|coffee|tea|bar)/i, sticker: cuisineDrinksStickerUrl },
-  { test: /(甜品|冰淇淋|蛋糕|dessert|gelato|ice cream)/i, sticker: cuisineDessertStickerUrl },
-  { test: /(烘焙|面包|吐司|披萨|bakery|bread|toast|pastry)/i, sticker: cuisineBakeryStickerUrl },
-  { test: /(牛排|steak)/i, sticker: cuisineSteakStickerUrl },
+  {
+    test: /(中餐|中式|川菜|粤菜|湘菜|鲁菜|中国菜|chinese|china)/i,
+    slugs: ["northeastern-chinese-cuisine", "chinese-pastry", "all"],
+  },
+  { test: /(东北|northeast)/i, slugs: ["northeastern-chinese-cuisine", "all"] },
+  { test: /(烧烤|烤肉|barbecue|bbq)/i, slugs: ["barbeque", "all"] },
+  { test: /(海鲜|seafood)/i, slugs: ["seafood", "all"] },
+  { test: /(日料|寿司|烧鸟|拉面|japanese|japan)/i, slugs: ["japanese", "all"] },
+  { test: /(韩餐|韩式|korean|korea)/i, slugs: ["korean", "all"] },
+  { test: /(糕点|中式糕点|chinese pastry)/i, slugs: ["chinese-pastry", "all"] },
+  {
+    test: /(东南亚|泰餐|越南|马来|印尼|southeast|thai|vietnam|malay)/i,
+    slugs: ["southeast-asian", "all"],
+  },
+  { test: /(咖啡|coffee|cafe)/i, slugs: ["coffee", "drinks", "all"] },
+  { test: /(奶茶|milk tea|milktea)/i, slugs: ["milk-tea", "drinks", "all"] },
+  {
+    test: /(饮品|酒吧|鸡尾酒|茶饮|drinks|drink|tea|bar)/i,
+    slugs: ["drinks", "milk-tea", "all"],
+  },
+  { test: /(甜品|冰淇淋|蛋糕|dessert|gelato|ice cream)/i, slugs: ["dessert", "all"] },
+  { test: /(烘焙|面包|吐司|披萨|bakery|bread|toast|pastry)/i, slugs: ["bakery", "chinese-pastry", "all"] },
+  { test: /(牛排|steak)/i, slugs: ["steak", "all"] },
+  { test: /(快餐|fast food|fast-food|fastfood)/i, slugs: ["fast-food", "all"] },
+  { test: /(小吃|snack|street food|street-food)/i, slugs: ["street-food", "snacks", "all"] },
+  { test: /(素食|蔬食|vegetarian|vegan|vagetarian)/i, slugs: ["vagetarian", "all"] },
 ];
+
+const CUISINE_LABEL_BY_ZH = Object.freeze({
+  日料: { en: "japanese cuisine", ko: "일식" },
+  糕点: { zh: "中式糕点", en: "chinese pastry", ko: "중식 페이스트리" },
+  海鲜: { en: "Seafood", ko: "해산물" },
+  奶茶: { en: "Milk tea", ko: "밀크티" },
+  甜品: { en: "Dessert", ko: "디저트" },
+  东北菜: { en: "northeastern cuisine", ko: "중국 동북 요리" },
+  咖啡: { en: "Coffee", ko: "커피" },
+  小吃: { en: "snack", ko: "간식" },
+  韩餐: { en: "korean cuisine", ko: "한식" },
+  快餐: { en: "Fast food", ko: "패스트푸드" },
+  烤肉: { en: "BBQ", ko: "바비큐" },
+  零食: { en: "snack", ko: "간식" },
+});
+
+const ZH_PINYIN_COLLATOR = new Intl.Collator("zh-Hans-CN-u-co-pinyin", {
+  usage: "sort",
+  sensitivity: "base",
+  numeric: true,
+});
+
+function normalizeSortText(value) {
+  return String(value ?? "")
+    .trim()
+    .replace(/^[\s\p{P}\p{S}]+/gu, "");
+}
+
+function isNumericLeading(text) {
+  return /^\d/.test(text);
+}
+
+function comparePinyinWithNumericRule(leftText, rightText) {
+  const leftNumeric = isNumericLeading(leftText);
+  const rightNumeric = isNumericLeading(rightText);
+  if (leftNumeric !== rightNumeric) {
+    return leftNumeric ? 1 : -1;
+  }
+  return ZH_PINYIN_COLLATOR.compare(leftText, rightText);
+}
 
 function pickCuisineSticker(cuisine) {
   const text = String(cuisine ?? "").trim();
-  if (text === "") return cuisineOtherStickerUrl;
-  const matched = CUISINE_STICKER_RULES.find((rule) => rule.test.test(text));
-  return matched?.sticker ?? cuisineOtherStickerUrl;
+  if (text === "") {
+    return CUISINE_STICKER_BY_SLUG["all"] ?? "";
+  }
+
+  const matchedRule = CUISINE_STICKER_RULES.find((rule) => rule.test.test(text));
+  if (matchedRule) {
+    const matchedSlug = matchedRule.slugs.find((slug) => CUISINE_STICKER_BY_SLUG[slug]);
+    if (matchedSlug) return CUISINE_STICKER_BY_SLUG[matchedSlug];
+  }
+  return CUISINE_STICKER_BY_SLUG["snacks"] ?? CUISINE_STICKER_BY_SLUG["all"] ?? "";
+}
+
+function splitCuisineLabelLines(label, detailLocale) {
+  const text = String(label ?? "").trim();
+  if (text === "") return [];
+  const script = detectLabelScript(text, detailLocale);
+  const maxUnits = MAX_INLINE_UNITS_BY_SCRIPT[script];
+  if (measureLabelUnits(text, script) <= maxUnits) return [text];
+  return splitLabelByUnits(text, script, maxUnits);
+}
+
+const MAX_INLINE_UNITS_BY_SCRIPT = Object.freeze({
+  zh: 4,
+  en: 12,
+  ja: 4.5,
+  ko: 5.5,
+  th: 6.2,
+});
+
+function detectLabelScript(text, detailLocale) {
+  if (/[\u0E00-\u0E7F]/u.test(text)) return "th";
+  if (/[\u1100-\u11FF\u3130-\u318F\uAC00-\uD7AF]/u.test(text)) return "ko";
+  if (/[\u3040-\u30FF\u31F0-\u31FF\uFF66-\uFF9D]/u.test(text)) return "ja";
+  if (/[A-Za-z]/u.test(text)) return "en";
+  if (detailLocale === "en") return "en";
+  return "zh";
+}
+
+function measureLabelUnits(text, script) {
+  if (script === "en") {
+    let sum = 0;
+    for (const char of text) {
+      if (char === " ") {
+        sum += 0.35;
+      } else {
+        sum += 1;
+      }
+    }
+    return sum;
+  }
+  return Array.from(text).length;
+}
+
+function splitLabelByUnits(text, script, maxUnits) {
+  if (script === "en") {
+    const words = text.split(/\s+/).filter(Boolean);
+    if (words.length <= 1) return [text];
+    const lines = [];
+    let current = "";
+    words.forEach((word) => {
+      const candidate = current === "" ? word : `${current} ${word}`;
+      if (measureLabelUnits(candidate, script) <= maxUnits || current === "") {
+        current = candidate;
+      } else {
+        lines.push(current);
+        current = word;
+      }
+    });
+    if (current !== "") lines.push(current);
+    return lines;
+  }
+
+  const hardLimit = Math.max(1, Math.floor(maxUnits));
+  const chars = Array.from(text);
+  const lines = [];
+  for (let start = 0; start < chars.length; start += hardLimit) {
+    lines.push(chars.slice(start, start + hardLimit).join(""));
+  }
+  return lines;
 }
 
 export default function CityDetail() {
@@ -66,7 +201,12 @@ export default function CityDetail() {
   } = useLanguage();
   const [activeSection, setActiveSection] = useState("map");
   const [isSectionMenuOpen, setSectionMenuOpen] = useState(false);
+  const [isCuisineMenuOpen, setCuisineMenuOpen] = useState(false);
+  const [isCuisineMenuScrollable, setCuisineMenuScrollable] = useState(false);
+  const [cuisineMenuMaxHeight, setCuisineMenuMaxHeight] = useState(null);
+  const [isCuisineSortHintOpen, setCuisineSortHintOpen] = useState(false);
   const [selectedStore, setSelectedStore] = useState(null);
+  const storeListRef = useRef(null);
   const [activeCuisine, setActiveCuisine] = useState("");
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const [mapCursorUi, setMapCursorUi] = useState({
@@ -74,6 +214,10 @@ export default function CityDetail() {
     isInteractive: false,
   });
   const sectionMenuRef = useRef(null);
+  const cuisineMenuRef = useRef(null);
+  const cuisineStorePanelRef = useRef(null);
+  const cuisineDropdownMenuRef = useRef(null);
+  const cuisineSortHintRef = useRef(null);
   const mapCursorRef = useRef(null);
   const cursorPosRef = useRef({ x: 0, y: 0 });
   const cursorRafRef = useRef(0);
@@ -99,12 +243,40 @@ export default function CityDetail() {
     nativeIso === "ko"
       ? "요리 왼쪽 페이지 자리(요리 필터)"
       : "Cuisine left-page placeholder (cuisine filters)";
-  const nativeCuisineRightPlaceholderText =
-    nativeIso === "ko"
-      ? "요리 오른쪽 페이지 자리(요리 상세)"
-      : "Cuisine right-page placeholder (dish details)";
   const nativeNoteGuideText =
     nativeIso === "ko" ? "지도에서 가게를 하나 눌러보세요" : "Tap a store on the map to begin";
+  const nativeCuisineLabelText = nativeIso === "ko" ? "요리 유형" : "Cuisine";
+  const nativeScoreOverallText = nativeIso === "ko" ? "종합 평점" : "Overall score";
+  const nativePricePerPersonText = nativeIso === "ko" ? "1인 평균 지출" : "Average spend";
+  const nativeBusinessHoursText = nativeIso === "ko" ? "영업시간" : "Business hours";
+  const nativePhoneText = nativeIso === "ko" ? "전화번호" : "Phone";
+  const nativeRadarTitleText = nativeIso === "ko" ? "평점 레이더 차트" : "Score radar";
+  const nativeRadarNoDataText = nativeIso === "ko" ? "레이더 차트 데이터가 없습니다" : "No radar data yet";
+  const nativeRadarTasteText = nativeIso === "ko" ? "맛" : "Taste";
+  const nativeRadarEnvironmentText = nativeIso === "ko" ? "분위기" : "Environment";
+  const nativeRadarQueueText = nativeIso === "ko" ? "대기 친화도" : "Queue friendliness";
+  const nativeRadarServiceText = nativeIso === "ko" ? "서비스" : "Service";
+  const nativeRadarPackagingText = nativeIso === "ko" ? "포장" : "Packaging";
+  const nativeRadarDeliveryText = nativeIso === "ko" ? "배달" : "Delivery";
+  const nativeRadarPersonalText = nativeIso === "ko" ? "개인 추천도" : "Personal recommendation";
+  const nativeMapOpenText = nativeIso === "ko" ? "새 탭에서 지도 열기" : "Open map in new tab";
+  const nativeMapUnavailableText = nativeIso === "ko" ? "지도 링크가 없습니다" : "Map link unavailable";
+  const nativeAllText = nativeIso === "ko" ? "전체" : "All";
+  const nativeCuisineFilterText = nativeIso === "ko" ? "요리 필터" : "Cuisine filter";
+  const nativeStorePlaylistText = nativeIso === "ko" ? "가게 플레이리스트" : "Store playlist";
+  const nativeNoStoreText = nativeIso === "ko" ? "더 찾아볼게요!" : "More to explore!";
+  const nativeNoPhotoText = nativeIso === "ko" ? "등록된 사진이 없습니다" : "No photos yet";
+  const nativePhotoRegionText = nativeIso === "ko" ? "사진 영역" : "Photo area";
+  const nativePhotoPaginationText = nativeIso === "ko" ? "사진 페이지네이션" : "Photo pagination";
+  const nativePrevPhotoText = nativeIso === "ko" ? "이전 사진" : "Previous photo";
+  const nativeNextPhotoText = nativeIso === "ko" ? "다음 사진" : "Next photo";
+  const nativeGotoPhotoText = nativeIso === "ko" ? "사진으로 이동" : "Go to photo";
+  const nativeExpandPhotoText = nativeIso === "ko" ? "클릭하여 확대" : "Click to enlarge";
+  const nativeCloseLightboxText =
+    nativeIso === "ko" ? "확대 보기 닫기 (클릭 또는 Esc)" : "Close enlarged view (click or Esc)";
+  const nativeDishInfoRegionText = nativeIso === "ko" ? "요리 정보" : "Dish details";
+  const nativeTasteStarsText = nativeIso === "ko" ? "맛 별점" : "Taste";
+  const nativeCuisineSortInfoText = nativeIso === "ko" ? "요리 정렬 규칙 안내" : "Cuisine sort rules";
   const pickUiText = (zhText, enText, nativeText = "") =>
     localeConfig.isChina
       ? pickByLocale(detailLocale, zhText, enText)
@@ -115,6 +287,16 @@ export default function CityDetail() {
           nativeText,
           localeConfig.nativeIso639_1,
         );
+  const pickCuisineLabel = (cuisineText) => {
+    const zh = String(cuisineText ?? "").trim();
+    if (zh === "") return "";
+    const mapped = CUISINE_LABEL_BY_ZH[zh];
+    const zhLabel = mapped?.zh ?? zh;
+    const en = mapped?.en ?? "";
+    const native = nativeIso === "ko" ? mapped?.ko ?? "" : "";
+    const label = pickUiText(zhLabel, en, native);
+    return detailLocale === "en" ? label.toLowerCase() : label;
+  };
 
   const sectionOptions = useMemo(
     () => [
@@ -141,10 +323,6 @@ export default function CityDetail() {
   const activeSectionLabel =
     sectionOptions.find((option) => option.id === activeSection)?.label ??
     sectionOptions[0].label;
-  const cityDishes = useMemo(
-    () => getDishesByCity(cityEnFromBookshelfSlug(slug)).slice(0, 8),
-    [slug]
-  );
   const cuisineFilters = useMemo(() => {
     const cityEn = cityEnFromBookshelfSlug(slug);
     if (!cityEn) return [];
@@ -153,53 +331,108 @@ export default function CityDetail() {
       const cuisine = String(row?.cuisine ?? "").trim();
       if (cuisine !== "") unique.add(cuisine);
     });
-    return Array.from(unique);
+
+    return Array.from(unique)
+      .map((cuisine, index) => ({
+        cuisine,
+        sortKey: normalizeSortText(cuisine),
+        index,
+      }))
+      .sort((left, right) => {
+        const byPinyin = comparePinyinWithNumericRule(left.sortKey, right.sortKey);
+        if (byPinyin !== 0) return byPinyin;
+        return left.index - right.index;
+      })
+      .map((item) => item.cuisine);
   }, [slug]);
   const cuisineStores = useMemo(() => {
     const cityEn = cityEnFromBookshelfSlug(slug);
     if (!cityEn) return [];
-    return getRestaurantsByCity(cityEn).filter((row) => {
-      if (String(row?.record_scope ?? "").trim().toLowerCase() === "brand") {
-        return false;
-      }
+    const filtered = getRestaurantsByCity(cityEn).filter((row) => {
       if (activeCuisine === "") return true;
       return String(row?.cuisine ?? "").trim() === activeCuisine;
     });
+
+    return filtered
+      .map((row, index) => {
+        const zhKey = normalizeSortText(row?.name_zh);
+        const enKey = normalizeSortText(row?.name_en);
+        const localKey = normalizeSortText(row?.name_local);
+        const primaryKey = zhKey || enKey || localKey;
+        return { row, index, primaryKey, enKey, localKey };
+      })
+      .sort((left, right) => {
+        const leftHasKey = left.primaryKey !== "";
+        const rightHasKey = right.primaryKey !== "";
+        if (leftHasKey !== rightHasKey) return leftHasKey ? -1 : 1;
+
+        const byPrimary = comparePinyinWithNumericRule(left.primaryKey, right.primaryKey);
+        if (byPrimary !== 0) return byPrimary;
+
+        const byEn = comparePinyinWithNumericRule(left.enKey, right.enKey);
+        if (byEn !== 0) return byEn;
+
+        const byLocal = comparePinyinWithNumericRule(left.localKey, right.localKey);
+        if (byLocal !== 0) return byLocal;
+
+        return left.index - right.index;
+      })
+      .map((entry) => entry.row);
   }, [slug, activeCuisine]);
   const cuisineFilterItems = useMemo(() => {
     const cityEn = cityEnFromBookshelfSlug(slug);
     if (!cityEn) return [];
     const counters = new Map();
-    const branchStores = getRestaurantsByCity(cityEn).filter(
-      (row) => String(row?.record_scope ?? "").trim().toLowerCase() !== "brand",
-    );
-    branchStores.forEach((row) => {
+    const allCuisineStores = getRestaurantsByCity(cityEn);
+    allCuisineStores.forEach((row) => {
       const cuisine = String(row?.cuisine ?? "").trim();
       if (cuisine === "") return;
       counters.set(cuisine, (counters.get(cuisine) ?? 0) + 1);
     });
 
-    const dynamicItems = Array.from(counters.entries()).map(([cuisine, count]) => ({
-      key: cuisine,
-      cuisine,
-      count,
-      stickerUrl: pickCuisineSticker(cuisine),
-    }));
+    const dynamicItems = Array.from(counters.entries())
+      .map(([cuisine, count], index) => ({
+        key: cuisine,
+        cuisine,
+        count,
+        stickerUrl: pickCuisineSticker(cuisine),
+        sortKey: normalizeSortText(cuisine),
+        index,
+      }))
+      .sort((left, right) => {
+        if (right.count !== left.count) return right.count - left.count;
 
-    dynamicItems.sort((left, right) =>
-      left.cuisine.localeCompare(right.cuisine, "zh-Hans-CN"),
-    );
+        const byPinyin = comparePinyinWithNumericRule(left.sortKey, right.sortKey);
+        if (byPinyin !== 0) return byPinyin;
+
+        return left.index - right.index;
+      })
+      .map(({ sortKey: _sortKey, index: _index, ...item }) => item);
 
     return [
       {
         key: "__all__",
         cuisine: "",
-        count: branchStores.length,
-        stickerUrl: cuisineAllStickerUrl,
+        count: allCuisineStores.length,
+        stickerUrl: CUISINE_STICKER_BY_SLUG["all"] ?? "",
       },
       ...dynamicItems,
     ];
   }, [slug]);
+  const activeCuisineLabel = useMemo(() => {
+    if (activeCuisine === "") {
+      return pickUiText("全部", "All", nativeAllText);
+    }
+    return pickCuisineLabel(activeCuisine);
+  }, [activeCuisine, detailLocale, localeConfig.isChina, nativeAllText]);
+  const isCuisineFilterNoMatch = activeCuisine !== "" && cuisineStores.length === 0;
+  const selectedStoreAddress = String(selectedStore?.address ?? "").trim();
+
+  const getStoreNameLines = useCallback((store) => {
+    return [store?.name_zh, store?.name_en, store?.name_local]
+      .map((value) => String(value ?? "").trim())
+      .filter((value) => value !== "");
+  }, []);
 
   useEffect(() => {
     if (!valid) return;
@@ -243,9 +476,33 @@ export default function CityDetail() {
   }, [isSectionMenuOpen]);
 
   useEffect(() => {
+    if (!isCuisineMenuOpen) return;
+
+    const onPointerDown = (event) => {
+      if (!cuisineMenuRef.current?.contains(event.target)) {
+        setCuisineMenuOpen(false);
+      }
+    };
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setCuisineMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isCuisineMenuOpen]);
+
+  useEffect(() => {
     setSelectedStore(null);
     setActiveCuisine("");
     setActivePhotoIndex(0);
+    setCuisineMenuOpen(false);
+    storeItemRefs.current = [];
   }, [slug]);
 
   useEffect(() => {
@@ -267,6 +524,10 @@ export default function CityDetail() {
   }, [selectedStore]);
 
   useEffect(() => {
+    storeItemRefs.current = [];
+  }, [cuisineStores.length]);
+
+  useEffect(() => {
     if (!selectedStore) return;
     if (activeCuisine === "") return;
     const selectedStoreCuisine = String(selectedStore?.cuisine ?? "").trim();
@@ -274,6 +535,109 @@ export default function CityDetail() {
       setSelectedStore(null);
     }
   }, [activeCuisine, selectedStore]);
+
+  useEffect(() => {
+    setCuisineMenuOpen(false);
+  }, [activeCuisine, activeSection]);
+
+  // 店铺列表键盘导航：上下键切换店铺
+  const storeItemRefs = useRef([]);
+  useEffect(() => {
+    if (activeSection !== "cuisine") return undefined;
+    if (cuisineStores.length === 0) return undefined;
+
+    const onKeyDown = (event) => {
+      if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
+
+      // 如果当前焦点不在店铺列表区域内，不处理
+      const listNode = storeListRef.current;
+      if (!listNode) return;
+
+      const activeElement = document.activeElement;
+      const isFocusInList = listNode.contains(activeElement);
+      if (!isFocusInList) return;
+
+      event.preventDefault();
+
+      const currentIndex = selectedStore ? cuisineStores.findIndex((s) => s === selectedStore) : -1;
+      let nextIndex;
+
+      if (event.key === "ArrowUp") {
+        nextIndex = currentIndex <= 0 ? cuisineStores.length - 1 : currentIndex - 1;
+      } else {
+        nextIndex = currentIndex >= cuisineStores.length - 1 ? 0 : currentIndex + 1;
+      }
+
+      const nextStore = cuisineStores[nextIndex];
+      setSelectedStore(nextStore);
+
+      // 焦点跟随：切换后将焦点设置到新选中的店铺项
+      window.requestAnimationFrame(() => {
+        const nextItemEl = storeItemRefs.current[nextIndex];
+        if (nextItemEl && typeof nextItemEl.focus === "function") {
+          nextItemEl.focus();
+        }
+      });
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [activeSection, cuisineStores, selectedStore]);
+
+  useEffect(() => {
+    if (!isCuisineSortHintOpen) return;
+
+    const onPointerDown = (event) => {
+      if (!cuisineSortHintRef.current?.contains(event.target)) {
+        setCuisineSortHintOpen(false);
+      }
+    };
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setCuisineSortHintOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isCuisineSortHintOpen]);
+
+  useEffect(() => {
+    if (!isCuisineMenuOpen) {
+      setCuisineMenuScrollable(false);
+      setCuisineMenuMaxHeight(null);
+      return;
+    }
+
+    const menuNode = cuisineDropdownMenuRef.current;
+    const panelNode = cuisineStorePanelRef.current;
+    if (!menuNode || !panelNode) return;
+
+    const updateCuisineMenuLayout = () => {
+      const panelRect = panelNode.getBoundingClientRect();
+      const menuRect = menuNode.getBoundingClientRect();
+      const availableHeight = Math.floor(panelRect.bottom - menuRect.top - 6);
+      const nextMaxHeight = Math.max(0, availableHeight);
+      setCuisineMenuMaxHeight(nextMaxHeight);
+
+      const hasOverflow = menuNode.scrollHeight > menuNode.clientHeight + 1;
+      setCuisineMenuScrollable(hasOverflow);
+    };
+
+    updateCuisineMenuLayout();
+    const frameId = requestAnimationFrame(updateCuisineMenuLayout);
+    window.addEventListener("resize", updateCuisineMenuLayout);
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.removeEventListener("resize", updateCuisineMenuLayout);
+    };
+  }, [isCuisineMenuOpen, cuisineFilterItems]);
 
   useEffect(() => {
     return () => {
@@ -506,6 +870,7 @@ export default function CityDetail() {
               activeCuisine={activeCuisine}
               onSelectStore={setSelectedStore}
               onInteractiveHoverChange={handleMapInteractiveHoverChange}
+              onContinueWithoutMap={() => setActiveSection("cuisine")}
             />
           </article>
 
@@ -524,22 +889,22 @@ export default function CityDetail() {
               selectedStore={selectedStore}
               onInteractiveHoverChange={handleMapInteractiveHoverChange}
               labels={{
-                cuisine: pickUiText("菜系类型", "Cuisine"),
-                scoreOverall: pickUiText("综合评分", "Overall score"),
-                pricePerPerson: pickUiText("人均消费", "Average spend"),
-                hours: pickUiText("营业时间", "Business hours"),
-                phone: pickUiText("联系电话", "Phone"),
-                radar: pickUiText("评分雷达图", "Score radar"),
-                radarNoData: pickUiText("暂无雷达图数据", "No radar data yet"),
-                radarTaste: pickUiText("口味", "Taste"),
-                radarEnvironment: pickUiText("环境", "Environment"),
-                radarQueue: pickUiText("排队友好度", "Queue friendliness"),
-                radarService: pickUiText("服务", "Service"),
-                radarPackaging: pickUiText("包装", "Packaging"),
-                radarDelivery: pickUiText("配送", "Delivery"),
-                radarPersonal: pickUiText("个人推荐值", "Personal recommendation"),
-                mapOpen: pickUiText("新标签页打开地图", "Open map in new tab"),
-                mapUnavailable: pickUiText("暂无地图链接", "Map link unavailable"),
+                cuisine: pickUiText("菜系类型", "Cuisine", nativeCuisineLabelText),
+                scoreOverall: pickUiText("综合评分", "Overall score", nativeScoreOverallText),
+                pricePerPerson: pickUiText("人均消费", "Average spend", nativePricePerPersonText),
+                hours: pickUiText("营业时间", "Business hours", nativeBusinessHoursText),
+                phone: pickUiText("联系电话", "Phone", nativePhoneText),
+                radar: pickUiText("评分雷达图", "Score radar", nativeRadarTitleText),
+                radarNoData: pickUiText("暂无雷达图数据", "No radar data yet", nativeRadarNoDataText),
+                radarTaste: pickUiText("口味", "Taste", nativeRadarTasteText),
+                radarEnvironment: pickUiText("环境", "Environment", nativeRadarEnvironmentText),
+                radarQueue: pickUiText("排队友好度", "Queue friendliness", nativeRadarQueueText),
+                radarService: pickUiText("服务", "Service", nativeRadarServiceText),
+                radarPackaging: pickUiText("包装", "Packaging", nativeRadarPackagingText),
+                radarDelivery: pickUiText("配送", "Delivery", nativeRadarDeliveryText),
+                radarPersonal: pickUiText("个人推荐值", "Personal recommendation", nativeRadarPersonalText),
+                mapOpen: pickUiText("新标签页打开地图", "Open map in new tab", nativeMapOpenText),
+                mapUnavailable: pickUiText("暂无地图链接", "Map link unavailable", nativeMapUnavailableText),
               }}
             />
           </article>
@@ -551,11 +916,13 @@ export default function CityDetail() {
             <div className={`ffj-cuisine-filter-stack ${activeCuisine !== "" ? "is-filtering" : ""}`}>
               {cuisineFilters.map((cuisine) => {
                 const isActive = activeCuisine === cuisine;
+                const cuisineLabel = pickCuisineLabel(cuisine);
+                const scriptClass = `is-script-${detectLabelScript(cuisineLabel, detailLocale)}`;
                 return (
                   <button
                     key={cuisine}
                     type="button"
-                    className={`ffj-cuisine-filter-btn ${isActive ? "is-active" : ""}`}
+                    className={`ffj-cuisine-filter-btn ${scriptClass} ${isActive ? "is-active" : ""}`}
                     onClick={() => {
                       setActiveCuisine((current) => (current === cuisine ? "" : cuisine));
                     }}
@@ -563,7 +930,18 @@ export default function CityDetail() {
                     onMouseLeave={() => handleMapInteractiveHoverChange(false)}
                     aria-pressed={isActive}
                   >
-                    {cuisine}
+                    <span className="ffj-cuisine-filter-btn-text">
+                      {splitCuisineLabelLines(cuisineLabel, detailLocale).map((line, lineIndex) => (
+                        <span
+                          key={`${cuisine}-${line}-${lineIndex}`}
+                          className={`ffj-cuisine-filter-btn-line ${
+                            lineIndex === 0 ? "is-first" : "is-following"
+                          }`}
+                        >
+                          {line}
+                        </span>
+                      ))}
+                    </span>
                   </button>
                 );
               })}
@@ -596,46 +974,196 @@ export default function CityDetail() {
             className="ffj-city-book-page ffj-city-book-page--left"
             aria-label={pickUiText("左页占位", "Left page placeholder", nativeLeftPageText)}
           >
-            <div
-              className={`ffj-cuisine-filter-stack ffj-cuisine-filter-stack--cuisine-page ${
-                activeCuisine !== "" ? "is-filtering" : ""
-              }`}
+            <section
+              ref={cuisineStorePanelRef}
+              className="ffj-cuisine-store-panel"
+              aria-label={pickUiText("菜系筛选与店铺列表", "Cuisine filter and store list", nativeStorePlaylistText)}
+              tabIndex={-1}
             >
-              {cuisineFilterItems.map((item) => {
-                const isAll = item.cuisine === "";
-                const isActive = isAll ? activeCuisine === "" : activeCuisine === item.cuisine;
-                const label = isAll ? pickUiText("全部", "All") : item.cuisine;
-                return (
+              <div className="ffj-cuisine-dropdown" ref={cuisineMenuRef}>
+                <div className="ffj-cuisine-dropdown-control-row">
                   <button
-                    key={item.key}
                     type="button"
-                    className={`ffj-cuisine-filter-btn ffj-cuisine-filter-btn--with-meta ${
-                      isActive ? "is-active" : ""
-                    }`}
-                    onClick={() => {
-                      if (isAll) {
-                        setActiveCuisine("");
-                        return;
-                      }
-                      setActiveCuisine((current) => (current === item.cuisine ? "" : item.cuisine));
-                    }}
-                    aria-pressed={isActive}
+                    className={`ffj-cuisine-dropdown-trigger ${isCuisineMenuOpen ? "is-open" : ""}`}
+                    onClick={() => setCuisineMenuOpen((open) => !open)}
+                    aria-haspopup="listbox"
+                    aria-expanded={isCuisineMenuOpen}
+                    aria-label={pickUiText("菜系筛选", "Cuisine filter", nativeCuisineFilterText)}
                   >
-                    <span className="ffj-cuisine-filter-btn-main">
-                      <img
-                        className="ffj-cuisine-filter-sticker"
-                        src={item.stickerUrl}
-                        alt=""
-                        aria-hidden="true"
-                        draggable={false}
-                      />
-                      <span className="ffj-cuisine-filter-label">{label}</span>
+                    <span className="ffj-cuisine-dropdown-trigger-label">{activeCuisineLabel}</span>
+                    <span className="ffj-cuisine-dropdown-trigger-arrow" aria-hidden="true">
+                      ▾
                     </span>
-                    <span className="ffj-cuisine-filter-count">{item.count}</span>
                   </button>
-                );
-              })}
-            </div>
+                  <div
+                    className={`ffj-cuisine-sort-hint-anchor ${isCuisineSortHintOpen ? "is-open" : ""}`}
+                    ref={cuisineSortHintRef}
+                    onMouseEnter={() => setCuisineSortHintOpen(true)}
+                    onMouseLeave={() => setCuisineSortHintOpen(false)}
+                  >
+                    <button
+                      type="button"
+                      className="ffj-cuisine-sort-hint-trigger"
+                      aria-label={pickUiText("菜系列表排序规则", "Cuisine sorting rules", nativeCuisineSortInfoText)}
+                      aria-expanded={isCuisineSortHintOpen}
+                      aria-controls="ffj-cuisine-sort-hint-panel"
+                      onClick={() => setCuisineSortHintOpen((open) => !open)}
+                      onFocus={() => setCuisineSortHintOpen(true)}
+                      onBlur={(event) => {
+                        if (!cuisineSortHintRef.current?.contains(event.relatedTarget)) {
+                          setCuisineSortHintOpen(false);
+                        }
+                      }}
+                    >
+                      i
+                    </button>
+                    <div
+                      id="ffj-cuisine-sort-hint-panel"
+                      className="ffj-cuisine-sort-hint-bubble"
+                      role="tooltip"
+                    >
+                      <p className="ffj-cuisine-sort-hint-title">
+                        {pickUiText("菜系排序规则：", "Cuisine sort rules:", "요리 정렬 규칙:")}
+                      </p>
+                      <p className="ffj-cuisine-sort-hint-line">
+                        {pickUiText(
+                          "先按店铺数降序",
+                          "Store count descending first",
+                          "매장 수 내림차순 우선"
+                        )}
+                      </p>
+                      <p className="ffj-cuisine-sort-hint-line">
+                        {pickUiText(
+                          "同店铺数按中文拼音升序",
+                          "Tie: Chinese pinyin ascending",
+                          "동률은 중국어 병음 오름차순"
+                        )}
+                      </p>
+                      <p className="ffj-cuisine-sort-hint-title ffj-cuisine-sort-hint-title--sub">
+                        {pickUiText("店铺排序规则：", "Store sort rules:", "매장 정렬 규칙:")}
+                      </p>
+                      <p className="ffj-cuisine-sort-hint-line">
+                        {pickUiText(
+                          "先按中文拼音升序",
+                          "First: Chinese pinyin ascending",
+                          "먼저 중국어 병음 오름차순"
+                        )}
+                      </p>
+                      <p className="ffj-cuisine-sort-hint-line">
+                        {pickUiText(
+                          "再按英文字母升序",
+                          "Then: English alphabet ascending",
+                          "다음은 영문 알파벳 오름차순"
+                        )}
+                      </p>
+                      <p className="ffj-cuisine-sort-hint-line">
+                        {pickUiText(
+                          "最后展示数字开头的店铺",
+                          "Finally: numeric-leading names last",
+                          "마지막으로 숫자로 시작하는 매장 표시"
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                {isCuisineMenuOpen ? (
+                  <div
+                    ref={cuisineDropdownMenuRef}
+                    className={`ffj-cuisine-dropdown-menu ${isCuisineMenuScrollable ? "is-scrollable" : ""}`}
+                    role="listbox"
+                    style={
+                      cuisineMenuMaxHeight == null
+                        ? undefined
+                        : { maxHeight: `${cuisineMenuMaxHeight}px` }
+                    }
+                  >
+                    {cuisineFilterItems.map((item) => {
+                      const isAll = item.cuisine === "";
+                      const isActive = isAll ? activeCuisine === "" : activeCuisine === item.cuisine;
+                      const label = isAll
+                        ? pickUiText("全部", "All", nativeAllText)
+                        : pickCuisineLabel(item.cuisine);
+                      return (
+                        <button
+                          key={item.key}
+                          type="button"
+                          role="option"
+                          aria-selected={isActive}
+                          className={`ffj-cuisine-dropdown-item ${isActive ? "is-active" : ""}`}
+                          onClick={() => {
+                            setActiveCuisine(isAll ? "" : item.cuisine);
+                            setCuisineMenuOpen(false);
+                          }}
+                        >
+                          <span className="ffj-cuisine-dropdown-item-main">
+                            <img
+                              className="ffj-cuisine-filter-sticker"
+                              src={item.stickerUrl}
+                              alt=""
+                              aria-hidden="true"
+                              draggable={false}
+                            />
+                            <span className="ffj-cuisine-dropdown-item-label">{label}</span>
+                          </span>
+                          <span className="ffj-cuisine-dropdown-item-count">{item.count}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : null}
+              </div>
+
+              <div ref={storeListRef} className="ffj-store-playlist" tabIndex={-1}>
+                {cuisineStores.length === 0 ? (
+                  <p className="ffj-store-playlist-empty">
+                    {pickUiText("等我探索 ：）", "More to explore :)", nativeNoStoreText)}
+                  </p>
+                ) : (
+                  <>
+                    {cuisineStores.map((store, index) => {
+                      const isActive = selectedStore === store;
+                      const lines = getStoreNameLines(store);
+                      return (
+                        <button
+                          key={`${store.city_en}-${store.store_slug ?? index}-${index}`}
+                          ref={(el) => { storeItemRefs.current[index] = el; }}
+                          type="button"
+                          className={`ffj-store-playlist-item ${isActive ? "is-active" : ""}`}
+                          onClick={() => setSelectedStore(store)}
+                          aria-pressed={isActive}
+                        >
+                          <span className="ffj-store-playlist-item-index">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          <span className="ffj-store-playlist-item-names">
+                            {lines.map((line, lineIndex) => (
+                              <span
+                                key={`${line}-${lineIndex}`}
+                                className={`ffj-store-playlist-item-name-line ${
+                                  lineIndex > 0 ? "is-secondary" : ""
+                                }`}
+                              >
+                                {line}
+                              </span>
+                            ))}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </>
+                )}
+                <div className="ffj-store-playlist-item ffj-store-playlist-item--tail" aria-hidden="true">
+                  <span className="ffj-store-playlist-item-index">
+                    {String(cuisineStores.length + 1).padStart(2, "0")}
+                  </span>
+                  <span className="ffj-store-playlist-item-names">
+                    <span className="ffj-store-playlist-item-name-line ffj-store-playlist-item-name-line--tail">
+                      AND MORE TO COME~
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </section>
           </article>
 
           <div className="ffj-city-book-gutter" aria-hidden="true" />
@@ -644,48 +1172,66 @@ export default function CityDetail() {
             className="ffj-city-book-page ffj-city-book-page--right"
             aria-label={pickUiText("右页占位", "Right page placeholder", nativeRightPageText)}
           >
-            {cityDishes.length === 0 ? (
-              <p className="ffj-body-text">
+            <header className="ffj-cuisine-address" aria-label={pickUiText("店铺地址", "Store address")}>
+              <img
+                className={`ffj-cuisine-address-icon ${selectedStoreAddress === "" ? "is-empty" : ""}`}
+                src={locationStickerUrl}
+                alt=""
+                aria-hidden="true"
+                draggable={false}
+              />
+              <p className="ffj-cuisine-address-text">
+                {selectedStoreAddress !== "" ? selectedStoreAddress : "\u00A0"}
+              </p>
+            </header>
+            {isCuisineFilterNoMatch ? (
+              <p className="ffj-cuisine-right-empty">
                 {pickUiText(
-                  "菜品右页占位（菜品详情区）",
-                  "Cuisine right-page placeholder (dish details)",
-                  nativeCuisineRightPlaceholderText
+                  "当前筛选下暂无匹配店铺",
+                  "No stores match this filter",
+                  nativeIso === "ko" ? "현재 필터에 맞는 매장이 없어요" : "No stores match this filter"
                 )}
               </p>
             ) : (
-              <div className="ffj-city-dish-preview-list">
-                {cityDishes.map((dish, index) => {
-                  const dishName = localeConfig.isChina
-                    ? pickByLocale(
-                        detailLocale,
-                        dish.dish_name_zh || "",
-                        dish.dish_name_en || dish.dish_name_zh || "",
-                        { allowMachineTranslate: false },
-                      )
-                    : [dish.dish_name_zh, dish.dish_name_en, dish.dish_name_local]
-                        .map((value) => String(value ?? "").trim())
-                        .filter((value) => value !== "")
-                        .join("\n");
-                  const priceText = getDishPriceText(dish);
-                  const noteText = getDishNoteText(dish);
-                  return (
-                    <article
-                      key={`${dish.city_en}-${dish.store_slug ?? "store"}-${
-                        dish.dish_name_zh ?? ""
-                      }-${dish.dish_name_en ?? ""}-${dish.dish_name_local ?? ""}-${index}`}
-                      className="ffj-city-dish-preview-card"
-                    >
-                      <h3 className="ffj-city-dish-preview-name">{dishName}</h3>
-                      {priceText !== "" ? (
-                        <p className="ffj-city-dish-preview-price">{priceText}</p>
-                      ) : null}
-                      {noteText !== "" ? (
-                        <p className="ffj-city-dish-preview-note">{noteText}</p>
-                      ) : null}
-                    </article>
-                  );
-                })}
-              </div>
+              <PhotoPanel
+                citySlug={slug}
+                selectedStore={selectedStore}
+                activePhotoIndex={activePhotoIndex}
+                onChangeActivePhotoIndex={setActivePhotoIndex}
+                labels={{
+                  photoRegion: pickUiText("店铺图片区域", "Store photo area", nativePhotoRegionText),
+                  photoPagination: pickUiText(
+                    "图片分页切换",
+                    "Photo pagination",
+                    nativePhotoPaginationText,
+                  ),
+                  prevPhoto: pickUiText("上一张图片", "Previous photo", nativePrevPhotoText),
+                  nextPhoto: pickUiText("下一张图片", "Next photo", nativeNextPhotoText),
+                  gotoPhoto: pickUiText("跳转到图片", "Go to photo", nativeGotoPhotoText),
+                  expandPhoto: pickUiText("点击放大查看", "Click to enlarge", nativeExpandPhotoText),
+                  closeLightbox: pickUiText(
+                    "关闭大图（点击空白或图片，或按 Esc）",
+                    "Close enlarged view (click or press Esc)",
+                    nativeCloseLightboxText,
+                  ),
+                  noPhoto: pickUiText("暂无美食图片", "No photos yet", nativeNoPhotoText),
+                }}
+                metaContent={
+                  selectedStore ? (
+                    <DishInfo
+                      citySlug={slug}
+                      selectedStore={selectedStore}
+                      activePhotoIndex={activePhotoIndex}
+                      isChina={localeConfig.isChina}
+                      detailLocale={detailLocale}
+                      labels={{
+                        dishInfoRegion: pickUiText("菜品信息", "Dish details", nativeDishInfoRegionText),
+                        tasteStars: pickUiText("口味星级", "Taste", nativeTasteStarsText),
+                      }}
+                    />
+                  ) : null
+                }
+              />
             )}
           </article>
         </div>

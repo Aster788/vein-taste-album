@@ -173,7 +173,7 @@ html[data-city="kuala-lumpur"],
   margin: 0;
   color: color-mix(in srgb, var(--color-text) 94%, transparent);
   font-family: var(--font-body-zh);
-  font-size: clamp(1.12rem, 2.1vw, 1.35rem);
+  font-size: clamp(1.24rem, 2.1vw, 1.47rem);
   line-height: 1.25;
   letter-spacing: 0.01em;
 }
@@ -289,7 +289,7 @@ html[data-city="kuala-lumpur"],
   padding-left: 0;
   color: color-mix(in srgb, var(--color-page-bg) 98%, transparent);
   font-family: var(--font-body-zh);
-  font-size: clamp(1rem, 1.8vw, 1.18rem);
+  font-size: clamp(1.12rem, 1.8vw, 1.3rem);
   line-height: 1.2;
   letter-spacing: 0.01em;
 }
@@ -325,7 +325,7 @@ html[data-city="kuala-lumpur"],
   text-align: left;
   color: color-mix(in srgb, var(--color-page-bg) 90%, transparent);
   font-family: var(--font-body-zh);
-  font-size: 0.95rem;
+  font-size: 1.07rem;
   line-height: 1.25;
   cursor: pointer;
   background: transparent;
@@ -397,8 +397,8 @@ html[data-city="kuala-lumpur"],
 
 .ffj-city-book-spread {
   --ffj-map-col-ratio: 7fr;
-  --ffj-note-col-ratio: 2fr;
-  --ffj-sticker-col-ratio: 1fr;
+  --ffj-note-col-ratio: 2.3fr;
+  --ffj-sticker-col-ratio: 0.7fr;
   position: relative;
   flex: 1 1 auto;
   display: grid;
@@ -425,12 +425,21 @@ html[data-city="kuala-lumpur"],
 }
 
 .ffj-city-book-spread--cuisine {
-  --ffj-cuisine-left-col-ratio: 2fr;
-  --ffj-cuisine-right-col-ratio: 3fr;
+  --ffj-cuisine-left-col-ratio: 3fr;
+  --ffj-cuisine-right-col-ratio: 7fr;
   grid-template-columns:
     minmax(0, var(--ffj-cuisine-left-col-ratio))
     auto
     minmax(0, var(--ffj-cuisine-right-col-ratio));
+}
+
+.ffj-city-book-spread--cuisine .ffj-city-book-page--left {
+  /* stretch：让店铺列表区与右栏同高，便于分页点底与列表滚动条底对齐 */
+  align-items: stretch;
+  justify-content: flex-start;
+  padding-inline: 1.1rem 0.9rem;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .ffj-city-book-page {
@@ -457,6 +466,17 @@ html[data-city="kuala-lumpur"],
   position: relative;
 }
 
+.ffj-city-book-spread--cuisine .ffj-city-book-page--right {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding-inline: 0.9rem 1.1rem;
+  min-height: 0;
+  overflow: hidden;
+  gap: 0.4rem;
+}
+
 .ffj-city-book-page--note {
   border-radius: 0;
   padding: 0;
@@ -465,12 +485,44 @@ html[data-city="kuala-lumpur"],
 .ffj-city-book-page--sticker {
   border-radius: 0 0.85rem 0.85rem 0;
   border-inline-start: 1px dashed color-mix(in srgb, var(--city-primary) 26%, transparent);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color:
+    color-mix(in srgb, var(--city-primary) 86%, black)
+    color-mix(in srgb, var(--city-primary) 24%, var(--color-page-bg));
   background:
     linear-gradient(
       180deg,
       color-mix(in srgb, var(--city-surface-muted) 80%, var(--color-page-bg)),
       color-mix(in srgb, var(--color-page-bg) 95%, var(--city-secondary))
     );
+}
+
+.ffj-city-book-page--sticker::-webkit-scrollbar {
+  width: 9px;
+}
+
+.ffj-city-book-page--sticker::-webkit-scrollbar-track {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--city-primary) 24%, var(--color-page-bg));
+}
+
+.ffj-city-book-page--sticker::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--city-primary) 86%, black);
+  border: 1px solid color-mix(in srgb, var(--city-primary) 36%, var(--color-page-bg));
+}
+
+.ffj-city-book-page--sticker::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--city-primary) 92%, black);
+}
+
+.ffj-city-book-spread--map .ffj-city-book-page--sticker {
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-inline: 0 0.35rem;
+  min-inline-size: clamp(5.6rem, 9.2vw, 8.4rem);
 }
 
 .ffj-city-book-page--map {
@@ -532,24 +584,82 @@ html[data-city="kuala-lumpur"],
 .ffj-map-error {
   position: absolute;
   left: 50%;
-  bottom: clamp(0.8rem, 2.2vw, 1.2rem);
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   z-index: 4;
-  width: min(92%, 34rem);
-  padding: 0.72rem 0.9rem;
-  border-radius: 0.68rem;
+  width: min(92%, 38rem);
+  padding: 0.9rem;
+  border-radius: 0.82rem;
   border: 1px solid color-mix(in srgb, #a14636 38%, transparent);
   background: color-mix(in srgb, #fff7f5 94%, transparent);
   box-shadow: 0 10px 22px color-mix(in srgb, #4d2e25 12%, transparent);
 }
 
+.ffj-map-error-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.6rem;
+  border: 1px solid color-mix(in srgb, #c7b2a1 45%, transparent);
+  margin-bottom: 0.65rem;
+}
+
+.ffj-map-error-copy {
+  display: grid;
+  gap: 0.24rem;
+}
+
 .ffj-map-error .ffj-body-text {
   margin: 0;
   color: #7d2f23;
+  font-weight: 600;
+}
+
+.ffj-map-error-message {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #7a4d3e;
+}
+
+.ffj-map-error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.68rem;
+}
+
+.ffj-map-error-btn {
+  border: 1px solid color-mix(in srgb, #a8634f 38%, transparent);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  line-height: 1;
+  padding: 0.5rem 0.78rem;
+  cursor: pointer;
+  background: #fff8f4;
+  color: #7a4a38;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.ffj-map-error-btn:hover,
+.ffj-map-error-btn:focus-visible {
+  background: #8f4a38;
+  color: #fffdfc;
+  border-color: #8f4a38;
+  box-shadow: 0 4px 12px color-mix(in srgb, #4d2e25 18%, transparent);
+}
+
+.ffj-map-error-btn:focus-visible {
+  outline: 2px solid color-mix(in srgb, #8f4a38 38%, white);
+  outline-offset: 2px;
 }
 
 .ffj-map-error-detail {
-  margin: 0.2rem 0 0;
+  margin: 0.5rem 0 0;
   font-size: 0.75rem;
   line-height: 1.35;
   color: #8e4a3d;
@@ -590,7 +700,7 @@ html[data-city="kuala-lumpur"],
   background: rgba(255, 255, 255, 0.97);
   color: rgba(30, 25, 20, 0.92);
   font-family: var(--font-body-zh);
-  font-size: 0.92rem;
+  font-size: 0.8rem;
   font-weight: 600;
   line-height: 1;
   letter-spacing: 0.01em;
@@ -669,7 +779,7 @@ html[data-city="kuala-lumpur"],
   line-height: 1.6;
   color: color-mix(in srgb, var(--city-primary) 72%, var(--color-text-muted));
   font-family: var(--font-handwriting);
-  font-size: clamp(1rem, 1.45vw, 1.35rem);
+  font-size: calc(clamp(1.12rem, 1.45vw, 1.47rem) - 0.12rem);
   letter-spacing: 0.01em;
   position: relative;
   z-index: 1;
@@ -694,7 +804,7 @@ html[data-city="kuala-lumpur"],
 
 .ffj-note-store-name {
   margin: 0;
-  font-size: clamp(1rem, 1.2vw, 1.2rem);
+  font-size: calc(clamp(1.12rem, 1.2vw, 1.32rem) - 0.2rem);
   line-height: 1.45;
   color: color-mix(in srgb, var(--color-text) 90%, var(--city-primary));
   white-space: pre-line;
@@ -741,17 +851,18 @@ html[data-city="kuala-lumpur"],
 .ffj-note-map-link-fallback {
   margin: 0.55rem 0 0;
   color: color-mix(in srgb, var(--color-text-muted) 82%, var(--city-primary));
-  font-size: 0.78rem;
+  font-size: 0.7rem;
 }
 
 .ffj-note-fields {
+  --ffj-note-label-size: 0.74rem;
   margin: 0;
 }
 
 .ffj-note-field {
   display: grid;
-  grid-template-columns: 7.2em 1fr;
-  gap: 0.75rem;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: calc(var(--ffj-note-label-size) * 2);
   align-items: baseline;
   padding: 0.62rem 0;
   border-bottom: 1px solid color-mix(in srgb, var(--city-primary) 36%, transparent);
@@ -764,12 +875,13 @@ html[data-city="kuala-lumpur"],
 
 .ffj-note-field dt {
   color: color-mix(in srgb, var(--color-text-muted) 82%, var(--city-primary));
-  font-size: 0.82rem;
+  font-size: var(--ffj-note-label-size);
   letter-spacing: 0.02em;
 }
 
 .ffj-note-field dd {
   color: color-mix(in srgb, var(--color-text) 92%, black);
+  font-size: 0.88rem;
   line-height: 1.45;
 }
 
@@ -778,8 +890,8 @@ html[data-city="kuala-lumpur"],
 }
 
 .ffj-note-radar-wrap {
-  inline-size: min(100%, 360px);
-  block-size: clamp(160px, 19vw, 230px);
+  inline-size: min(100%, 420px);
+  block-size: clamp(220px, 24vw, 300px);
   margin-inline: auto;
 }
 
@@ -791,18 +903,29 @@ html[data-city="kuala-lumpur"],
 
 .ffj-cuisine-filter-stack {
   width: 100%;
-  max-width: 11rem;
+  max-width: none;
   display: grid;
   align-content: flex-start;
-  justify-items: stretch;
+  justify-items: start;
   gap: 0.62rem;
 }
 
+.ffj-cuisine-filter-stack--cuisine-page {
+  max-width: 100%;
+  gap: 0.56rem;
+}
+
 .ffj-cuisine-filter-btn {
+  --ffj-filter-max-inline-em: 4;
   border: none;
-  border-radius: 12px;
+  width: max-content;
+  max-width: calc(var(--ffj-filter-max-inline-em) * 1em + 1.24rem);
+  border-radius: 0 12px 12px 0;
   padding: 0.58rem 0.62rem 0.54rem;
   min-height: 2.4rem;
+  display: inline-grid;
+  align-items: center;
+  justify-items: start;
   background:
     linear-gradient(
       180deg,
@@ -823,6 +946,44 @@ html[data-city="kuala-lumpur"],
     opacity 140ms ease,
     box-shadow 140ms ease,
     filter 140ms ease;
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: keep-all;
+}
+
+.ffj-cuisine-filter-btn.is-script-en {
+  --ffj-filter-max-inline-em: 12;
+}
+
+.ffj-cuisine-filter-btn.is-script-ja {
+  --ffj-filter-max-inline-em: 4.5;
+}
+
+.ffj-cuisine-filter-btn.is-script-ko {
+  --ffj-filter-max-inline-em: 5.5;
+}
+
+.ffj-cuisine-filter-btn.is-script-th {
+  --ffj-filter-max-inline-em: 6.2;
+}
+
+.ffj-cuisine-filter-btn-text {
+  display: grid;
+  min-width: 0;
+}
+
+.ffj-cuisine-filter-btn-line {
+  min-width: 0;
+  line-height: 1.15;
+}
+
+.ffj-cuisine-filter-btn-line.is-first {
+  justify-self: start;
+}
+
+.ffj-cuisine-filter-btn-line.is-following {
+  justify-self: center;
 }
 
 .ffj-cuisine-filter-btn:hover {
@@ -830,12 +991,8 @@ html[data-city="kuala-lumpur"],
 }
 
 .ffj-cuisine-filter-btn.is-active {
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--city-primary) 28%, var(--color-page-bg)),
-      color-mix(in srgb, var(--city-primary) 17%, var(--color-page-bg))
-    );
+  background: color-mix(in srgb, var(--city-primary) 92%, black);
+  color: #fff;
   box-shadow:
     0 2px 6px color-mix(in srgb, var(--city-primary) 24%, transparent),
     inset 0 0 0 1px color-mix(in srgb, var(--city-primary) 44%, transparent);
@@ -851,6 +1008,852 @@ html[data-city="kuala-lumpur"],
   outline-offset: 2px;
 }
 
+.ffj-cuisine-filter-btn--with-meta {
+  min-height: 2.6rem;
+  padding-inline: 0.68rem 0.74rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  text-align: left;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.ffj-cuisine-filter-btn-main {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.44rem;
+}
+
+.ffj-cuisine-filter-sticker {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  object-fit: contain;
+  background: transparent;
+}
+
+.ffj-cuisine-filter-btn-main,
+.ffj-cuisine-filter-btn--with-meta {
+  background: transparent;
+}
+
+.ffj-cuisine-filter-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ffj-cuisine-filter-count {
+  flex: 0 0 auto;
+  min-width: 1.6rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 999px;
+  text-align: center;
+  font-family: var(--font-body-en);
+  font-size: 0.68rem;
+  line-height: 1.2;
+  color: color-mix(in srgb, var(--color-text) 82%, var(--city-primary));
+  background: color-mix(in srgb, var(--color-page-bg) 76%, var(--city-secondary));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--city-primary) 15%, transparent);
+}
+
+.ffj-cuisine-filter-btn.is-active .ffj-cuisine-filter-count {
+  color: color-mix(in srgb, var(--city-primary) 70%, black);
+  background: color-mix(in srgb, var(--city-primary) 12%, var(--color-page-bg));
+}
+
+.ffj-cuisine-store-panel {
+  width: 100%;
+  max-width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 0.88rem;
+  overflow: hidden;
+}
+
+.ffj-cuisine-dropdown {
+  --ffj-cuisine-info-size: 1.72rem;
+  --ffj-cuisine-control-gap: 0.42rem;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+}
+
+.ffj-cuisine-dropdown-control-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--ffj-cuisine-info-size);
+  align-items: center;
+  gap: var(--ffj-cuisine-control-gap);
+}
+
+.ffj-cuisine-dropdown-trigger {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 0.6rem 0.75rem;
+  min-height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  text-align: left;
+  cursor: pointer;
+  color: color-mix(in srgb, var(--color-text) 88%, var(--city-primary));
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-page-bg) 94%, var(--city-secondary)),
+      color-mix(in srgb, var(--city-secondary) 26%, var(--color-page-bg))
+    );
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--color-text) 11%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--city-primary) 17%, transparent);
+  font-family: var(--font-body-zh);
+  font-size: 0.95rem;
+  line-height: 1.2;
+}
+
+.ffj-cuisine-sort-hint-anchor {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ffj-cuisine-sort-hint-trigger {
+  width: 1.72rem;
+  height: 1.72rem;
+  border: none;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body-en);
+  font-size: 0.92rem;
+  line-height: 1;
+  color: color-mix(in srgb, var(--color-page-bg) 96%, transparent);
+  background: color-mix(in srgb, var(--city-primary) 82%, black);
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--color-text) 13%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--color-page-bg) 22%, transparent);
+  cursor: pointer;
+  transition: transform 120ms ease, background-color 120ms ease;
+}
+
+.ffj-cuisine-sort-hint-trigger:hover,
+.ffj-cuisine-sort-hint-anchor.is-open .ffj-cuisine-sort-hint-trigger {
+  background: color-mix(in srgb, var(--city-primary) 88%, black);
+}
+
+.ffj-cuisine-sort-hint-trigger:active {
+  transform: translateY(1px);
+}
+
+.ffj-cuisine-sort-hint-trigger:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--city-primary) 58%, transparent);
+  outline-offset: 2px;
+}
+
+.ffj-cuisine-sort-hint-bubble {
+  position: absolute;
+  z-index: 14;
+  top: calc(100% + 0.34rem);
+  right: 0;
+  min-width: 15.2rem;
+  max-width: min(20rem, 72vw);
+  padding: 0.52rem 0.62rem;
+  border-radius: 10px;
+  color: color-mix(in srgb, var(--color-text-muted) 92%, #808080);
+  background: color-mix(in srgb, var(--color-page-bg) 93%, var(--city-secondary));
+  box-shadow:
+    0 8px 22px color-mix(in srgb, var(--color-text) 14%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--city-primary) 18%, transparent);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-2px);
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease,
+    visibility 140ms ease;
+}
+
+.ffj-cuisine-sort-hint-anchor:hover .ffj-cuisine-sort-hint-bubble,
+.ffj-cuisine-sort-hint-anchor:focus-within .ffj-cuisine-sort-hint-bubble,
+.ffj-cuisine-sort-hint-anchor.is-open .ffj-cuisine-sort-hint-bubble {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.ffj-cuisine-sort-hint-title,
+.ffj-cuisine-sort-hint-line {
+  margin: 0;
+  font-family: var(--font-body-zh);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.ffj-cuisine-sort-hint-line {
+  text-indent: 2em;
+}
+
+.ffj-cuisine-sort-hint-title {
+  margin-bottom: 0.16rem;
+  color: color-mix(in srgb, var(--color-text-muted) 96%, #666666);
+}
+
+.ffj-cuisine-sort-hint-title--sub {
+  margin-top: 0.35rem;
+}
+
+.ffj-cuisine-dropdown-trigger-arrow {
+  flex: 0 0 auto;
+  transition: transform 140ms ease;
+}
+
+.ffj-cuisine-dropdown-trigger.is-open .ffj-cuisine-dropdown-trigger-arrow {
+  transform: rotate(180deg);
+}
+
+.ffj-cuisine-dropdown-menu {
+  position: absolute;
+  z-index: 12;
+  top: calc(100% + 0.28rem);
+  left: 0;
+  width: calc(100% - var(--ffj-cuisine-info-size) - var(--ffj-cuisine-control-gap));
+  max-height: none;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  border-radius: 12px;
+  padding: 0.35rem;
+  display: grid;
+  gap: 0.3rem;
+  background: color-mix(in srgb, var(--color-page-bg) 93%, var(--city-secondary));
+  box-shadow:
+    0 8px 22px color-mix(in srgb, var(--color-text) 12%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--city-primary) 16%, transparent);
+}
+
+.ffj-cuisine-dropdown-menu.is-scrollable {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color:
+    color-mix(in srgb, var(--city-primary) 86%, black)
+    color-mix(in srgb, var(--city-primary) 24%, var(--color-page-bg));
+}
+
+.ffj-cuisine-dropdown-menu.is-scrollable::-webkit-scrollbar {
+  width: 9px;
+}
+
+.ffj-cuisine-dropdown-menu.is-scrollable::-webkit-scrollbar-track {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--city-primary) 24%, var(--color-page-bg));
+}
+
+.ffj-cuisine-dropdown-menu.is-scrollable::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--city-primary) 86%, black);
+  border: 1px solid color-mix(in srgb, var(--city-primary) 36%, var(--color-page-bg));
+}
+
+.ffj-cuisine-dropdown-menu.is-scrollable::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--city-primary) 92%, black);
+}
+
+.ffj-cuisine-dropdown-item {
+  border: none;
+  border-radius: 10px;
+  min-height: 2.35rem;
+  padding: 0.5rem 0.55rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  text-align: left;
+  cursor: pointer;
+  color: color-mix(in srgb, var(--color-text) 88%, var(--city-primary));
+  background: transparent;
+}
+
+.ffj-cuisine-dropdown-item:hover {
+  background: color-mix(in srgb, var(--city-secondary) 33%, var(--color-page-bg));
+}
+
+.ffj-cuisine-dropdown-item.is-active {
+  background: color-mix(in srgb, var(--city-primary) 15%, var(--color-page-bg));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--city-primary) 28%, transparent);
+}
+
+.ffj-cuisine-dropdown-item-main {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.ffj-cuisine-dropdown-item-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ffj-cuisine-dropdown-item-count {
+  flex: 0 0 auto;
+  min-width: 1.6rem;
+  text-align: right;
+  font-family: var(--font-body-en);
+  font-size: 0.8rem;
+  color: color-mix(in srgb, var(--color-text) 80%, var(--city-primary));
+}
+
+.ffj-store-playlist {
+  --ffj-store-index-col-width: 2.2rem;
+  --ffj-store-col-gap: 0.58rem;
+  --ffj-store-row-gap: 1.42rem;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-inline-end: 0.3rem;
+  scrollbar-width: thin;
+  scrollbar-color:
+    color-mix(in srgb, var(--city-primary) 86%, black)
+    color-mix(in srgb, var(--city-primary) 24%, var(--color-page-bg));
+}
+
+.ffj-store-playlist::-webkit-scrollbar {
+  width: 9px;
+}
+
+.ffj-store-playlist::-webkit-scrollbar-track {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--city-primary) 24%, var(--color-page-bg));
+}
+
+.ffj-store-playlist::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--city-primary) 86%, black);
+  border: 1px solid color-mix(in srgb, var(--city-primary) 36%, var(--color-page-bg));
+}
+
+.ffj-store-playlist::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--city-primary) 92%, black);
+}
+
+.ffj-store-playlist-item {
+  appearance: none;
+  flex: 0 0 auto;
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  min-height: 2.7rem;
+  padding: 0.52rem 0.62rem calc(0.58rem + var(--ffj-store-row-gap));
+  display: grid;
+  grid-template-columns: var(--ffj-store-index-col-width) minmax(0, 1fr);
+  align-items: start;
+  column-gap: var(--ffj-store-col-gap);
+  text-align: left;
+  cursor: pointer;
+  color: color-mix(in srgb, var(--color-text) 91%, var(--city-primary));
+  background: transparent;
+  transition: background-color 120ms ease, transform 120ms ease;
+  outline: none;
+}
+
+.ffj-store-playlist-item:hover {
+  transform: translateY(-1px);
+}
+
+.ffj-store-playlist-item:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--city-primary) 28%, transparent);
+  outline-offset: -1px;
+}
+
+.ffj-store-playlist-item.is-active {
+  background: color-mix(in srgb, var(--city-primary) 17%, var(--color-page-bg));
+  box-shadow:
+    0 2px 6px color-mix(in srgb, var(--city-primary) 18%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--city-primary) 24%, transparent);
+}
+
+.ffj-store-playlist-item--tail {
+  cursor: default;
+  background: transparent;
+  box-shadow: none;
+}
+
+.ffj-store-playlist-item--tail:hover {
+  transform: none;
+}
+
+.ffj-store-playlist-item-index {
+  font-family: var(--font-body-en);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: color-mix(in srgb, var(--color-text-muted) 80%, var(--city-primary));
+  width: var(--ffj-store-index-col-width);
+}
+
+.ffj-store-playlist-item-names {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.24rem;
+}
+
+.ffj-store-playlist-item-name-line {
+  display: block;
+  min-width: 0;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: nowrap;
+  font-family: var(--font-body-zh);
+  font-size: 0.92rem;
+  line-height: 1.36;
+  color: color-mix(in srgb, var(--color-text) 90%, var(--city-primary));
+}
+
+.ffj-store-playlist-item-name-line.is-secondary {
+  padding-inline-start: 2ch;
+  font-size: 0.85rem;
+  color: color-mix(in srgb, var(--color-text-muted) 86%, var(--city-primary));
+}
+
+.ffj-store-playlist-item-name-line--tail {
+  font-family: var(--font-body-en);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  color: color-mix(in srgb, var(--color-text-muted) 78%, var(--city-primary));
+}
+
+.ffj-store-playlist-item.is-active .ffj-store-playlist-item-name-line {
+  font-weight: 600;
+}
+
+.ffj-store-playlist-empty {
+  margin: 0;
+  padding: 0.65rem 0.62rem;
+  text-align: left;
+  font-family: var(--font-body-zh);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: color-mix(in srgb, var(--color-text-muted) 90%, var(--city-primary));
+}
+
+.ffj-cuisine-right-empty {
+  margin: 0;
+  width: 100%;
+  min-height: 7rem;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-family: var(--font-body-zh);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-text-muted) 90%, var(--city-primary));
+}
+
+.ffj-cuisine-address {
+  margin: 0 0 0.9rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  column-gap: 0.5rem;
+  min-height: 1.2rem;
+}
+
+.ffj-cuisine-address-icon {
+  width: 0.92rem;
+  height: 0.92rem;
+  margin-top: 0.14rem;
+  object-fit: contain;
+  opacity: 0.82;
+}
+
+.ffj-cuisine-address-icon.is-empty {
+  opacity: 0;
+}
+
+.ffj-cuisine-address-text {
+  margin: 0;
+  font-family: var(--font-body-zh);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-text-muted) 88%, var(--city-primary));
+  word-break: break-word;
+}
+
+.ffj-dish-info {
+  min-width: 0;
+  align-self: center;
+  width: min(100%, 94%);
+}
+
+.ffj-dish-info-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: center;
+  text-align: center;
+}
+
+.ffj-dish-info-names {
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+}
+
+.ffj-dish-info-name-line {
+  margin: 0;
+  font-family: var(--font-body-zh);
+  font-size: 0.98rem;
+  line-height: 1.38;
+  color: color-mix(in srgb, var(--color-text) 92%, var(--city-primary));
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
+
+.ffj-dish-info-name-line.is-secondary {
+  font-family: var(--font-body-en), var(--font-body-zh);
+  font-size: 0.86rem;
+  color: color-mix(in srgb, var(--color-text-muted) 88%, var(--city-primary));
+}
+
+.ffj-dish-info-stars {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.35;
+  letter-spacing: 0.06em;
+}
+
+.ffj-dish-info-note {
+  margin: 0;
+  font-family: var(--font-body-zh);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--color-text-muted) 82%, #bdbdbd);
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.ffj-dish-info-note.is-density-md {
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.ffj-dish-info-note.is-density-lg {
+  font-size: 0.74rem;
+  line-height: 1.34;
+  letter-spacing: -0.005em;
+}
+
+.ffj-dish-info-note.is-density-xl {
+  font-size: 0.7rem;
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+}
+
+.ffj-photo-panel {
+  width: 100%;
+  min-height: 0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  align-content: stretch;
+}
+
+.ffj-photo-meta-slot {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: auto;
+  max-width: 100%;
+  display: grid;
+  place-items: center;
+  padding: 0.35rem 0 0.45rem;
+  z-index: 2;
+}
+
+.ffj-photo-stage {
+  position: relative;
+  flex: 0 0 auto;
+  min-height: 0;
+  width: 100%;
+  border-radius: 12px;
+  display: grid;
+  justify-items: center;
+  align-items: start;
+  padding-top: 0.12rem;
+  padding-bottom: 0.12rem;
+}
+
+.ffj-photo-polaroid {
+  margin: 0;
+  width: auto;
+  max-width: 100%;
+  /* 避免依赖百分比高度导致的塌陷/超大留白 */
+  max-height: clamp(16rem, 52dvh, 40rem);
+  background: #fff;
+  border-radius: 8px;
+  padding: 0.44rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  /* 保留略加强的外阴影（无 inset） */
+  box-shadow:
+    0 10px 26px color-mix(in srgb, var(--city-primary) 18%, transparent),
+    0 3px 10px color-mix(in srgb, var(--color-text) 14%, transparent);
+  transform: rotate(-1.8deg);
+}
+
+.ffj-photo-polaroid--clickable {
+  cursor: zoom-in;
+  border: none;
+  outline: none;
+}
+
+.ffj-photo-polaroid--clickable:focus-visible {
+  box-shadow:
+    0 10px 26px color-mix(in srgb, var(--city-primary) 18%, transparent),
+    0 3px 10px color-mix(in srgb, var(--color-text) 14%, transparent),
+    0 0 0 2px color-mix(in srgb, var(--city-primary) 55%, white);
+}
+
+.ffj-photo-polaroid-image {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(100%, 34rem);
+  max-height: clamp(15rem, 48dvh, 36rem);
+  object-fit: contain;
+  border-radius: 4px;
+  user-select: none;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity 280ms ease,
+    transform 320ms ease;
+}
+
+.ffj-photo-polaroid-image.is-transitioning {
+  opacity: 0.74;
+  transform: translateY(1px) scale(0.995);
+}
+
+.ffj-photo-nav {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  width: 1.8rem;
+  height: 1.8rem;
+  border: none;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  cursor: pointer;
+  color: color-mix(in srgb, var(--color-text) 90%, var(--city-primary));
+  background: color-mix(in srgb, var(--color-page-bg) 92%, white);
+  box-shadow: 0 1px 5px color-mix(in srgb, var(--color-text) 16%, transparent);
+}
+
+.ffj-photo-nav-icon {
+  display: block;
+  width: 0.72rem;
+  height: 0.72rem;
+  margin: 0;
+}
+
+.ffj-photo-nav--prev {
+  left: 0.1rem;
+}
+
+.ffj-photo-nav--next {
+  right: 0.1rem;
+}
+
+.ffj-photo-empty {
+  width: min(100%, 19.5rem);
+  min-height: 12rem;
+  border-radius: 10px;
+  border: 1px dashed color-mix(in srgb, var(--city-primary) 36%, transparent);
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 0.9rem;
+  font-family: var(--font-body-zh);
+  font-size: 0.9rem;
+  color: color-mix(in srgb, var(--color-text-muted) 88%, var(--city-primary));
+}
+
+.ffj-photo-dots {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 1.1rem;
+  padding-top: 0.08rem;
+  margin-top: 0;
+  align-self: center;
+  z-index: 3;
+}
+
+/* 分页点贴齐照片面板底边，与左栏 .ffj-store-playlist（含滚动条）底对齐 */
+.ffj-city-book-spread--cuisine .ffj-photo-dots {
+  margin-top: 0;
+}
+
+.ffj-photo-dot {
+  appearance: none;
+  width: 0.54rem;
+  height: 0.54rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: color-mix(in srgb, var(--color-text-muted) 36%, transparent);
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+}
+
+.ffj-photo-dot:hover {
+  transform: scale(1.08);
+}
+
+.ffj-photo-dot.is-active {
+  background: color-mix(in srgb, var(--city-primary) 74%, var(--color-text));
+  transform: scale(1.16);
+}
+
+.ffj-photo-lightbox {
+  --ffj-lb-pad: max(1rem, min(4dvw, 1.75rem));
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  margin: 0;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(var(--ffj-lb-pad), env(safe-area-inset-top, 0px))
+    max(var(--ffj-lb-pad), env(safe-area-inset-right, 0px))
+    max(var(--ffj-lb-pad), env(safe-area-inset-bottom, 0px))
+    max(var(--ffj-lb-pad), env(safe-area-inset-left, 0px));
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: color-mix(in srgb, #2a241c 78%, transparent);
+  cursor: zoom-out;
+}
+
+.ffj-photo-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 2.85rem;
+  height: 2.85rem;
+  margin: 0;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, white 30%, transparent);
+  background: color-mix(in srgb, #f7f3ee 16%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: color-mix(in srgb, white 94%, var(--city-primary) 6%);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow:
+    0 2px 12px color-mix(in srgb, #000 38%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 22%, transparent);
+  transform: translateY(-50%);
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.ffj-photo-lightbox-nav:hover {
+  background: color-mix(in srgb, #f7f3ee 26%, transparent);
+  border-color: color-mix(in srgb, white 45%, transparent);
+  transform: translateY(-50%) scale(1.05);
+  box-shadow:
+    0 4px 18px color-mix(in srgb, #000 42%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 28%, transparent);
+}
+
+.ffj-photo-lightbox-nav:focus-visible {
+  outline: 2px solid color-mix(in srgb, white 55%, var(--city-primary));
+  outline-offset: 3px;
+}
+
+.ffj-photo-lightbox-nav--prev {
+  left: max(0.5rem, env(safe-area-inset-left, 0px));
+}
+
+.ffj-photo-lightbox-nav--next {
+  right: max(0.5rem, env(safe-area-inset-right, 0px));
+}
+
+.ffj-photo-lightbox-nav-icon {
+  display: block;
+  margin: 0;
+  opacity: 0.95;
+}
+
+.ffj-photo-lightbox-image {
+  display: block;
+  flex: 0 1 auto;
+  margin: auto;
+  position: relative;
+  z-index: 1;
+  width: auto;
+  height: auto;
+  max-width: min(96vw, calc(100vw - 2 * var(--ffj-lb-pad)));
+  max-height: calc(
+    100vh - max(var(--ffj-lb-pad), env(safe-area-inset-top, 0px)) -
+      max(var(--ffj-lb-pad), env(safe-area-inset-bottom, 0px))
+  );
+  max-height: calc(
+    100dvh - max(var(--ffj-lb-pad), env(safe-area-inset-top, 0px)) -
+      max(var(--ffj-lb-pad), env(safe-area-inset-bottom, 0px))
+  );
+  object-fit: contain;
+  object-position: center;
+  border-radius: 6px;
+  cursor: zoom-out;
+  user-select: none;
+  box-shadow:
+    0 24px 64px color-mix(in srgb, #000 42%, transparent),
+    0 8px 24px color-mix(in srgb, var(--city-primary) 22%, transparent);
+}
+
 .ffj-note-radar-empty {
   margin: 0;
   min-height: 4.25rem;
@@ -862,6 +1865,7 @@ html[data-city="kuala-lumpur"],
 }
 
 .ffj-city-dish-preview-list {
+  width: 100%;
   display: grid;
   gap: 12px;
   align-content: start;
