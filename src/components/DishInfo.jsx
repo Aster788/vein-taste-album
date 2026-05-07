@@ -61,7 +61,7 @@ export default function DishInfo({
     const basename = getBasenameWithoutExtension(activeFilename);
     if (basename === "") return [];
 
-    // basename 为中文数字序号（一二三四五六七八九十）=> 仅图不显示名
+    // basename 为中文数字序号（含十一/二十等组合）=> 仅图不显示名
     if (isChineseNumeralBasename(basename)) {
       return [];
     }
