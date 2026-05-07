@@ -39,6 +39,34 @@ function normalizeNameKey(value) {
     .toLowerCase();
 }
 
+function escapeRegExp(value) {
+  return String(value ?? "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function resolveCurrencyPrefix(currencyCode) {
+  const code = String(currencyCode ?? "").trim().toUpperCase();
+  if (code === "") return "";
+
+  // ISO 4217 currency code -> localized symbol (JPY -> ¥, THB -> ฿, etc.).
+  // Using "narrowSymbol" keeps symbols concise for inline dish title rendering.
+  try {
+    const formatter = new Intl.NumberFormat("en", {
+      style: "currency",
+      currency: code,
+      currencyDisplay: "narrowSymbol",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
+    const parts = formatter.formatToParts(1);
+    const symbol = parts.find((part) => part.type === "currency")?.value ?? "";
+    const normalizedSymbol = String(symbol).trim();
+    if (normalizedSymbol !== "") return normalizedSymbol;
+  } catch {
+    // Unsupported currency code or runtime Intl limitations: fall back to code.
+  }
+  return code;
+}
+
 function nonEmptyNameKeys(...values) {
   return values
     .map((value) => normalizeNameKey(value))
@@ -91,17 +119,17 @@ export function getDishPriceText(dish) {
   const currency = String(dish?.currency ?? "").trim().toUpperCase();
   if (currency === "") return text;
 
-  // If authors already typed a currency symbol/text in `price`, keep it as-is.
-  if (/[¥₩$]|RM|CNY|KRW|MYR/i.test(text)) return text;
+  // If authors already typed a currency marker/text in `price`, keep it as-is.
+  const currencyCodePattern = new RegExp(`\\b${escapeRegExp(currency)}\\b`, "i");
+  if (/[¥₩$€£₹₽₫฿₺₴₦₱₲₡₵₸₭₪₼₾₣]|RM/i.test(text) || currencyCodePattern.test(text)) {
+    return text;
+  }
 
-  // Only prepend symbol for plain numeric values; descriptive prices stay untouched.
-  const isPlainNumber = /^-?\d+(?:\.\d+)?$/.test(text);
-  if (!isPlainNumber) return text;
-
-  if (currency === "CNY") return `¥${text}`;
-  if (currency === "KRW") return `₩${text}`;
-  if (currency === "MYR") return `RM ${text}`;
-  return text;
+  // If currency is provided and text doesn't already contain a currency marker,
+  // prepend resolved symbol/prefix for both numeric and descriptive prices.
+  const currencyPrefix = resolveCurrencyPrefix(currency);
+  if (currencyPrefix === "") return text;
+  return `${currencyPrefix}${text}`;
 }
 
 /**

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { pickByLocale } from "../context/LanguageContext.jsx";
-import { getDishesForRestaurant, getDishNoteText } from "../utils/dataLoader.js";
+import { getDishesForRestaurant, getDishNoteText, getDishPriceText } from "../utils/dataLoader.js";
 import { formatDishTasteStars } from "../utils/formatDishTasteStars.js";
 import {
   findMatchedDishByFilename,
@@ -39,9 +39,11 @@ export default function DishInfo({
     [activeFilename, dishes],
   );
 
+  const priceText = matchedDish ? getDishPriceText(matchedDish) : "";
+
   const nameLines = useMemo(() => {
     if (matchedDish) {
-      // 匹配成功：按 PRD 规则显示菜名
+      // 匹配成功：按 PRD 规则显示菜名，首行追加价格（如有）
       if (isChina) {
         const line = pickByLocale(
           detailLocale,
@@ -50,11 +52,18 @@ export default function DishInfo({
           { allowMachineTranslate: false },
         );
         const text = String(line ?? "").trim();
-        return text === "" ? [] : [text];
+        if (text === "") return [];
+        const lineWithPrice = priceText ? `${text}  ${priceText}` : text;
+        return [lineWithPrice];
       }
-      return [matchedDish.dish_name_zh, matchedDish.dish_name_en, matchedDish.dish_name_local]
+      // 非中国城市：三语菜名，仅在首行追加价格
+      const lines = [matchedDish.dish_name_zh, matchedDish.dish_name_en, matchedDish.dish_name_local]
         .map((v) => String(v ?? "").trim())
         .filter((v) => v !== "");
+      if (lines.length > 0 && priceText) {
+        lines[0] = `${lines[0]}  ${priceText}`;
+      }
+      return lines;
     }
 
     // 未匹配到菜品：按 Task 5.9 basename 兜底规则
@@ -68,7 +77,7 @@ export default function DishInfo({
 
     // 其他 basename => 显示 basename（不含扩展名）作为图片名称
     return [basename];
-  }, [matchedDish, isChina, detailLocale, activeFilename]);
+  }, [matchedDish, isChina, detailLocale, activeFilename, priceText]);
 
   const starsText = matchedDish ? formatDishTasteStars(matchedDish.taste) : "";
   const noteText = matchedDish ? getDishNoteText(matchedDish) : "";

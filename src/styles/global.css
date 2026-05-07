@@ -1630,7 +1630,7 @@ html[data-city="kuala-lumpur"],
   width: auto;
   max-width: 100%;
   /* 避免依赖百分比高度导致的塌陷/超大留白 */
-  max-height: clamp(16rem, 52dvh, 40rem);
+  max-height: clamp(17.5rem, 58dvh, 44rem);
   background: #fff;
   border-radius: 8px;
   padding: 0.44rem;
@@ -1663,7 +1663,7 @@ html[data-city="kuala-lumpur"],
   width: auto;
   height: auto;
   max-width: min(100%, 34rem);
-  max-height: clamp(15rem, 48dvh, 36rem);
+  max-height: clamp(16.5rem, 54dvh, 40rem);
   object-fit: contain;
   border-radius: 4px;
   user-select: none;
@@ -1742,6 +1742,7 @@ html[data-city="kuala-lumpur"],
 /* 分页点贴齐照片面板底边，与左栏 .ffj-store-playlist（含滚动条）底对齐 */
 .ffj-city-book-spread--cuisine .ffj-photo-dots {
   margin-top: 0;
+  transform: translateY(10px) !important;
 }
 
 .ffj-photo-dot {
@@ -1907,8 +1908,6 @@ html[data-city="kuala-lumpur"],
   aspect-ratio: 1;
   object-fit: contain;
   display: block;
-  /* SVG 文件有黑底问题，临时使用滤镜反色显示 */
-  filter: invert(1);
   background: transparent;
 }
 
