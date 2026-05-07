@@ -1,6 +1,8 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 import Book from "../components/Book.jsx";
+import BookTransition from "../components/BookTransition.jsx";
 import { useLanguage } from "../context/LanguageContext.jsx";
 import { getBookshelfCities } from "../utils/dataLoader.js";
 /* Slogan 旁 page 贴纸须透明底、无整幅黑/白底 path（与书脊 cities 贴纸同旨，见 Book.jsx 注释） */
@@ -9,6 +11,7 @@ import footprintsStickerUrl from "../assets/stickers/page/footprints.svg?url";
 
 export default function Bookshelf() {
   const { setCitySlug } = useLanguage();
+  const navigate = useNavigate();
   const cities = useMemo(() => getBookshelfCities(), []);
   const sloganCnFull = "世界这本书 我想一直读";
   const sloganEnFull =
@@ -32,6 +35,7 @@ export default function Bookshelf() {
   const [typedEn, setTypedEn] = useState("");
   const [isTypingDone, setIsTypingDone] = useState(false);
   const [typingPhase, setTypingPhase] = useState("cn");
+  const [transitioningBook, setTransitioningBook] = useState(null);
 
   const scrollBookToCenter = (bookIndex) => {
     const scroller = scrollRef.current;
@@ -50,6 +54,35 @@ export default function Bookshelf() {
       left: nextScrollLeft,
       behavior: "smooth",
     });
+  };
+
+  /**
+   * 处理书本点击，触发翻书过渡动画
+   * @param {Object} city - 城市数据
+   * @param {HTMLElement} bookElement - 被点击的书本元素
+   */
+  const handleBookClick = (city, bookElement) => {
+    // 获取书本的 3D 组装元素位置（更精确的书本边界）
+    const assembly = bookElement?.querySelector(".ffj-book__assembly");
+    const rect = assembly ? assembly.getBoundingClientRect() : bookElement.getBoundingClientRect();
+
+    // 设置过渡状态，触发 BookTransition 动画
+    setTransitioningBook({
+      city,
+      rect,
+    });
+
+    // 延迟导航，让动画播放至展开阶段（总时长 1.4s 的约 80%）
+    setTimeout(() => {
+      navigate(`/${city.slug}`);
+    }, 1100);
+  };
+
+  /**
+   * 动画完成后的清理
+   */
+  const handleTransitionComplete = () => {
+    setTransitioningBook(null);
   };
 
   useEffect(() => {
@@ -445,17 +478,25 @@ export default function Bookshelf() {
               data-city={city.slug}
               data-sticker-file={city.stickerFileName || undefined}
             >
-              <Link
+              <div
                 className="ffj-bookshelf-book-hit"
-                to={`/${city.slug}`}
+                role="button"
+                tabIndex={0}
                 aria-label={
                   city.city_zh
                     ? `进入${city.city_zh}详情`
                     : `Enter ${city.city_en}`
                 }
+                onClick={(e) => handleBookClick(city, e.currentTarget)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    handleBookClick(city, e.currentTarget);
+                  }
+                }}
               >
                 <Book city={city} />
-              </Link>
+              </div>
             </li>
           ))}
         </ul>
@@ -475,6 +516,17 @@ export default function Bookshelf() {
           </button>
         ))}
       </div>
+
+      {/* 翻书过渡动画 */}
+      <AnimatePresence>
+        {transitioningBook && (
+          <BookTransition
+            city={transitioningBook.city}
+            startRect={transitioningBook.rect}
+            onComplete={handleTransitionComplete}
+          />
+        )}
+      </AnimatePresence>
     </main>
   );
 }

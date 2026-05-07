@@ -60,61 +60,71 @@ svg {
 
 /* --- 10 城主色 / 辅色（由路由在 documentElement 上设置 data-city 切换） --- */
 html[data-city="dalian"],
-.ffj-bookshelf-book-slot[data-city="dalian"] {
+.ffj-bookshelf-book-slot[data-city="dalian"],
+.ffj-book-transition-book[data-city="dalian"] {
   --city-primary: #6f93ae;
   --city-secondary: #eaf0f4;
 }
 
 html[data-city="qingdao"],
-.ffj-bookshelf-book-slot[data-city="qingdao"] {
+.ffj-bookshelf-book-slot[data-city="qingdao"],
+.ffj-book-transition-book[data-city="qingdao"] {
   --city-primary: #5f84b0;
   --city-secondary: #f0ede7;
 }
 
 html[data-city="shanghai"],
-.ffj-bookshelf-book-slot[data-city="shanghai"] {
+.ffj-bookshelf-book-slot[data-city="shanghai"],
+.ffj-book-transition-book[data-city="shanghai"] {
   --city-primary: #505050;
   --city-secondary: #ece7d9;
 }
 
 html[data-city="guangzhou"],
-.ffj-bookshelf-book-slot[data-city="guangzhou"] {
+.ffj-bookshelf-book-slot[data-city="guangzhou"],
+.ffj-book-transition-book[data-city="guangzhou"] {
   --city-primary: #b18a59;
   --city-secondary: #f3efe7;
 }
 
 html[data-city="chongqing"],
-.ffj-bookshelf-book-slot[data-city="chongqing"] {
+.ffj-bookshelf-book-slot[data-city="chongqing"],
+.ffj-book-transition-book[data-city="chongqing"] {
   --city-primary: #b0664d;
   --city-secondary: #f0e0d8;
 }
 
 html[data-city="fuzhou"],
-.ffj-bookshelf-book-slot[data-city="fuzhou"] {
+.ffj-bookshelf-book-slot[data-city="fuzhou"],
+.ffj-book-transition-book[data-city="fuzhou"] {
   --city-primary: #7d9570;
   --city-secondary: #ece5dc;
 }
 
 html[data-city="xiamen"],
-.ffj-bookshelf-book-slot[data-city="xiamen"] {
+.ffj-bookshelf-book-slot[data-city="xiamen"],
+.ffj-book-transition-book[data-city="xiamen"] {
   --city-primary: #6e9496;
   --city-secondary: #eeeae3;
 }
 
 html[data-city="quanzhou"],
-.ffj-bookshelf-book-slot[data-city="quanzhou"] {
+.ffj-bookshelf-book-slot[data-city="quanzhou"],
+.ffj-book-transition-book[data-city="quanzhou"] {
   --city-primary: #967662;
   --city-secondary: #f0ebe4;
 }
 
 html[data-city="jeju"],
-.ffj-bookshelf-book-slot[data-city="jeju"] {
+.ffj-bookshelf-book-slot[data-city="jeju"],
+.ffj-book-transition-book[data-city="jeju"] {
   --city-primary: #d98f65;
   --city-secondary: #f5eae1;
 }
 
 html[data-city="kuala-lumpur"],
-.ffj-bookshelf-book-slot[data-city="kuala-lumpur"] {
+.ffj-bookshelf-book-slot[data-city="kuala-lumpur"],
+.ffj-book-transition-book[data-city="kuala-lumpur"] {
   --city-primary: #9368b8;
   --city-secondary: #f2ede4;
 }
@@ -459,6 +469,12 @@ html[data-city="kuala-lumpur"],
 
 .ffj-city-book-page--left {
   border-radius: 0.85rem 0 0 0.85rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: clamp(0.75rem, 2vw, 1.25rem);
+  overflow: hidden;
 }
 
 .ffj-city-book-page--right {
@@ -1547,12 +1563,14 @@ html[data-city="kuala-lumpur"],
 
 .ffj-dish-info-note {
   margin: 0;
+  width: 100%;
+  max-width: 100%;
   font-family: var(--font-body-zh);
   font-size: 0.82rem;
   line-height: 1.45;
   color: color-mix(in srgb, var(--color-text-muted) 82%, #bdbdbd);
-  word-break: break-word;
-  overflow-wrap: anywhere;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 
 .ffj-dish-info-note.is-density-md {
@@ -1586,7 +1604,7 @@ html[data-city="kuala-lumpur"],
 .ffj-photo-meta-slot {
   flex: 1 1 auto;
   min-height: 0;
-  width: auto;
+  width: 100%;
   max-width: 100%;
   display: grid;
   place-items: center;
@@ -1864,16 +1882,69 @@ html[data-city="kuala-lumpur"],
   color: color-mix(in srgb, var(--color-text-muted) 84%, var(--city-primary));
 }
 
+/* 菜品分类按钮 - 带图标的布局 */
+.ffj-cuisine-filter-btn--with-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.45rem 0.62rem 0.42rem 0.55rem;
+  text-align: left;
+}
+
+.ffj-cuisine-filter-btn-main {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ffj-cuisine-filter-sticker {
+  flex: 0 0 auto;
+  width: clamp(1.4rem, 3.5vw, 2rem);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  display: block;
+  /* SVG 文件有黑底问题，临时使用滤镜反色显示 */
+  filter: invert(1);
+  background: transparent;
+}
+
+.ffj-cuisine-filter-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ffj-cuisine-filter-count {
+  flex: 0 0 auto;
+  font-size: 0.85rem;
+  color: color-mix(in srgb, var(--color-text-muted) 80%, var(--city-primary));
+  font-variant-numeric: tabular-nums;
+}
+
 .ffj-city-dish-preview-list {
   width: 100%;
   display: grid;
   gap: 12px;
   align-content: start;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: clamp(0.5rem, 1.5vw, 1rem);
 }
 
 .ffj-city-dish-preview-card {
   border-bottom: 1px solid rgba(89, 71, 56, 0.16);
   padding-bottom: 10px;
+  background: var(--color-page-bg);
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .ffj-city-dish-preview-name {
@@ -2604,4 +2675,63 @@ html[data-city="kuala-lumpur"],
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+}
+
+/* ============================================
+   翻书过渡动画样式
+   ============================================ */
+
+/* 书本过渡模式：在动画过程中调整外观 */
+.ffj-book.is-transitioning .ffj-book__pages,
+.ffj-book.is-transitioning .ffj-book__back,
+.ffj-book.is-transitioning .ffj-book__back--bookshelf-solid {
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+/* 过渡模式下书脊更突出 - 使用城市主色保持一致 */
+.ffj-book.is-transitioning .ffj-book__spine {
+  box-shadow:
+    inset 2px 0 6px color-mix(in srgb, var(--city-primary) 15%, transparent),
+    0 0 30px color-mix(in srgb, var(--city-primary) 20%, transparent);
+}
+
+/* 过渡动画专用封面：从书脊侧翻转展开 */
+.ffj-book.is-transitioning .ffj-book__cover--transition {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--bb-cover-radius, 0 3px 3px 0);
+  background: var(--bb-shell-base, var(--city-primary));
+  background-image:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-page-bg) 20%, transparent) 0%,
+      transparent 50%
+    ),
+    linear-gradient(
+      225deg,
+      color-mix(in srgb, var(--color-text) 8%, transparent) 0%,
+      transparent 40%
+    );
+  box-shadow:
+    inset -10px 0 20px color-mix(in srgb, var(--city-primary) 10%, transparent),
+    10px 15px 30px color-mix(in srgb, var(--city-primary) 25%, transparent);
+  transform-origin: left center;
+  opacity: 1;
+}
+
+/* 详情页入场动画 */
+.ffj-city-detail-page {
+  animation: ffjPageFadeIn 0.4s ease-out;
+}
+
+@keyframes ffjPageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
