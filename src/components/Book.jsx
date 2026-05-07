@@ -12,9 +12,10 @@ import { spineInkCssVariables } from "../utils/spineContrast.js";
  * **资源约定（`src/assets/stickers/cities/*.svg`）**：不得含整幅画布黑底/白底或「大卡纸」矩形层；
  *   导出工具常自动加全框 path，上架前须删净，否则书脊上会出现黑/白方块（与 `citySlugs.js` 注释一致）。
  *
- * @param {{ city: object }} props
+ * @param {{ city: object, isTransitioning?: boolean }} props
+ *   isTransitioning - 是否为过渡动画模式，此时会调整书本外观以适应翻书动画
  */
-export default function Book({ city }) {
+export default function Book({ city, isTransitioning = false }) {
   const spineRef = useRef(null);
   const {
     is_china,
@@ -45,7 +46,7 @@ export default function Book({ city }) {
   const spineLabel = `${zhCountry}·${city_zh}，${enCountry} · ${city_en}`;
 
   return (
-    <div className="ffj-book">
+    <div className={`ffj-book ${isTransitioning ? "is-transitioning" : ""}`}>
       {/* 滚动驱动 yaw 无 transition；仅 hover 到该书时轻微 translateZ 抽出，子层 300ms ease-out */}
       <div className="ffj-book__yaw-scroll">
         <div className="ffj-book__yaw-hover">
@@ -81,6 +82,10 @@ export default function Book({ city }) {
             {/* 铰链柔化：置于各面之后并略抬高 Z，叠在接缝上消缝（preserve-3d 深度排序） */}
             <div className="ffj-book__hinge-blend ffj-book__hinge-blend--cover" aria-hidden />
             <div className="ffj-book__hinge-blend ffj-book__hinge-blend--back" aria-hidden />
+            {/* 过渡动画时显示的封面（从书脊侧翻转出来） */}
+            {isTransitioning && (
+              <div className="ffj-book__cover ffj-book__cover--transition" aria-hidden />
+            )}
           </div>
         </div>
       </div>
