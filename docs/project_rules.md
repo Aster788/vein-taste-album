@@ -150,6 +150,7 @@ src/assets/photos/{city-folder}/{store_slug}/{dish-file}.{jpg|jpeg|png|webp|heic
 6. **所有贴纸 SVG（`stickers/cities`、`stickers/page`、`stickers/cuisine`）必须透明底**：禁止整幅 viewBox 黑/白底框、禁止大面积纯色卡纸底；否则会在书脊/Slogan/筛选/拍立得区域出现黑白方块。
   - **硬性验收标准**：任何贴纸 SVG 都不允许存在“覆盖全画布（接近 `0,0` 到 `512,512`）的黑色或白色背景 path/rect”（含 `#000/#000000/#010000/#fff/#ffffff` 及近似纯黑纯白）。
   - 如素材自带背景层，必须先删除或改为透明再接入页面。
+  - **展示颜色需与素材一致**：禁止在贴纸 `<img>` 或其容器上用 `filter: invert()` / `hue-rotate()` / `brightness()` 等方式整体改色；如出现“页面颜色与 SVG 文件不一致”，先排查样式层滤镜而非改素材色值。
 7. **在任何新分支进行功能改动/新增时，禁止触碰不相关模块**：只允许修改与当前任务直接相关的文件与逻辑；若发现需要跨模块调整，必须先与开发者确认范围再改。
 
 ---

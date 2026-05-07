@@ -139,3 +139,12 @@ Optional columns:
 - all other dish columns (for example: `city_en`, `store_name_zh`, `store_name_en`, `store_name_local`, `price`, `note`)
 - `currency` is supported and should be filled when `price` has value.
   - Mapping rule: in `dishes.xlsx`, `currency` is the unit for `price` (same code set: `CNY` / `KRW` / `MYR`).
+  - Rendering rule (must stay consistent for new rows):
+    - if `price` already includes a currency marker/text (`¥`/`₩`/`$`/`RM`/`CNY`/`KRW`/`MYR`), frontend keeps `price` as-is.
+    - otherwise, when `currency` is present, frontend prepends currency prefix:
+      - frontend resolves symbol dynamically from `currency` (ISO 4217 code) via runtime formatter (for example: `JPY -> ¥`, `THB -> ฿`, `USD -> $`).
+      - when symbol resolution is unavailable, fallback is raw `currency` code prefix.
+    - this applies to both plain numeric prices (`38`) and descriptive prices (`19/个`, `11/斤`).
+  - Authoring recommendation:
+    - keep `price` focused on amount/description only, do not manually repeat currency symbols.
+    - always fill `currency` whenever `price` has value, to avoid missing currency display in UI.
