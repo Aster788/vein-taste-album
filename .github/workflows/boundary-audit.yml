@@ -2,15 +2,6 @@ name: Boundary Offset Audit
 
 on:
   pull_request:
-    paths:
-      - "src/assets/geojson/**/*.geojson"
-      - "src/components/MapPanel.jsx"
-      - "src/utils/coordTransform.js"
-      - "src/utils/citySlugs.js"
-      - "src/data/restaurants.json"
-      - "scripts/audit-boundary-offsets.mjs"
-      - "package.json"
-      - "package-lock.json"
   push:
     branches:
       - main
@@ -52,13 +43,19 @@ jobs:
           HEAD_SHA="${{ github.event.pull_request.head.sha }}"
           CHANGED_FILES="$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")"
           CITY_SLUGS="$(printf '%s\n' "$CHANGED_FILES" | sed -n 's#^src/assets/geojson/\(.*\)\.geojson$#\1#p' | sort -u | paste -sd, -)"
+          AUDIT_RELATED_COUNT="$(printf '%s\n' "$CHANGED_FILES" | awk 'BEGIN{count=0} /^(src\/assets\/geojson\/.*\.geojson|src\/components\/MapPanel\.jsx|src\/utils\/coordTransform\.js|src\/utils\/citySlugs\.js|src\/data\/restaurants\.json|scripts\/audit-boundary-offsets\.mjs|package\.json|package-lock\.json)$/ {count++} END{print count}')"
           echo "cities=$CITY_SLUGS" >> "$GITHUB_OUTPUT"
+          if [ "$AUDIT_RELATED_COUNT" -gt 0 ]; then
+            echo "should_audit=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_audit=false" >> "$GITHUB_OUTPUT"
+          fi
           echo "changed_files<<EOF" >> "$GITHUB_OUTPUT"
           printf '%s\n' "$CHANGED_FILES" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
 
       - name: Run incremental audit for changed cities
-        if: steps.detect.outputs.cities != ''
+        if: steps.detect.outputs.should_audit == 'true' && steps.detect.outputs.cities != ''
         run: >
           node scripts/audit-boundary-offsets.mjs
           --cities=${{ steps.detect.outputs.cities }}
@@ -68,13 +65,17 @@ jobs:
           --max-invalid-lnglat=0
 
       - name: Run full audit when non-city map logic changed
-        if: steps.detect.outputs.cities == ''
+        if: steps.detect.outputs.should_audit == 'true' && steps.detect.outputs.cities == ''
         run: >
           node scripts/audit-boundary-offsets.mjs
           --fail-on-regression
           --min-delta-pct=0
           --max-open-rings=0
           --max-invalid-lnglat=0
+
+      - name: Skip audit for unrelated PR changes
+        if: steps.detect.outputs.should_audit != 'true'
+        run: echo "No map-boundary related files changed. Marking pr-incremental-audit as success."
 
   main-full-audit:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'

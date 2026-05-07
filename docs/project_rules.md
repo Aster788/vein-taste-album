@@ -101,7 +101,7 @@ src/data/
 图片路径规则：
 
 ```
-src/assets/photos/{city-folder}/{store_slug}/{dish-file}.jpg
+src/assets/photos/{city-folder}/{store_slug}/{dish-file}.{jpg|jpeg|png|webp|heic}
 `store_slug` 规则：[a-z0-9-]+，至少在 `(city_en, store_slug)` 维度唯一
 `dish-file` 可使用任一语言菜名；代码匹配顺序：dish_name_local → dish_name_en → dish_name_zh
 ```
@@ -109,9 +109,10 @@ src/assets/photos/{city-folder}/{store_slug}/{dish-file}.jpg
 补充兜底规则（板块②）：
 
 - basename 未匹配到 `dishes.json` 任一菜名时，图片仍需展示在其所属店铺下（不丢图）。
-- basename 为中文数字序号（`一二三四五六七八九十`）时，仅显示图片，不显示名称文本。
+- basename 为中文数字序号（`一二三四五六七八九十`，含组合如 `十一/十二/二十`）时，仅显示图片，不显示名称文本。
 - basename 非中文数字序号时，显示 basename（不含扩展名）作为图片名称。
 - 图片真实格式强约束：扩展名与文件头必须一致；导入新城市图片前先跑 `npm run audit:photo-magic`。
+- 板块②图片排序固定三段式：先显示 basename 匹配到菜名的图片，再显示 basename 非中文数字序号的图片，最后显示 basename 为中文数字序号（含 `十一/十二/二十`）的图片，并按数字值升序排列（且这组不显示名称）。
 
 板块②排序与列表规则（已确认）：
 
@@ -149,6 +150,7 @@ src/assets/photos/{city-folder}/{store_slug}/{dish-file}.jpg
 6. **所有贴纸 SVG（`stickers/cities`、`stickers/page`、`stickers/cuisine`）必须透明底**：禁止整幅 viewBox 黑/白底框、禁止大面积纯色卡纸底；否则会在书脊/Slogan/筛选/拍立得区域出现黑白方块。
   - **硬性验收标准**：任何贴纸 SVG 都不允许存在“覆盖全画布（接近 `0,0` 到 `512,512`）的黑色或白色背景 path/rect”（含 `#000/#000000/#010000/#fff/#ffffff` 及近似纯黑纯白）。
   - 如素材自带背景层，必须先删除或改为透明再接入页面。
+7. **在任何新分支进行功能改动/新增时，禁止触碰不相关模块**：只允许修改与当前任务直接相关的文件与逻辑；若发现需要跨模块调整，必须先与开发者确认范围再改。
 
 ---
 
