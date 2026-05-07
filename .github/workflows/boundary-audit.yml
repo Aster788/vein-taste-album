@@ -43,7 +43,7 @@ jobs:
           HEAD_SHA="${{ github.event.pull_request.head.sha }}"
           CHANGED_FILES="$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")"
           CITY_SLUGS="$(printf '%s\n' "$CHANGED_FILES" | sed -n 's#^src/assets/geojson/\(.*\)\.geojson$#\1#p' | sort -u | paste -sd, -)"
-          AUDIT_RELATED_COUNT="$(printf '%s\n' "$CHANGED_FILES" | grep -E '^(src/assets/geojson/.*\.geojson|src/components/MapPanel\.jsx|src/utils/coordTransform\.js|src/utils/citySlugs\.js|src/data/restaurants\.json|scripts/audit-boundary-offsets\.mjs|package\.json|package-lock\.json)$' | wc -l | tr -d ' ')"
+          AUDIT_RELATED_COUNT="$(printf '%s\n' "$CHANGED_FILES" | awk 'BEGIN{count=0} /^(src\/assets\/geojson\/.*\.geojson|src\/components\/MapPanel\.jsx|src\/utils\/coordTransform\.js|src\/utils\/citySlugs\.js|src\/data\/restaurants\.json|scripts\/audit-boundary-offsets\.mjs|package\.json|package-lock\.json)$/ {count++} END{print count}')"
           echo "cities=$CITY_SLUGS" >> "$GITHUB_OUTPUT"
           if [ "$AUDIT_RELATED_COUNT" -gt 0 ]; then
             echo "should_audit=true" >> "$GITHUB_OUTPUT"
