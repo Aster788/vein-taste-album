@@ -1,5 +1,10 @@
 import { useLayoutEffect, useRef } from "react";
-import { spineInkCssVariables } from "../utils/spineContrast.js";
+import {
+  LIGHT_SPINE_INK_CSS_VARIABLES,
+  spineInkCssVariables,
+} from "../utils/spineContrast.js";
+
+const FORCE_LIGHT_SPINE_INK_SLUGS = Object.freeze(new Set(["suzhou", "melaka"]));
 
 /**
  * 书架单本书：书脊 + 书口 + 封面 3D 组装；父级 `li` 写入 `--ffj-book-yaw-scroll`，抽出由 hover 样式控制（见 Bookshelf.jsx、global.css）。
@@ -31,7 +36,9 @@ export default function Book({ city, isTransitioning = false }) {
     const el = spineRef.current;
     if (!el) return;
     const raw = getComputedStyle(el).getPropertyValue("--city-primary").trim();
-    const vars = spineInkCssVariables(raw);
+    const vars = FORCE_LIGHT_SPINE_INK_SLUGS.has(slug)
+      ? LIGHT_SPINE_INK_CSS_VARIABLES
+      : spineInkCssVariables(raw);
     for (const [key, value] of Object.entries(vars)) {
       el.style.setProperty(key, value);
     }

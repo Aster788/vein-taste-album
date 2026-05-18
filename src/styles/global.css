@@ -58,12 +58,19 @@ svg {
   );
 }
 
-/* --- 10 城主色 / 辅色（由路由在 documentElement 上设置 data-city 切换） --- */
+/* --- 12 城主色 / 辅色（由路由在 documentElement 上设置 data-city 切换） --- */
 html[data-city="dalian"],
 .ffj-bookshelf-book-slot[data-city="dalian"],
 .ffj-book-transition-book[data-city="dalian"] {
   --city-primary: #6f93ae;
   --city-secondary: #eaf0f4;
+}
+
+html[data-city="suzhou"],
+.ffj-bookshelf-book-slot[data-city="suzhou"],
+.ffj-book-transition-book[data-city="suzhou"] {
+  --city-primary: #168f8b;
+  --city-secondary: #e2f4ee;
 }
 
 html[data-city="qingdao"],
@@ -127,6 +134,13 @@ html[data-city="kuala-lumpur"],
 .ffj-book-transition-book[data-city="kuala-lumpur"] {
   --city-primary: #9368b8;
   --city-secondary: #f2ede4;
+}
+
+html[data-city="melaka"],
+.ffj-bookshelf-book-slot[data-city="melaka"],
+.ffj-book-transition-book[data-city="melaka"] {
+  --city-primary: #c85f3a;
+  --city-secondary: #f8e7b5;
 }
 
 /* 页面级工具类（避免组件内联样式） */
