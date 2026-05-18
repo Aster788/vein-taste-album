@@ -1,22 +1,24 @@
 /**
- * PRD 10 城 URL 段（小写 + 连字符），与 geojson 文件名、global.css `html[data-city]` 一致。
+ * PRD 12 城 URL 段（小写 + 连字符），与 geojson 文件名、global.css `html[data-city]` 一致。
  * 书架横向成书顺序与本数组顺序相同（`getBookshelfCities` 使用 `CITY_SLUGS.map`）。
  */
 export const CITY_SLUGS = Object.freeze([
   "shanghai",
+  "suzhou",
   "qingdao",
   "chongqing",
   "guangzhou",
   "jeju",
   "kuala-lumpur",
+  "melaka",
   "fuzhou",
   "quanzhou",
   "xiamen",
   "dalian",
 ]);
 
-/** PRD：非中文城市（济州岛、吉隆坡） */
-export const NON_CHINA_CITY_SLUGS = Object.freeze(["jeju", "kuala-lumpur"]);
+/** PRD：非中文城市（济州岛、吉隆坡、马六甲） */
+export const NON_CHINA_CITY_SLUGS = Object.freeze(["jeju", "kuala-lumpur", "melaka"]);
 
 /**
  * 书脊城市贴纸文件名（位于 `src/assets/stickers/cities/`，与 `docs/structure.md` 一致）。
@@ -29,11 +31,13 @@ export const NON_CHINA_CITY_SLUGS = Object.freeze(["jeju", "kuala-lumpur"]);
  */
 export const CITY_STICKER_FILENAME_BY_SLUG = Object.freeze({
   shanghai: "shanghai-oriental-pearl-tower.svg",
+  suzhou: "suzhou-huqiuta.svg",
   qingdao: "qingdao-beer.svg",
   chongqing: "chongqing-chili.svg",
   guangzhou: "guangzhou-canton-tower.svg",
   jeju: "jeju-orange.svg",
   "kuala-lumpur": "kl-petronas-twin-tower.svg",
+  melaka: "melaka-mosque.svg",
   fuzhou: "fuzhou-banyan-tree.svg",
   quanzhou: "quanzhou-anchor.svg",
   xiamen: "xiamen-piano.svg",
@@ -60,6 +64,14 @@ export const BOOKSHELF_CITY_DISPLAY_BY_SLUG = Object.freeze({
     country_en: "China",
     city_zh: "青岛",
     city_en: "Qingdao",
+    city_native: "",
+    is_china: true,
+  },
+  suzhou: {
+    country_zh: "中国",
+    country_en: "China",
+    city_zh: "苏州",
+    city_en: "Suzhou",
     city_native: "",
     is_china: true,
   },
@@ -125,6 +137,14 @@ export const BOOKSHELF_CITY_DISPLAY_BY_SLUG = Object.freeze({
     city_zh: "吉隆坡",
     city_en: "Kuala Lumpur",
     city_native: "Kuala Lumpur",
+    is_china: false,
+  },
+  melaka: {
+    country_zh: "马来西亚",
+    country_en: "Malaysia",
+    city_zh: "马六甲",
+    city_en: "Melaka",
+    city_native: "Melaka",
     is_china: false,
   },
 });

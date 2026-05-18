@@ -46,6 +46,12 @@ function contrastRatio(lumFg, lumBg) {
 const LUM_INK = relativeLuminance({ r: 26, g: 26, b: 26 });
 const LUM_PAPER = 1;
 
+export const LIGHT_SPINE_INK_CSS_VARIABLES = Object.freeze({
+  "--ffj-spine-ink": "rgba(252, 250, 246, 0.97)",
+  "--ffj-spine-shadow":
+    "0 0 1px rgba(0, 0, 0, 0.52), 0 1px 4px rgba(0, 0, 0, 0.4)",
+});
+
 /**
  * @param {string} cityPrimaryResolved 浏览器解析后的主色字符串
  * @returns {Record<string, string>} 写入书脊根节点的 CSS 自定义属性
@@ -66,11 +72,7 @@ export function spineInkCssVariables(cityPrimaryResolved) {
   const useLightInk = crLight >= crDark;
 
   if (useLightInk) {
-    return {
-      "--ffj-spine-ink": "rgba(252, 250, 246, 0.97)",
-      "--ffj-spine-shadow":
-        "0 0 1px rgba(0, 0, 0, 0.52), 0 1px 4px rgba(0, 0, 0, 0.4)",
-    };
+    return LIGHT_SPINE_INK_CSS_VARIABLES;
   }
 
   return {

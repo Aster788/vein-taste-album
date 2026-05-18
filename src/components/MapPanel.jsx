@@ -55,6 +55,7 @@ function getCityView(citySlug) {
 /** 与 `global.css` 中 `html[data-city]` 的 `--city-primary` / `--city-secondary` 保持一致，供地图边界线着色。 */
 const CITY_MAP_LINE_COLORS_BY_SLUG = Object.freeze({
   dalian: Object.freeze({ primary: "#6f93ae", secondary: "#eaf0f4" }),
+  suzhou: Object.freeze({ primary: "#168f8b", secondary: "#e2f4ee" }),
   qingdao: Object.freeze({ primary: "#5f84b0", secondary: "#f0ede7" }),
   shanghai: Object.freeze({ primary: "#505050", secondary: "#ece7d9" }),
   guangzhou: Object.freeze({ primary: "#b18a59", secondary: "#f3efe7" }),
@@ -64,6 +65,7 @@ const CITY_MAP_LINE_COLORS_BY_SLUG = Object.freeze({
   quanzhou: Object.freeze({ primary: "#967662", secondary: "#f0ebe4" }),
   jeju: Object.freeze({ primary: "#d98f65", secondary: "#f5eae1" }),
   "kuala-lumpur": Object.freeze({ primary: "#9368b8", secondary: "#f2ede4" }),
+  melaka: Object.freeze({ primary: "#c85f3a", secondary: "#f8e7b5" }),
 });
 
 function getCityMapLineColors(citySlug) {
