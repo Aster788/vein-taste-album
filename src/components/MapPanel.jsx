@@ -12,6 +12,14 @@ import {
   getMappableRestaurantsByCity,
 } from "../utils/dataLoader.js";
 import { isChinaCitySlug } from "../utils/citySlugs.js";
+import {
+  getRestaurantCuisineEn,
+  getRestaurantCuisineZh,
+} from "../utils/cuisineSlugs.js";
+import {
+  buildMapBranchKey,
+  formatMapTagLabel,
+} from "../utils/storeGroups.js";
 import placeholderMapUrl from "../assets/fallback-maps/placeholder-map.svg?url";
 import dalianStaticMapUrl from "../assets/fallback-maps/dalian-static-map.png?url";
 import jejuStaticMapUrl from "../assets/fallback-maps/jeju-static-map.png?url";
@@ -39,6 +47,7 @@ const CITY_VIEW_BY_SLUG = Object.freeze({
   dalian: Object.freeze({ center: [121.6147, 38.914], zoom: 11 }),
   qingdao: Object.freeze({ center: [120.3826, 36.0671], zoom: 11 }),
   shanghai: Object.freeze({ center: [121.4737, 31.2304], zoom: 11 }),
+  suzhou: Object.freeze({ center: [120.6196, 31.2989], zoom: 11 }),
   guangzhou: Object.freeze({ center: [113.2644, 23.1291], zoom: 11 }),
   chongqing: Object.freeze({ center: [106.5516, 29.563], zoom: 11 }),
   fuzhou: Object.freeze({ center: [119.2965, 26.0745], zoom: 11 }),
@@ -46,6 +55,7 @@ const CITY_VIEW_BY_SLUG = Object.freeze({
   quanzhou: Object.freeze({ center: [118.6757, 24.8741], zoom: 11 }),
   jeju: Object.freeze({ center: [126.5312, 33.4996], zoom: 10 }),
   "kuala-lumpur": Object.freeze({ center: [101.6869, 3.139], zoom: 11 }),
+  melaka: Object.freeze({ center: [102.2501, 2.1945], zoom: 11 }),
 });
 
 function getCityView(citySlug) {
@@ -336,11 +346,15 @@ async function loadCityBoundaryGeoJson(citySlug) {
 function buildRestaurantPointsGeoJson(citySlug) {
   const cityEn = cityEnFromBookshelfSlug(citySlug);
   const rows = getMappableRestaurantsByCity(cityEn);
+  const seenKeys = new Set();
   const features = rows
     .map((row) => {
       const point = lngLatForMapbox(row);
       if (!Number.isFinite(point?.lng) || !Number.isFinite(point?.lat)) return null;
       const displayName = pickRestaurantDisplayName(row);
+      const storeKey = buildMapBranchKey(row);
+      if (seenKeys.has(storeKey)) return null;
+      seenKeys.add(storeKey);
       return {
         type: "Feature",
         properties: {
@@ -348,8 +362,11 @@ function buildRestaurantPointsGeoJson(citySlug) {
           name_en: row.name_en,
           name_local: row.name_local,
           display_name: displayName,
-          cuisine: row.cuisine,
+          cuisine: getRestaurantCuisineZh(row),
+          cuisine_zh: getRestaurantCuisineZh(row),
+          cuisine_en: getRestaurantCuisineEn(row),
           city_en: row.city_en,
+          store_slug: row.store_slug,
           score_overall: row.score_overall,
           score_taste: row.score_taste,
           score_environment: row.socre_environment ?? row.score_environment,
@@ -366,10 +383,7 @@ function buildRestaurantPointsGeoJson(citySlug) {
           map_platform: row.map_platform,
           map_url: row.map_url,
           dining_type: row.dining_type,
-          store_key:
-            String(row.store_slug ?? "").trim() !== ""
-              ? `${String(row.city_en ?? "").trim()}-${String(row.store_slug ?? "").trim()}`
-              : `${String(row.city_en ?? "").trim()}-${displayName}`,
+          store_key: storeKey,
         },
         geometry: {
           type: "Point",
@@ -430,8 +444,7 @@ function toStoreLabelByZoom(name, zoom, forcedMaxChars) {
     Number.isFinite(forcedMaxChars) && forcedMaxChars > 0
       ? Math.min(forcedMaxChars, plain.length)
       : getRestaurantTagMaxChars(zoom, plain.length);
-  if (plain.length <= maxChars) return plain;
-  return `${plain.slice(0, maxChars)}...`;
+  return formatMapTagLabel(plain, maxChars);
 }
 
 function getRestaurantTagVisualMetrics(zoom, containerWidth) {
@@ -874,7 +887,8 @@ function toSelectedStore(properties) {
     nameEn: readText(properties?.name_en),
     nameLocal: readText(properties?.name_local),
     displayName: readText(properties?.display_name),
-    cuisine: readText(properties?.cuisine),
+    cuisine: readText(properties?.cuisine_zh ?? properties?.cuisine),
+    cuisineEn: readText(properties?.cuisine_en),
     address: readText(properties?.address),
     scoreOverall: readNumber(properties?.score_overall),
     scoreTaste: readNumber(properties?.score_taste),
@@ -905,9 +919,6 @@ export default function MapPanel({
   onInteractiveHoverChange,
   onContinueWithoutMap,
 }) {
-  // #region agent log
-  fetch('http://127.0.0.1:7912/ingest/1d8177e6-7440-400c-b3ec-b5409296808e',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'79f6c0'},body:JSON.stringify({sessionId:'79f6c0',runId:'run1',hypothesisId:'H1',location:'src/components/MapPanel.jsx:component-entry',message:'MapPanel entered',data:{citySlug},timestamp:Date.now()})}).catch(()=>{});
-  // #endregion
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const [isMapReady, setIsMapReady] = useState(false);
@@ -1113,7 +1124,7 @@ export default function MapPanel({
             ? cityPrimaryColor
             : [
                 "case",
-                ["==", ["coalesce", ["get", "cuisine"], ""], normalizedCuisine],
+                ["==", ["coalesce", ["get", "cuisine_en"], ""], normalizedCuisine],
                 cityPrimaryColor,
                 "rgba(120, 108, 96, 0.34)",
               ],
@@ -1122,7 +1133,7 @@ export default function MapPanel({
             ? 1
             : [
                 "case",
-                ["==", ["coalesce", ["get", "cuisine"], ""], normalizedCuisine],
+                ["==", ["coalesce", ["get", "cuisine_en"], ""], normalizedCuisine],
                 1,
                 0.56,
               ],
@@ -1165,7 +1176,11 @@ export default function MapPanel({
             : nextLayouts.map((layout) => ({
                 ...layout,
                 isDimmed:
-                  String(layout.selectedStore?.cuisine ?? "").trim() !== normalizedCuisine,
+                  String(
+                    layout.selectedStore?.cuisineEn ??
+                      layout.selectedStore?.cuisine_en ??
+                      "",
+                  ).trim() !== normalizedCuisine,
               }));
         setRestaurantTagLayouts(filteredLayouts);
       });
@@ -1175,6 +1190,7 @@ export default function MapPanel({
     map.on("mouseenter", RESTAURANT_POINTS_LAYER_ID, setPointerCursor);
     map.on("mouseleave", RESTAURANT_POINTS_LAYER_ID, resetPointerCursor);
     map.on("move", syncTagLayouts);
+    map.on("zoom", syncTagLayouts);
     map.on("resize", syncTagLayouts);
 
     return () => {
@@ -1185,6 +1201,7 @@ export default function MapPanel({
       map.off("mouseenter", RESTAURANT_POINTS_LAYER_ID, setPointerCursor);
       map.off("mouseleave", RESTAURANT_POINTS_LAYER_ID, resetPointerCursor);
       map.off("move", syncTagLayouts);
+      map.off("zoom", syncTagLayouts);
       map.off("resize", syncTagLayouts);
       setRestaurantTagLayouts([]);
     };

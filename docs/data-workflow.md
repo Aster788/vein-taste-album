@@ -113,6 +113,39 @@ npm run data:export-translations
 
 ---
 
+## 4.1) 多分店 `store_slug`（同城同品牌，通用）
+
+> **所有多分店店铺均适用**（如南里山房 `nlsf`、耶里夏丽 `ylxl` 及今后任意新增）。规则由数据驱动，前端 [`src/utils/storeGroups.js`](../src/utils/storeGroups.js) 按 `(city_en, store_slug)` 自动归组，**禁止**为单店写 UI 白名单。
+
+适用：同一城市有多家分店、菜品与照片只维护一份。
+
+### Excel 录入
+
+- 每个分店一行，`record_scope=branch`
+- **相同** `store_slug`（如 `nlsf`、`ylxl`），各自填写 `name_zh`（含括号分店名）、`address`、`lng`、`lat`
+- 同步后 `restaurants.json` 可出现重复 `(city_en, store_slug)` — 属预期
+- 新增第 N 家分店：再增一行、**沿用同一 slug**，无需改代码
+
+### dishes / 照片
+
+- `dishes.xlsx`：`store_slug` 与组一致；`store_name_zh` 等写**基础店名**（不含括号分店名）
+- 照片目录：`src/assets/photos/{city-folder}/{store_slug}/` 仅一套
+
+### 页面行为（数据驱动，无白名单）
+
+- 地图：每个分店独立打点（`getMappableRestaurantsByCity`，不去重）
+- 菜品：左侧列表合并为一项（`getCuisineStoreGroupsByCity`）；右侧地址多行展示各分店
+
+### 校验
+
+```bash
+npm run audit:multi-branch
+```
+
+输出当前所有「同城同 slug 多 branch」组；发布前建议跑一遍确认录入正确。
+
+---
+
 ## 5) Google Places 回填流程（可选）
 
 触发：你有城市来源 xlsx（`Title`/`URL`）要批量补店铺信息。
@@ -136,6 +169,7 @@ npm run data:sync
 ```bash
 npm run data:sync
 npm run audit:photo-magic
+npm run audit:multi-branch
 npm run build
 ```
 

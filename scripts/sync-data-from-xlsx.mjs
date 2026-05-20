@@ -58,7 +58,12 @@ function normalizeRestaurant(row) {
   const picked = pickFields(row, RESTAURANTS_HEADERS);
   const cityEn = normalizeOptionalString(picked.city_en);
   const cityZh = normalizeOptionalString(picked.city_zh);
-  const cuisine = normalizeOptionalString(picked.cuisine);
+  const cuisineLegacy = normalizeOptionalString(picked.cuisine);
+  const cuisineZh = normalizeOptionalString(picked.cuisine_zh) || cuisineLegacy;
+  const cuisineEn = normalizeOptionalString(picked.cuisine_en)
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/_/g, "-");
   const storeSlug = normalizeNullableString(picked.store_slug);
   const nameZh = normalizeNullableString(picked.name_zh);
   const nameEn = normalizeNullableString(picked.name_en);
@@ -86,7 +91,9 @@ function normalizeRestaurant(row) {
     name_zh: nameZh,
     name_en: nameEn,
     name_local: nameLocal,
-    cuisine,
+    cuisine: cuisineZh,
+    cuisine_zh: cuisineZh,
+    cuisine_en: cuisineEn,
     address: normalizeOptionalString(picked.address),
     lng: normalizeOptionalNumber(picked.lng),
     lat: normalizeOptionalNumber(picked.lat),

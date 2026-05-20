@@ -1,0 +1,310 @@
+{
+  "generatedAt": "2026-05-20T13:33:25.187Z",
+  "cities": [
+    {
+      "slug": "shanghai",
+      "isChina": true,
+      "fileExists": true,
+      "sourceClass": "DataV-like (China district boundary schema)",
+      "health": {
+        "polygonCount": 0,
+        "multiPolygonCount": 16,
+        "closedRingCount": 25,
+        "openRingCount": 0,
+        "invalidLngLatCount": 0
+      },
+      "bounds": {
+        "minLng": 120.856804,
+        "minLat": 30.675593,
+        "maxLng": 122.247149,
+        "maxLat": 31.872716,
+        "coordCount": 3443
+      },
+      "sampleCount": 119,
+      "aCoveragePct": 100,
+      "bCoveragePct": 100,
+      "deltaPct": 0,
+      "meanGcjToWgsShiftMeters": 482.1754529420684
+    },
+    {
+      "slug": "qingdao",
+      "isChina": true,
+      "fileExists": true,
+      "sourceClass": "DataV-like (China district boundary schema)",
+      "health": {
+        "polygonCount": 0,
+        "multiPolygonCount": 10,
+        "closedRingCount": 32,
+        "openRingCount": 0,
+        "invalidLngLatCount": 0
+      },
+      "bounds": {
+        "minLng": 119.514841,
+        "minLat": 35.576062,
+        "maxLng": 121.066549,
+        "maxLat": 37.148838,
+        "coordCount": 2494
+      },
+      "sampleCount": 7,
+      "aCoveragePct": 100,
+      "bCoveragePct": 100,
+      "deltaPct": 0,
+      "meanGcjToWgsShiftMeters": 458.6400926194663
+    },
+    {
+      "slug": "chongqing",
+      "isChina": true,
+      "fileExists": true,
+      "sourceClass": "DataV-like (China district boundary schema)",
+      "health": {
+        "polygonCount": 0,
+        "multiPolygonCount": 38,
+        "closedRingCount": 47,
+        "openRingCount": 0,
+        "invalidLngLatCount": 0
+      },
+      "bounds": {
+        "minLng": 105.289759,
+        "minLat": 28.161339,
+        "maxLng": 110.198876,
+        "maxLat": 32.201187,
+        "coordCount": 6607
+      },
+      "sampleCount": 21,
+      "aCoveragePct": 100,
+      "bCoveragePct": 100,
+      "deltaPct": 0,
+      "meanGcjToWgsShiftMeters": 498.2881452801416
+    },
+    {
+      "slug": "guangzhou",
+      "isChina": true,
+      "fileExists": true,
+      "sourceClass": "DataV-like (China district boundary schema)",
+      "health": {
+        "polygonCount": 0,
+        "multiPolygonCount": 11,
+        "closedRingCount": 11,
+        "openRingCount": 0,
+        "invalidLngLatCount": 0
+      },
+      "bounds": {
+        "minLng": 112.958508,
+        "minLat": 22.51436,
+        "maxLng": 114.059957,
+        "maxLat": 23.932916,
+        "coordCount": 2639
+      },
+      "sampleCount": 7,
+      "aCoveragePct": 100,
+      "bCoveragePct": 100,
+      "deltaPct": 0,
+      "meanGcjToWgsShiftMeters": 619.1052454764136
+    },
+    {
+      "slug": "fuzhou",
+      "isChina": true,
+      "fileExists": true,
+      "sourceClass": "DataV-like (China district boundary schema)",
+      "health": {
+        "polygonCount": 0,
+        "multiPolygonCount": 13,
+        "closedRingCount": 127,
+        "openRingCount": 0,
+        "invalidLngLatCount": 0
+      },
+      "bounds": {
+        "minLng": 118.38209,
+        "minLat": 25.24989,
+        "maxLng": 120.515933,
+        "maxLat": 26.634377,
+        "coordCount": 5088
+      },
+      "sampleCount": 8,
+      "aCoveragePct": 100,
+      "bCoveragePct": 100,
+      "deltaPct": 0,
+      "meanGcjToWgsShiftMeters": 586.7097178045602
+    },
+    {
+      "slug": "quanzhou",
+      "isChina": true,
+      "fileExists": true,
+      "sourceClass": "DataV-like (China district boundary schema)",
+      "health": {
+        "polygonCount": 0,
+        "multiPolygonCount": 12,
+        "closedRingCount": 50,
+        "openRingCount": 0,
+        "invalidLngLatCount": 0
+      },
+      "bounds": {
+        "minLng": 117.555387,
+        "minLat": 24.374189,
+        "maxLng": 119.047575,
+        "maxLat": 25.937016,
+        "coordCount": 3837
+      },
+      "sampleCount": 7,
+      "aCoveragePct": 100,
+      "bCoveragePct": 100,
+      "deltaPct": 0,
+      "meanGcjToWgsShiftMeters": 572.1333017004376
+    },
+    {
+      "slug": "xiamen",
+      "isChina": true,
+      "fileExists": true,
+      "sourceClass": "DataV-like (China district boundary schema)",
+      "health": {
+        "polygonCount": 0,
+        "multiPolygonCount": 6,
+        "closedRingCount": 12,
+        "openRingCount": 0,
+        "invalidLngLatCount": 0
+      },
+      "bounds": {
+        "minLng": 117.886012,
+        "minLat": 24.418307,
+        "maxLng": 118.414651,
+        "maxLat": 24.902792,
+        "coordCount": 1136
+      },
+      "sampleCount": 4,
+      "aCoveragePct": 100,
+      "bCoveragePct": 100,
+      "deltaPct": 0,
+      "meanGcjToWgsShiftMeters": 578.2551494192537
+    },
+    {
+      "slug": "dalian",
+      "isChina": true,
+      "fileExists": true,
+      "sourceClass": "DataV-like (China district boundary schema)",
+      "health": {
+        "polygonCount": 0,
+        "multiPolygonCount": 10,
+        "closedRingCount": 98,
+        "openRingCount": 0,
+        "invalidLngLatCount": 0
+      },
+      "bounds": {
+        "minLng": 120.9753,
+        "minLat": 38.719848,
+        "maxLng": 123.51887,
+        "maxLat": 40.205189,
+        "coordCount": 4585
+      },
+      "sampleCount": 11,
+      "aCoveragePct": 100,
+      "bCoveragePct": 100,
+      "deltaPct": 0,
+      "meanGcjToWgsShiftMeters": 456.6789493152484
+    },
+    {
+      "slug": "suzhou",
+      "isChina": true,
+      "fileExists": true,
+      "sourceClass": "DataV-like (China district boundary schema)",
+      "health": {
+        "polygonCount": 0,
+        "multiPolygonCount": 9,
+        "closedRingCount": 9,
+        "openRingCount": 0,
+        "invalidLngLatCount": 0
+      },
+      "bounds": {
+        "minLng": 119.920013,
+        "minLat": 30.75797,
+        "maxLng": 121.372212,
+        "maxLat": 32.045827,
+        "coordCount": 2389
+      },
+      "sampleCount": 11,
+      "aCoveragePct": 100,
+      "bCoveragePct": 100,
+      "deltaPct": 0,
+      "meanGcjToWgsShiftMeters": 474.9309721237774
+    },
+    {
+      "slug": "jeju",
+      "isChina": false,
+      "fileExists": true,
+      "sourceClass": "Minimal custom schema (likely open admin source)",
+      "health": {
+        "polygonCount": 1,
+        "multiPolygonCount": 1,
+        "closedRingCount": 3,
+        "openRingCount": 0,
+        "invalidLngLatCount": 0
+      },
+      "bounds": {
+        "minLng": 126.17247937500008,
+        "minLat": 33.193832185000076,
+        "maxLng": 126.97066721800002,
+        "maxLat": 33.56416453800006,
+        "coordCount": 275
+      },
+      "sampleCount": 17,
+      "aCoveragePct": 82.35294117647058,
+      "bCoveragePct": 82.35294117647058,
+      "deltaPct": 0,
+      "meanGcjToWgsShiftMeters": 0
+    },
+    {
+      "slug": "kuala-lumpur",
+      "isChina": false,
+      "fileExists": true,
+      "sourceClass": "TindakMalaysia parliamentary boundary schema",
+      "health": {
+        "polygonCount": 11,
+        "multiPolygonCount": 0,
+        "closedRingCount": 11,
+        "openRingCount": 0,
+        "invalidLngLatCount": 0
+      },
+      "bounds": {
+        "minLng": 101.6153618763921,
+        "minLat": 3.033255548184983,
+        "maxLng": 101.75828669616094,
+        "maxLat": 3.244428750398983,
+        "coordCount": 1570
+      },
+      "sampleCount": 7,
+      "aCoveragePct": 57.14285714285714,
+      "bCoveragePct": 57.14285714285714,
+      "deltaPct": 0,
+      "meanGcjToWgsShiftMeters": 0
+    },
+    {
+      "slug": "melaka",
+      "isChina": false,
+      "fileExists": true,
+      "sourceClass": "Minimal custom schema (likely open admin source)",
+      "health": {
+        "polygonCount": 0,
+        "multiPolygonCount": 28,
+        "closedRingCount": 34,
+        "openRingCount": 0,
+        "invalidLngLatCount": 0
+      },
+      "bounds": {
+        "minLng": 101.96853,
+        "minLat": 2.0726,
+        "maxLng": 102.59432,
+        "maxLat": 2.49886,
+        "coordCount": 1749
+      },
+      "sampleCount": 2,
+      "aCoveragePct": 100,
+      "bCoveragePct": 100,
+      "deltaPct": 0,
+      "meanGcjToWgsShiftMeters": 0
+    }
+  ],
+  "notes": [
+    "A = 原始边界（线上逻辑）",
+    "B = 中国城市边界做 GCJ-02 -> WGS-84 转换后",
+    "点样本来自 restaurants.json 且先按现有 Mapbox 规则转换（中国点位会先转 WGS）"
+  ]
+}
