@@ -10,6 +10,8 @@ export const RESTAURANTS_HEADERS = Object.freeze([
   "name_en",
   "name_local",
   "cuisine",
+  "cuisine_zh",
+  "cuisine_en",
   "address",
   "lng",
   "lat",

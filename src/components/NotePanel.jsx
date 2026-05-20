@@ -46,6 +46,17 @@ function formatHours(value) {
   return segments.join("\n");
 }
 
+function formatPhone(value) {
+  const text = String(value ?? "").trim();
+  if (text === "") return "";
+  const segments = text
+    .split(/[;；]/)
+    .map((segment) => segment.trim())
+    .filter((segment) => segment !== "");
+  if (segments.length === 0) return "";
+  return segments.join("\n");
+}
+
 function normalizeMapPlatform(value) {
   const platform = String(value ?? "").trim().toLowerCase();
   return platform === "google" || platform === "amap" ? platform : "";
@@ -136,6 +147,7 @@ export default function NotePanel({
   const hasMapUrl = mapUrl !== "";
   const priceText = formatPrice(selectedStore?.pricePerPerson, selectedStore?.currency);
   const hoursText = formatHours(selectedStore?.hours);
+  const phoneText = formatPhone(selectedStore?.phone);
   const openMapInNewTab = (event) => {
     if (!hasMapUrl) return;
     event.preventDefault();
@@ -186,7 +198,11 @@ export default function NotePanel({
           <dl className="ffj-note-fields">
             <div className="ffj-note-field">
               <dt>{labels?.cuisine ?? "Cuisine"}</dt>
-              <dd>{String(selectedStore.cuisine ?? "").trim() || "—"}</dd>
+              <dd>
+                {String(
+                  selectedStore.cuisine_zh ?? selectedStore.cuisine ?? "",
+                ).trim() || "—"}
+              </dd>
             </div>
             <div className="ffj-note-field">
               <dt>{labels?.scoreOverall ?? "Overall score"}</dt>
@@ -204,10 +220,10 @@ export default function NotePanel({
                 <dd className="ffj-note-field-value--multiline">{hoursText}</dd>
               </div>
             ) : null}
-            {String(selectedStore.phone ?? "").trim() !== "" ? (
+            {phoneText !== "" ? (
               <div className="ffj-note-field">
                 <dt>{labels?.phone ?? "Phone"}</dt>
-                <dd>{selectedStore.phone}</dd>
+                <dd className="ffj-note-field-value--multiline">{phoneText}</dd>
               </div>
             ) : null}
           </dl>

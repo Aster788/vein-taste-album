@@ -6,5 +6,8 @@
   },
   "kuala-lumpur": {
     "detail_locale_mode": "en_zh"
+  },
+  "melaka": {
+    "detail_locale_mode": "en_zh"
   }
 }

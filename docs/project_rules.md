@@ -47,16 +47,16 @@
 | 数据用本地 JSON，不用数据库         | MVP 阶段复杂度最低，静态部署足够                                                                                                                              |
 | 图片路径与文件名匹配               | 店铺目录统一用 `store_slug`；图片 basename 按 `dish_name_local`→`dish_name_en`→`dish_name_zh` 匹配 dishes.json；未命中也要展示（中文数字序号 basename 仅图，其他 basename 显示为名称） |
 | 图片扩展名需与真实编码一致            | `.jpg/.jpeg` 必须是真实 JPEG（文件头 `FF D8 FF`）；禁止把 HEIC/HEIF 仅改后缀伪装成 JPG，避免浏览器坏图                                                                       |
-| 所有颜色用 CSS 变量（token）      | 10个城市各有专属配色，必须通过变量统一管理，禁止硬编码色值                                                                                                                  |
+| 所有颜色用 CSS 变量（token）      | 12 个城市各有专属配色，必须通过变量统一管理，禁止硬编码色值                                                                                                                 |
 
 
 ---
 
 ## 四、城市与语言规则
 
-- **目前共10个城市**：中国8城（大连、青岛、上海、广州、重庆、福州、厦门、泉州）+ 济州岛 + 吉隆坡
+- **目前共 12 个城市**：中国 9 城（大连、青岛、上海、苏州、广州、重庆、福州、厦门、泉州）+ 济州岛 + 吉隆坡 + 马六甲
 - **中国城市**：页面右上角显示 EN/CN 切换按钮，用户可在中英文间切换（**不含**书脊/封面：书脊与封面统一为上中文、下英文「国家·城市」，见 `prd.md` §2.5）
-- **非中国城市**（济州岛、吉隆坡；以及未来新增城市）：页面右上角显示语言切换按钮（书架页不显示；具体按钮集合见 `prd.md` §2.5，例如 `EN/KO/CN` 或 `EN/CN`）；**书脊/封面**与中国城同一套上中文、下英文「国家·城市」
+- **非中国城市**（济州岛、吉隆坡、马六甲；以及未来新增城市）：页面右上角显示语言切换按钮（书架页不显示；具体按钮集合见 `prd.md` §2.5，例如 `EN/KO/CN` 或 `EN/CN`）；**书脊/封面**与中国城同一套上中文、下英文「国家·城市」
 - **非中国城市配置源**：详情页语言按钮集合不写死在组件里，统一读取 `src/data/city_meta.json`
 - **新增非中国城市时必须同步补配置**：至少新增该城市的 `slug -> detail_locale_mode`；若模式为 `en_native_zh`，还必须补 `native_iso639_1` 与 `native_button_label`
 - **店铺名 / 菜品名**：始终以数据文件中的多语言字段为准（`restaurants.json`：`name_zh/name_en/name_local`；`dishes.json`：`dish_name_zh/dish_name_en/dish_name_local`），**不参与**语言切换，也**不做**机器翻译覆盖（Map 点位标签与 Cuisine 多行展示规则见 `prd.md` §2.5 / §4.2 / §4.3）
@@ -68,7 +68,7 @@
   - 宽度上限按文案脚本而非当前语言按钮判定：`zh=4em`、`en=12em`、`ja=4.5em`、`ko=5.5em`、`th=6.2em`
   - 英文文案统一小写展示
   - 标签区需支持超量纵向滚动，滚动条颜色跟随城市主色
-  - 当前确认英文映射：`东北菜 -> northeastern cuisine`、`韩餐 -> korean cuisine`、`日料 -> japanese cuisine`
+  - 菜系英文展示文案见 `cuisineSlugs.js` 的 `CUISINE_BY_EN`（数据填表以 `cuisine_zh` / `cuisine_en` 为准，不再用组件内正则猜贴纸）
 
 ---
 
@@ -88,11 +88,13 @@ src/data/
 
 - `restaurants.xlsx` 中：
   - 必填：`city_en`、`store_slug`、`record_scope`（`branch` / `brand`）以及至少一个店名字段（`name_zh/name_en/name_local`）。
-  - `store_slug` 规则：`[a-z0-9-]+`，至少保证 `(city_en, store_slug)` 唯一。
+  - `store_slug` 规则：`[a-z0-9-]+`；`dishes` / `photos` 维度 `(city_en, store_slug)` 唯一；`restaurants` 允许多条 `branch` 共享同一 slug（多分店，见 `docs/data-workflow.md` §4.1）。
+  - **多分店 UI 归组**：唯一实现 [`src/utils/storeGroups.js`](../src/utils/storeGroups.js)；新增分店只改 Excel 共用 slug，禁止在组件写店名/slug 白名单。
   - `record_scope` 语义：`branch`=具体门店（有坐标即可上图）；`brand`=品牌层记录（不作为地图点位）。
   - `price_per_person` 必须是数值单元格（不带货币符号，币种写 `currency`）。
   - `score_overall` 必须是数值单元格（统一 1 位小数）。
   - `is_china` 仅允许小写字符串 `true` / `false`。
+  - **菜系与贴纸**：`cuisine_zh`（中文展示名）、`cuisine_en`（对应 `src/assets/stickers/cuisine/{cuisine_en}.svg`）。筛选与贴纸加载以 `cuisine_en` 为准；详见 `docs/structure.md` 与 `src/utils/cuisineSlugs.js`。
 - 数据变更后的执行顺序：
   - 先运行 `npm run data:sync`（xlsx -> restaurants.json/dishes.json）
   - 如需固化 MT 结果，再运行 `npm run data:export-translations`（输出 `translations.static.json`）
@@ -102,7 +104,7 @@ src/data/
 
 ```
 src/assets/photos/{city-folder}/{store_slug}/{dish-file}.{jpg|jpeg|png|webp|heic}
-`store_slug` 规则：[a-z0-9-]+，至少在 `(city_en, store_slug)` 维度唯一
+`store_slug` 规则：[a-z0-9-]+；`dishes` / `photos` 在 `(city_en, store_slug)` 唯一；`restaurants` 可多 branch 行共享 slug（多分店）
 `dish-file` 可使用任一语言菜名；代码匹配顺序：dish_name_local → dish_name_en → dish_name_zh
 ```
 
@@ -136,7 +138,7 @@ src/assets/photos/{city-folder}/{store_slug}/{dish-file}.{jpg|jpeg|png|webp|heic
 - Phase 5：板块②杂志详情
 - Phase 6：打磨与扩展
 
-**当前正在做：Phase 4（板块①地图，当前推进 Task 4.10）**
+**当前已全部完成，出于打磨、扩展阶段。**
 
 ---
 

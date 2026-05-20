@@ -17,68 +17,24 @@ import spoonAndForkStickerUrl from "../assets/stickers/page/spoon-and-fork.svg?u
 import locationStickerUrl from "../assets/stickers/page/location.svg?url";
 import {
   cityEnFromBookshelfSlug,
-  getRestaurantsByCity,
   getMappableRestaurantsByCity,
 } from "../utils/dataLoader.js";
+import {
+  getCuisineLabelsByEn,
+  getRestaurantCuisineEn,
+  getRestaurantCuisineZh,
+  resolveCuisineStickerHref,
+} from "../utils/cuisineSlugs.js";
+import {
+  getCuisineAddressBlock,
+  getCuisineDisplayNameLines,
+  getCuisineGroupRepresentativeBranch,
+  getCuisineGroupSortKey,
+  getCuisineStoreGroupsByCity,
+} from "../utils/storeGroups.js";
 import DishInfo from "../components/DishInfo.jsx";
 import NotePanel from "../components/NotePanel.jsx";
 import PhotoPanel from "../components/PhotoPanel.jsx";
-
-const CUISINE_STICKER_MODULES = import.meta.glob("../assets/stickers/cuisine/*.svg", {
-  eager: true,
-  import: "default",
-});
-
-const CUISINE_STICKER_BY_SLUG = Object.fromEntries(
-  Object.entries(CUISINE_STICKER_MODULES).map(([path, href]) => {
-    const matched = path.match(/\/([^/]+)\.svg$/);
-    return [matched?.[1] ?? path, href];
-  }),
-);
-
-const CUISINE_STICKER_RULES = [
-  {
-    test: /(中餐|中式|川菜|粤菜|湘菜|鲁菜|中国菜|chinese|china)/i,
-    slugs: ["northeastern-chinese-cuisine", "chinese-pastry", "all"],
-  },
-  { test: /(东北|northeast)/i, slugs: ["northeastern-chinese-cuisine", "all"] },
-  { test: /(烧烤|烤肉|barbecue|bbq)/i, slugs: ["barbeque", "all"] },
-  { test: /(海鲜|seafood)/i, slugs: ["seafood", "all"] },
-  { test: /(日料|寿司|烧鸟|拉面|japanese|japan)/i, slugs: ["japanese", "all"] },
-  { test: /(韩餐|韩式|korean|korea)/i, slugs: ["korean", "all"] },
-  { test: /(糕点|中式糕点|chinese pastry)/i, slugs: ["chinese-pastry", "all"] },
-  {
-    test: /(东南亚|泰餐|越南|马来|印尼|southeast|thai|vietnam|malay)/i,
-    slugs: ["southeast-asian", "all"],
-  },
-  { test: /(咖啡|coffee|cafe)/i, slugs: ["coffee", "drinks", "all"] },
-  { test: /(奶茶|milk tea|milktea)/i, slugs: ["milk-tea", "drinks", "all"] },
-  {
-    test: /(饮品|酒吧|鸡尾酒|茶饮|drinks|drink|tea|bar)/i,
-    slugs: ["drinks", "milk-tea", "all"],
-  },
-  { test: /(甜品|冰淇淋|蛋糕|dessert|gelato|ice cream)/i, slugs: ["dessert", "all"] },
-  { test: /(烘焙|面包|吐司|披萨|bakery|bread|toast|pastry)/i, slugs: ["bakery", "chinese-pastry", "all"] },
-  { test: /(牛排|steak)/i, slugs: ["steak", "all"] },
-  { test: /(快餐|fast food|fast-food|fastfood)/i, slugs: ["fast-food", "all"] },
-  { test: /(小吃|snack|street food|street-food)/i, slugs: ["street-food", "snacks", "all"] },
-  { test: /(素食|蔬食|vegetarian|vegan|vagetarian)/i, slugs: ["vagetarian", "all"] },
-];
-
-const CUISINE_LABEL_BY_ZH = Object.freeze({
-  日料: { en: "japanese cuisine", ko: "일식" },
-  糕点: { zh: "中式糕点", en: "chinese pastry", ko: "중식 페이스트리" },
-  海鲜: { en: "Seafood", ko: "해산물" },
-  奶茶: { en: "Milk tea", ko: "밀크티" },
-  甜品: { en: "Dessert", ko: "디저트" },
-  东北菜: { en: "northeastern cuisine", ko: "중국 동북 요리" },
-  咖啡: { en: "Coffee", ko: "커피" },
-  小吃: { en: "snack", ko: "간식" },
-  韩餐: { en: "korean cuisine", ko: "한식" },
-  快餐: { en: "Fast food", ko: "패스트푸드" },
-  烤肉: { en: "BBQ", ko: "바비큐" },
-  零食: { en: "snack", ko: "간식" },
-});
 
 const ZH_PINYIN_COLLATOR = new Intl.Collator("zh-Hans-CN-u-co-pinyin", {
   usage: "sort",
@@ -103,20 +59,6 @@ function comparePinyinWithNumericRule(leftText, rightText) {
     return leftNumeric ? 1 : -1;
   }
   return ZH_PINYIN_COLLATOR.compare(leftText, rightText);
-}
-
-function pickCuisineSticker(cuisine) {
-  const text = String(cuisine ?? "").trim();
-  if (text === "") {
-    return CUISINE_STICKER_BY_SLUG["all"] ?? "";
-  }
-
-  const matchedRule = CUISINE_STICKER_RULES.find((rule) => rule.test.test(text));
-  if (matchedRule) {
-    const matchedSlug = matchedRule.slugs.find((slug) => CUISINE_STICKER_BY_SLUG[slug]);
-    if (matchedSlug) return CUISINE_STICKER_BY_SLUG[matchedSlug];
-  }
-  return CUISINE_STICKER_BY_SLUG["snacks"] ?? CUISINE_STICKER_BY_SLUG["all"] ?? "";
 }
 
 function splitCuisineLabelLines(label, detailLocale) {
@@ -206,6 +148,7 @@ export default function CityDetail() {
   const [cuisineMenuMaxHeight, setCuisineMenuMaxHeight] = useState(null);
   const [isCuisineSortHintOpen, setCuisineSortHintOpen] = useState(false);
   const [selectedStore, setSelectedStore] = useState(null);
+  const [selectedCuisineGroup, setSelectedCuisineGroup] = useState(null);
   const storeListRef = useRef(null);
   const [activeCuisine, setActiveCuisine] = useState("");
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
@@ -287,13 +230,13 @@ export default function CityDetail() {
           nativeText,
           localeConfig.nativeIso639_1,
         );
-  const pickCuisineLabel = (cuisineText) => {
-    const zh = String(cuisineText ?? "").trim();
-    if (zh === "") return "";
-    const mapped = CUISINE_LABEL_BY_ZH[zh];
-    const zhLabel = mapped?.zh ?? zh;
-    const en = mapped?.en ?? "";
-    const native = nativeIso === "ko" ? mapped?.ko ?? "" : "";
+  const pickCuisineLabel = (cuisineEn, cuisineZh = "") => {
+    const slug = String(cuisineEn ?? "").trim();
+    if (slug === "") return "";
+    const mapped = getCuisineLabelsByEn(slug);
+    const zhLabel = String(cuisineZh ?? "").trim() || mapped.zh;
+    const en = mapped.en ?? "";
+    const native = nativeIso === "ko" ? mapped.ko ?? "" : "";
     const label = pickUiText(zhLabel, en, native);
     return detailLocale === "en" ? label.toLowerCase() : label;
   };
@@ -326,16 +269,20 @@ export default function CityDetail() {
   const cuisineFilters = useMemo(() => {
     const cityEn = cityEnFromBookshelfSlug(slug);
     if (!cityEn) return [];
-    const unique = new Set();
+    const unique = new Map();
     getMappableRestaurantsByCity(cityEn).forEach((row) => {
-      const cuisine = String(row?.cuisine ?? "").trim();
-      if (cuisine !== "") unique.add(cuisine);
+      const cuisineEn = getRestaurantCuisineEn(row);
+      if (cuisineEn === "") return;
+      if (!unique.has(cuisineEn)) {
+        unique.set(cuisineEn, getRestaurantCuisineZh(row));
+      }
     });
 
-    return Array.from(unique)
-      .map((cuisine, index) => ({
-        cuisine,
-        sortKey: normalizeSortText(cuisine),
+    return Array.from(unique.entries())
+      .map(([cuisineEn, cuisineZh], index) => ({
+        cuisineEn,
+        cuisineZh,
+        sortKey: normalizeSortText(cuisineZh || getCuisineLabelsByEn(cuisineEn).zh),
         index,
       }))
       .sort((left, right) => {
@@ -343,23 +290,27 @@ export default function CityDetail() {
         if (byPinyin !== 0) return byPinyin;
         return left.index - right.index;
       })
-      .map((item) => item.cuisine);
+      .map((item) => item.cuisineEn);
   }, [slug]);
-  const cuisineStores = useMemo(() => {
+  const cuisineStoreGroups = useMemo(() => {
+    // Multi-branch grouping: universal (city_en + store_slug), see src/utils/storeGroups.js
     const cityEn = cityEnFromBookshelfSlug(slug);
     if (!cityEn) return [];
-    const filtered = getRestaurantsByCity(cityEn).filter((row) => {
+    const filtered = getCuisineStoreGroupsByCity(cityEn).filter((group) => {
       if (activeCuisine === "") return true;
-      return String(row?.cuisine ?? "").trim() === activeCuisine;
+      return group.branches.some(
+        (row) => getRestaurantCuisineEn(row) === activeCuisine,
+      );
     });
 
     return filtered
-      .map((row, index) => {
-        const zhKey = normalizeSortText(row?.name_zh);
-        const enKey = normalizeSortText(row?.name_en);
-        const localKey = normalizeSortText(row?.name_local);
-        const primaryKey = zhKey || enKey || localKey;
-        return { row, index, primaryKey, enKey, localKey };
+      .map((group, index) => {
+        const lines = getCuisineDisplayNameLines(group);
+        const zhKey = normalizeSortText(lines[0] ?? "");
+        const enKey = normalizeSortText(lines[1] ?? "");
+        const localKey = normalizeSortText(lines[2] ?? "");
+        const primaryKey = zhKey || getCuisineGroupSortKey(group) || enKey || localKey;
+        return { group, index, primaryKey, enKey, localKey };
       })
       .sort((left, right) => {
         const leftHasKey = left.primaryKey !== "";
@@ -377,26 +328,43 @@ export default function CityDetail() {
 
         return left.index - right.index;
       })
-      .map((entry) => entry.row);
+      .map((entry) => entry.group);
   }, [slug, activeCuisine]);
   const cuisineFilterItems = useMemo(() => {
     const cityEn = cityEnFromBookshelfSlug(slug);
     if (!cityEn) return [];
     const counters = new Map();
-    const allCuisineStores = getRestaurantsByCity(cityEn);
-    allCuisineStores.forEach((row) => {
-      const cuisine = String(row?.cuisine ?? "").trim();
-      if (cuisine === "") return;
-      counters.set(cuisine, (counters.get(cuisine) ?? 0) + 1);
+    const allCuisineGroups = getCuisineStoreGroupsByCity(cityEn);
+    allCuisineGroups.forEach((group) => {
+      const cuisineEns = new Set(
+        group.branches
+          .map((row) => getRestaurantCuisineEn(row))
+          .filter((value) => value !== ""),
+      );
+      cuisineEns.forEach((cuisineEn) => {
+        const existing = counters.get(cuisineEn);
+        if (!existing) {
+          counters.set(cuisineEn, {
+            count: 1,
+            cuisineZh: getRestaurantCuisineZh(
+              group.branches.find((row) => getRestaurantCuisineEn(row) === cuisineEn) ??
+                group.branches[0],
+            ),
+          });
+          return;
+        }
+        existing.count += 1;
+      });
     });
 
     const dynamicItems = Array.from(counters.entries())
-      .map(([cuisine, count], index) => ({
-        key: cuisine,
-        cuisine,
-        count,
-        stickerUrl: pickCuisineSticker(cuisine),
-        sortKey: normalizeSortText(cuisine),
+      .map(([cuisineEn, meta], index) => ({
+        key: cuisineEn,
+        cuisine: cuisineEn,
+        cuisineZh: meta.cuisineZh,
+        count: meta.count,
+        stickerUrl: resolveCuisineStickerHref(cuisineEn),
+        sortKey: normalizeSortText(meta.cuisineZh || getCuisineLabelsByEn(cuisineEn).zh),
         index,
       }))
       .sort((left, right) => {
@@ -413,8 +381,8 @@ export default function CityDetail() {
       {
         key: "__all__",
         cuisine: "",
-        count: allCuisineStores.length,
-        stickerUrl: CUISINE_STICKER_BY_SLUG["all"] ?? "",
+        count: allCuisineGroups.length,
+        stickerUrl: resolveCuisineStickerHref("all"),
       },
       ...dynamicItems,
     ];
@@ -423,16 +391,20 @@ export default function CityDetail() {
     if (activeCuisine === "") {
       return pickUiText("全部", "All", nativeAllText);
     }
-    return pickCuisineLabel(activeCuisine);
-  }, [activeCuisine, detailLocale, localeConfig.isChina, nativeAllText]);
-  const isCuisineFilterNoMatch = activeCuisine !== "" && cuisineStores.length === 0;
-  const selectedStoreAddress = String(selectedStore?.address ?? "").trim();
-
-  const getStoreNameLines = useCallback((store) => {
-    return [store?.name_zh, store?.name_en, store?.name_local]
-      .map((value) => String(value ?? "").trim())
-      .filter((value) => value !== "");
-  }, []);
+    const meta = cuisineFilterItems.find((item) => item.cuisine === activeCuisine);
+    return pickCuisineLabel(activeCuisine, meta?.cuisineZh ?? "");
+  }, [activeCuisine, cuisineFilterItems, detailLocale, localeConfig.isChina, nativeAllText]);
+  const isCuisineFilterNoMatch = activeCuisine !== "" && cuisineStoreGroups.length === 0;
+  const selectedCuisineStore = useMemo(
+    () =>
+      selectedCuisineGroup
+        ? getCuisineGroupRepresentativeBranch(selectedCuisineGroup)
+        : null,
+    [selectedCuisineGroup],
+  );
+  const selectedStoreAddress = selectedCuisineGroup
+    ? getCuisineAddressBlock(selectedCuisineGroup)
+    : "";
 
   useEffect(() => {
     if (!valid) return;
@@ -499,6 +471,7 @@ export default function CityDetail() {
 
   useEffect(() => {
     setSelectedStore(null);
+    setSelectedCuisineGroup(null);
     setActiveCuisine("");
     setActivePhotoIndex(0);
     setCuisineMenuOpen(false);
@@ -507,34 +480,36 @@ export default function CityDetail() {
 
   useEffect(() => {
     if (activeSection !== "cuisine") return;
-    if (cuisineStores.length === 0) {
-      setSelectedStore(null);
+    if (cuisineStoreGroups.length === 0) {
+      setSelectedCuisineGroup(null);
       setActivePhotoIndex(0);
       return;
     }
-    const hasCurrent = cuisineStores.some((row) => row === selectedStore);
+    const hasCurrent = cuisineStoreGroups.some((group) => group === selectedCuisineGroup);
     if (!hasCurrent) {
-      setSelectedStore(cuisineStores[0]);
+      setSelectedCuisineGroup(cuisineStoreGroups[0]);
       setActivePhotoIndex(0);
     }
-  }, [activeSection, cuisineStores, selectedStore]);
+  }, [activeSection, cuisineStoreGroups, selectedCuisineGroup]);
 
   useEffect(() => {
     setActivePhotoIndex(0);
-  }, [selectedStore]);
+  }, [selectedCuisineGroup]);
 
   useEffect(() => {
     storeItemRefs.current = [];
-  }, [cuisineStores.length]);
+  }, [cuisineStoreGroups.length]);
 
   useEffect(() => {
-    if (!selectedStore) return;
+    if (!selectedCuisineGroup) return;
     if (activeCuisine === "") return;
-    const selectedStoreCuisine = String(selectedStore?.cuisine ?? "").trim();
-    if (selectedStoreCuisine !== activeCuisine) {
-      setSelectedStore(null);
+    const matchesFilter = selectedCuisineGroup.branches.some(
+      (row) => getRestaurantCuisineEn(row) === activeCuisine,
+    );
+    if (!matchesFilter) {
+      setSelectedCuisineGroup(null);
     }
-  }, [activeCuisine, selectedStore]);
+  }, [activeCuisine, selectedCuisineGroup]);
 
   useEffect(() => {
     setCuisineMenuOpen(false);
@@ -544,7 +519,7 @@ export default function CityDetail() {
   const storeItemRefs = useRef([]);
   useEffect(() => {
     if (activeSection !== "cuisine") return undefined;
-    if (cuisineStores.length === 0) return undefined;
+    if (cuisineStoreGroups.length === 0) return undefined;
 
     const onKeyDown = (event) => {
       if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
@@ -559,17 +534,19 @@ export default function CityDetail() {
 
       event.preventDefault();
 
-      const currentIndex = selectedStore ? cuisineStores.findIndex((s) => s === selectedStore) : -1;
+      const currentIndex = selectedCuisineGroup
+        ? cuisineStoreGroups.findIndex((group) => group === selectedCuisineGroup)
+        : -1;
       let nextIndex;
 
       if (event.key === "ArrowUp") {
-        nextIndex = currentIndex <= 0 ? cuisineStores.length - 1 : currentIndex - 1;
+        nextIndex = currentIndex <= 0 ? cuisineStoreGroups.length - 1 : currentIndex - 1;
       } else {
-        nextIndex = currentIndex >= cuisineStores.length - 1 ? 0 : currentIndex + 1;
+        nextIndex = currentIndex >= cuisineStoreGroups.length - 1 ? 0 : currentIndex + 1;
       }
 
-      const nextStore = cuisineStores[nextIndex];
-      setSelectedStore(nextStore);
+      const nextGroup = cuisineStoreGroups[nextIndex];
+      setSelectedCuisineGroup(nextGroup);
 
       // 焦点跟随：切换后将焦点设置到新选中的店铺项
       window.requestAnimationFrame(() => {
@@ -584,7 +561,7 @@ export default function CityDetail() {
     return () => {
       document.removeEventListener("keydown", onKeyDown);
     };
-  }, [activeSection, cuisineStores, selectedStore]);
+  }, [activeSection, cuisineStoreGroups, selectedCuisineGroup]);
 
   useEffect(() => {
     if (!isCuisineSortHintOpen) return;
@@ -914,17 +891,17 @@ export default function CityDetail() {
             aria-label={pickUiText("菜系筛选", "Cuisine filters", nativeCuisineLeftPlaceholderText)}
           >
             <div className={`ffj-cuisine-filter-stack ${activeCuisine !== "" ? "is-filtering" : ""}`}>
-              {cuisineFilters.map((cuisine) => {
-                const isActive = activeCuisine === cuisine;
-                const cuisineLabel = pickCuisineLabel(cuisine);
+              {cuisineFilters.map((cuisineEn) => {
+                const isActive = activeCuisine === cuisineEn;
+                const cuisineLabel = pickCuisineLabel(cuisineEn);
                 const scriptClass = `is-script-${detectLabelScript(cuisineLabel, detailLocale)}`;
                 return (
                   <button
-                    key={cuisine}
+                    key={cuisineEn}
                     type="button"
                     className={`ffj-cuisine-filter-btn ${scriptClass} ${isActive ? "is-active" : ""}`}
                     onClick={() => {
-                      setActiveCuisine((current) => (current === cuisine ? "" : cuisine));
+                      setActiveCuisine((current) => (current === cuisineEn ? "" : cuisineEn));
                     }}
                     onMouseEnter={() => handleMapInteractiveHoverChange(true)}
                     onMouseLeave={() => handleMapInteractiveHoverChange(false)}
@@ -933,7 +910,7 @@ export default function CityDetail() {
                     <span className="ffj-cuisine-filter-btn-text">
                       {splitCuisineLabelLines(cuisineLabel, detailLocale).map((line, lineIndex) => (
                         <span
-                          key={`${cuisine}-${line}-${lineIndex}`}
+                          key={`${cuisineEn}-${line}-${lineIndex}`}
                           className={`ffj-cuisine-filter-btn-line ${
                             lineIndex === 0 ? "is-first" : "is-following"
                           }`}
@@ -1082,7 +1059,7 @@ export default function CityDetail() {
                       const isActive = isAll ? activeCuisine === "" : activeCuisine === item.cuisine;
                       const label = isAll
                         ? pickUiText("全部", "All", nativeAllText)
-                        : pickCuisineLabel(item.cuisine);
+                        : pickCuisineLabel(item.cuisine, item.cuisineZh);
                       return (
                         <button
                           key={item.key}
@@ -1114,22 +1091,22 @@ export default function CityDetail() {
               </div>
 
               <div ref={storeListRef} className="ffj-store-playlist" tabIndex={-1}>
-                {cuisineStores.length === 0 ? (
+                {cuisineStoreGroups.length === 0 ? (
                   <p className="ffj-store-playlist-empty">
                     {pickUiText("等我探索 ：）", "More to explore :)", nativeNoStoreText)}
                   </p>
                 ) : (
                   <>
-                    {cuisineStores.map((store, index) => {
-                      const isActive = selectedStore === store;
-                      const lines = getStoreNameLines(store);
+                    {cuisineStoreGroups.map((group, index) => {
+                      const isActive = selectedCuisineGroup === group;
+                      const lines = getCuisineDisplayNameLines(group);
                       return (
                         <button
-                          key={`${store.city_en}-${store.store_slug ?? index}-${index}`}
+                          key={`${group.city_en}-${group.store_slug ?? index}`}
                           ref={(el) => { storeItemRefs.current[index] = el; }}
                           type="button"
                           className={`ffj-store-playlist-item ${isActive ? "is-active" : ""}`}
-                          onClick={() => setSelectedStore(store)}
+                          onClick={() => setSelectedCuisineGroup(group)}
                           aria-pressed={isActive}
                         >
                           <span className="ffj-store-playlist-item-index">
@@ -1154,7 +1131,7 @@ export default function CityDetail() {
                 )}
                 <div className="ffj-store-playlist-item ffj-store-playlist-item--tail" aria-hidden="true">
                   <span className="ffj-store-playlist-item-index">
-                    {String(cuisineStores.length + 1).padStart(2, "0")}
+                    {String(cuisineStoreGroups.length + 1).padStart(2, "0")}
                   </span>
                   <span className="ffj-store-playlist-item-names">
                     <span className="ffj-store-playlist-item-name-line ffj-store-playlist-item-name-line--tail">
@@ -1195,7 +1172,7 @@ export default function CityDetail() {
             ) : (
               <PhotoPanel
                 citySlug={slug}
-                selectedStore={selectedStore}
+                selectedStore={selectedCuisineStore}
                 activePhotoIndex={activePhotoIndex}
                 onChangeActivePhotoIndex={setActivePhotoIndex}
                 labels={{
@@ -1217,10 +1194,10 @@ export default function CityDetail() {
                   noPhoto: pickUiText("暂无美食图片", "No photos yet", nativeNoPhotoText),
                 }}
                 metaContent={
-                  selectedStore ? (
+                  selectedCuisineStore ? (
                     <DishInfo
                       citySlug={slug}
-                      selectedStore={selectedStore}
+                      selectedStore={selectedCuisineStore}
                       activePhotoIndex={activePhotoIndex}
                       isChina={localeConfig.isChina}
                       detailLocale={detailLocale}

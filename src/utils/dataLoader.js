@@ -73,6 +73,12 @@ function nonEmptyNameKeys(...values) {
     .filter((value) => value !== "");
 }
 
+function normalizeStoreSlug(value) {
+  return String(value ?? "")
+    .trim()
+    .toLowerCase();
+}
+
 /**
  * 按城市筛选店铺（`restaurants.json` 的 `city_en`）。
  * @param {string} cityEn
@@ -153,6 +159,12 @@ export function getDishNoteText(dish) {
 export function dishBelongsToRestaurant(dish, restaurant) {
   if (normalizeCityEn(dish.city_en) !== normalizeCityEn(restaurant.city_en)) {
     return false;
+  }
+
+  const dishSlug = normalizeStoreSlug(dish.store_slug);
+  const restaurantSlug = normalizeStoreSlug(restaurant.store_slug);
+  if (dishSlug !== "" && restaurantSlug !== "" && dishSlug === restaurantSlug) {
+    return true;
   }
 
   const dishKeys = new Set(

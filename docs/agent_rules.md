@@ -101,7 +101,8 @@
 - 若需说明「文件为空」：须写明**路径 + 字节大小**；Read 显示空不等于磁盘一定为空，以终端为准。
 - 涉及 **任意贴纸 SVG**（`src/assets/stickers/cities/`、`page/`、`cuisine/`）：在汇报“可用”前，必须核查是否含整幅 viewBox 黑/白底框或大面积底卡 path；如存在，先清理再接入，避免在书脊/Slogan/筛选/拍立得出现黑白方块。
 - **黑/白背景一票否决**：只要存在覆盖全画布的黑色或白色背景层（含 `#000/#000000/#010000/#fff/#ffffff` 或近似纯黑纯白），即判定该 SVG 不可用，必须改成透明背景后才能合入。
-- **贴纸颜色一致性强校验**：`src/assets/stickers/**` 下 SVG 在页面展示时，禁止通过 `filter`（如 `invert()` / `hue-rotate()` / `brightness()`）进行整体改色；若页面颜色与文件不一致，优先排查并移除样式层滤镜，确保呈现为素材原色。
+- **贴纸颜色一致性强校验**：`src/assets/stickers/`** 下 SVG 在页面展示时，禁止通过 `filter`（如 `invert()` / `hue-rotate()` / `brightness()`）进行整体改色；若页面颜色与文件不一致，优先排查并移除样式层滤镜，确保呈现为素材原色。
+- **菜系贴纸与数据列**：`restaurants.json` 的 `cuisine_en` 必须对应 `stickers/cuisine/{cuisine_en}.svg`；`cuisine_zh` 为中文展示名。约定见 `docs/structure.md` §菜系筛选贴纸、`src/utils/cuisineSlugs.js`。
 - **非中国城市** `src/assets/geojson/<slug>.geojson`：新增或更新边界时，须符合 `prd.md` §5.3 小节 **「非中国城市：地图上『分区』边界的统一规则」**（选型优先级、块数区间、命名字段、许可与出处）；要素属性中应能识别数据源类型（如官方区划、开放 ADM、选举分区等，可与现有 `ffj_admin` / `ffj_source` 一类字段对齐）。
 
 ---

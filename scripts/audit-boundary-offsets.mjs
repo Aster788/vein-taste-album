@@ -17,8 +17,10 @@ const CITY_CONFIG = [
   { slug: "quanzhou", cityEn: "quanzhou", isChina: true },
   { slug: "xiamen", cityEn: "xiamen", isChina: true },
   { slug: "dalian", cityEn: "dalian", isChina: true },
+  { slug: "suzhou", cityEn: "suzhou", isChina: true },
   { slug: "jeju", cityEn: "jeju", isChina: false },
   { slug: "kuala-lumpur", cityEn: "kuala-lumpur", isChina: false },
+  { slug: "melaka", cityEn: "melaka", isChina: false },
 ];
 
 function parseArgs(argv) {

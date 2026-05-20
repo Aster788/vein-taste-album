@@ -55,13 +55,50 @@ Scope and map behavior:
 
 Slug/scope hygiene rules:
 
-- `store_slug` should satisfy `[a-z0-9-]+` and be unique at least by `(city_en, store_slug)`.
+- `store_slug` should satisfy `[a-z0-9-]+`.
+- `(city_en, store_slug)` must be unique for **dishes** and **photos** (one menu / album per slug).
+- `restaurants.json` may contain **multiple** `branch` rows with the same `(city_en, store_slug)` when a brand has several locations; map shows each row, cuisine UI groups by slug (see `docs/data-workflow.md` §4.1).
+- **Universal rule — not store-specific**: any future multi-branch store follows the same logic when branches share `store_slug`; implementation is only in `src/utils/storeGroups.js` (no React whitelist).
 - Use `branch` for concrete stores (even if coordinates are temporarily missing and will be filled later).
 - Use `brand` only for brand-level placeholders that should never become map points.
 
 Optional columns:
 
-- all other restaurant columns (for example: `city_en`, `city_zh`, `cuisine`, `price_per_person`, `hours`, `phone`, `map_url`)
+- all other restaurant columns (for example: `city_en`, `city_zh`, `cuisine_zh`, `cuisine_en`, `price_per_person`, `hours`, `phone`, `map_url`)
+
+### Cuisine fields (`cuisine_zh` / `cuisine_en`)
+
+These two columns link each store to a sticker under `src/assets/stickers/cuisine/`:
+
+| Column | Role |
+| ------ | ---- |
+| `cuisine_zh` | Chinese label shown in filters and store detail |
+| `cuisine_en` | Sticker slug; must match `{cuisine_en}.svg` in `stickers/cuisine/` (e.g. `hotpot`, `sichuan-cuisine`) |
+
+Rules:
+
+- Fill both when possible. `cuisine_en` is the source of truth for which icon to show.
+- Legacy column `cuisine` is still synced: if `cuisine_zh` is empty, sync copies `cuisine` into `cuisine_zh`.
+- See `docs/structure.md` (菜系筛选贴纸) and `src/utils/cuisineSlugs.js` for the slug registry and DEV warnings when a slug has no SVG.
+
+### Multi-branch stores (same `store_slug` in one city)
+
+When one brand has several locations in the same city:
+
+1. Add one Excel row per branch, all with the **same** `store_slug` and `record_scope=branch`.
+2. Each row gets its own `name_zh` (with branch suffix in parentheses), `address`, `lng`, `lat`.
+3. In `dishes.xlsx`, use that shared `store_slug` once; `store_name_*` = base brand name (no branch suffix).
+4. Photos: one folder `src/assets/photos/{city}/{store_slug}/`.
+5. Run `npm run data:sync` then `npm run audit:multi-branch` to verify.
+
+UI grouping is automatic via `src/utils/storeGroups.js` — do not add store-specific logic in React.
+
+### Phone field (`phone`)
+
+- Store one or more phone numbers in a single cell.
+- Separate multiple numbers with English `;` or full-width Chinese `；` (both are supported).
+- Do not add line breaks in Excel; the frontend splits on semicolons and displays each number on its own line in the store detail panel (`NotePanel`).
+- Example: `020-83700611;020-83700622` or `13862053849；15862546585`.
 
 Numeric formatting rules (must stay consistent for every row, including newly added rows):
 
@@ -123,7 +160,7 @@ Store hours text with these formatting constraints:
 For reruns of enrichment scripts:
 
 - `name_zh`: if cell already has a non-empty value, do not overwrite.
-- `cuisine`: first run may auto-fill when empty; if cell already has a non-empty value, do not overwrite.
+- `cuisine` / `cuisine_zh` / `cuisine_en`: first run may auto-fill when empty; if cell already has a non-empty value, do not overwrite.
 - `hours`: if cell already has a non-empty value, do not overwrite.
 - Other fields may continue to auto-update.
 
