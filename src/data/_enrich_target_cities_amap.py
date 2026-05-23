@@ -8,8 +8,17 @@ from typing import Dict, Optional, Tuple
 
 import openpyxl
 
-FILE = r"D:/food-for-joy/src/data/restaurants.xlsx"
-API_KEY = "92d1ab962892c764d0d631318cde583c"
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+FILE = os.path.join(_SCRIPT_DIR, "restaurants.xlsx")
+
+
+def get_amap_web_key() -> str:
+    key = os.environ.get("AMAP_WEB_KEY", "").strip()
+    if not key:
+        raise RuntimeError(
+            "Set AMAP_WEB_KEY (Gaode Web Service key) before running this script."
+        )
+    return key
 
 TARGET_CITIES = {"吉隆坡", "马六甲", "重庆", "福州", "泉州", "厦门", "广州", "青岛", "苏州", "上海"}
 TARGET_COLUMNS = [
@@ -56,9 +65,10 @@ def place_text(query: str, city_zh: str, city_en: str) -> Optional[dict]:
         candidates.append(city_en)
     candidates.append("")
 
+    api_key = get_amap_web_key()
     for city in candidates:
         params = {
-            "key": API_KEY,
+            "key": api_key,
             "keywords": query,
             "extensions": "all",
             "offset": "10",
@@ -80,7 +90,7 @@ def place_text(query: str, city_zh: str, city_en: str) -> Optional[dict]:
 def place_detail(poi_id: str) -> Optional[dict]:
     if not poi_id:
         return None
-    params = {"key": API_KEY, "id": poi_id, "extensions": "all"}
+    params = {"key": get_amap_web_key(), "id": poi_id, "extensions": "all"}
     url = "https://restapi.amap.com/v3/place/detail?" + urllib.parse.urlencode(params)
     data = http_get_json(url)
     if data.get("status") != "1":
