@@ -1,12 +1,13 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import {
   pickByDetailLocale,
   pickByLocale,
   useLanguage,
 } from "../context/LanguageContext.jsx";
-import { BOOKSHELF_CITY_DISPLAY_BY_SLUG } from "../utils/citySlugs.js";
 import {
+  BOOKSHELF_CITY_DISPLAY_BY_SLUG,
+  getCityDetailTitles,
   isValidCitySlug,
   normalizeCitySlug,
 } from "../utils/citySlugs.js";
@@ -254,13 +255,14 @@ export default function CityDetail() {
     ],
     [detailLocale, localeConfig.isChina, sectionNativeMapText, sectionNativeCuisineText]
   );
+  const cityTitleByLocale = useMemo(() => getCityDetailTitles(cityMeta), [cityMeta]);
   const cityDisplay = localeConfig.isChina
-    ? pickByLocale(detailLocale, cityMeta?.city_zh || "城市详情", cityMeta?.city_en || "City Detail")
+    ? pickByLocale(detailLocale, cityTitleByLocale.zh, cityTitleByLocale.en)
     : pickByDetailLocale(
         detailLocale,
-        cityMeta?.city_zh || "城市详情",
-        cityMeta?.city_en || "City Detail",
-        cityMeta?.city_native || "",
+        cityTitleByLocale.zh,
+        cityTitleByLocale.en,
+        cityTitleByLocale.native,
         localeConfig.nativeIso639_1,
       );
   const activeSectionLabel =
@@ -585,7 +587,7 @@ export default function CityDetail() {
     };
   }, [isCuisineSortHintOpen]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isCuisineMenuOpen) {
       setCuisineMenuScrollable(false);
       setCuisineMenuMaxHeight(null);
@@ -601,10 +603,15 @@ export default function CityDetail() {
       const menuRect = menuNode.getBoundingClientRect();
       const availableHeight = Math.floor(panelRect.bottom - menuRect.top - 6);
       const nextMaxHeight = Math.max(0, availableHeight);
-      setCuisineMenuMaxHeight(nextMaxHeight);
 
-      const hasOverflow = menuNode.scrollHeight > menuNode.clientHeight + 1;
-      setCuisineMenuScrollable(hasOverflow);
+      // Measure unconstrained content height; max-height from state may not be applied yet.
+      const previousMaxHeight = menuNode.style.maxHeight;
+      menuNode.style.maxHeight = "none";
+      const contentHeight = menuNode.scrollHeight;
+      menuNode.style.maxHeight = previousMaxHeight;
+
+      setCuisineMenuMaxHeight(nextMaxHeight);
+      setCuisineMenuScrollable(contentHeight > nextMaxHeight + 1);
     };
 
     updateCuisineMenuLayout();
@@ -1046,7 +1053,7 @@ export default function CityDetail() {
                 {isCuisineMenuOpen ? (
                   <div
                     ref={cuisineDropdownMenuRef}
-                    className={`ffj-cuisine-dropdown-menu ${isCuisineMenuScrollable ? "is-scrollable" : ""}`}
+                    className={`ffj-cuisine-dropdown-menu ${cuisineMenuMaxHeight != null ? "is-constrained" : ""} ${isCuisineMenuScrollable ? "is-scrollable" : ""}`}
                     role="listbox"
                     style={
                       cuisineMenuMaxHeight == null

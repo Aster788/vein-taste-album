@@ -48,12 +48,15 @@ export const CITY_STICKER_FILENAME_BY_SLUG = Object.freeze({
  * 书架书脊/封面用城市文案兜底（与 PRD §1.5、§2.5「国家·城市」一致；`restaurants.json` 有该城数据时以 JSON 覆盖）。
  * 书脊双行：上中文 `country_zh·city_zh`，下英文 `country_en · city_en`。
  * `city_native` 供详情页等城市文案使用，**不用于书脊**（语言切换与展示策略见 `prd.md` §2.5）。
- * @type {Readonly<Record<(typeof CITY_SLUGS)[number], { country_zh: string; country_en: string; city_zh: string; city_en: string; city_native: string; is_china: boolean }>>}
+ * `province_*` 供详情页顶栏「国家·省份·城市」；直辖市留空。
+ * @type {Readonly<Record<(typeof CITY_SLUGS)[number], { country_zh: string; country_en: string; country_native?: string; province_zh?: string; province_en?: string; province_native?: string; city_zh: string; city_en: string; city_native: string; is_china: boolean }>>}
  */
 export const BOOKSHELF_CITY_DISPLAY_BY_SLUG = Object.freeze({
   dalian: {
     country_zh: "中国",
     country_en: "China",
+    province_zh: "辽宁",
+    province_en: "Liaoning",
     city_zh: "大连",
     city_en: "Dalian",
     city_native: "",
@@ -62,6 +65,8 @@ export const BOOKSHELF_CITY_DISPLAY_BY_SLUG = Object.freeze({
   qingdao: {
     country_zh: "中国",
     country_en: "China",
+    province_zh: "山东",
+    province_en: "Shandong",
     city_zh: "青岛",
     city_en: "Qingdao",
     city_native: "",
@@ -70,6 +75,8 @@ export const BOOKSHELF_CITY_DISPLAY_BY_SLUG = Object.freeze({
   suzhou: {
     country_zh: "中国",
     country_en: "China",
+    province_zh: "江苏",
+    province_en: "Jiangsu",
     city_zh: "苏州",
     city_en: "Suzhou",
     city_native: "",
@@ -86,6 +93,8 @@ export const BOOKSHELF_CITY_DISPLAY_BY_SLUG = Object.freeze({
   guangzhou: {
     country_zh: "中国",
     country_en: "China",
+    province_zh: "广东",
+    province_en: "Guangdong",
     city_zh: "广州",
     city_en: "Guangzhou",
     city_native: "",
@@ -102,6 +111,8 @@ export const BOOKSHELF_CITY_DISPLAY_BY_SLUG = Object.freeze({
   fuzhou: {
     country_zh: "中国",
     country_en: "China",
+    province_zh: "福建",
+    province_en: "Fujian",
     city_zh: "福州",
     city_en: "Fuzhou",
     city_native: "",
@@ -110,6 +121,8 @@ export const BOOKSHELF_CITY_DISPLAY_BY_SLUG = Object.freeze({
   xiamen: {
     country_zh: "中国",
     country_en: "China",
+    province_zh: "福建",
+    province_en: "Fujian",
     city_zh: "厦门",
     city_en: "Xiamen",
     city_native: "",
@@ -118,6 +131,8 @@ export const BOOKSHELF_CITY_DISPLAY_BY_SLUG = Object.freeze({
   quanzhou: {
     country_zh: "中国",
     country_en: "China",
+    province_zh: "福建",
+    province_en: "Fujian",
     city_zh: "泉州",
     city_en: "Quanzhou",
     city_native: "",
@@ -126,6 +141,7 @@ export const BOOKSHELF_CITY_DISPLAY_BY_SLUG = Object.freeze({
   jeju: {
     country_zh: "韩国",
     country_en: "South Korea",
+    country_native: "한국",
     city_zh: "济州岛",
     city_en: "Jeju",
     city_native: "제주",
@@ -158,6 +174,45 @@ if (import.meta.env?.DEV) {
       console.warn(`[citySlugs] Missing BOOKSHELF_CITY_DISPLAY_BY_SLUG for: ${slug}`);
     }
   }
+}
+
+/**
+ * 详情页顶栏标题：「国家·省份·城市」；无省份时省略省份段（如直辖市、非中国城）。
+ * @param {Record<string, string | boolean | undefined> | null | undefined} meta
+ * @returns {{ zh: string; en: string; native: string }}
+ */
+export function getCityDetailTitles(meta) {
+  if (!meta) {
+    return { zh: "城市详情", en: "City Detail", native: "City Detail" };
+  }
+
+  const pickPart = (locale, zhKey, enKey, nativeKey) => {
+    const zh = String(meta[zhKey] ?? "").trim();
+    const en = String(meta[enKey] ?? "").trim();
+    const native = String(meta[nativeKey] ?? "").trim();
+    if (locale === "en") return en || zh;
+    if (locale === "native") return native || en || zh;
+    return zh || en;
+  };
+
+  const joinParts = (locale, parts) => {
+    const filtered = parts.map((part) => String(part ?? "").trim()).filter(Boolean);
+    if (filtered.length === 0) return locale === "en" ? "City Detail" : "城市详情";
+    return locale === "en" ? filtered.join(" · ") : filtered.join("·");
+  };
+
+  const build = (locale) =>
+    joinParts(locale, [
+      pickPart(locale, "country_zh", "country_en", "country_native"),
+      pickPart(locale, "province_zh", "province_en", "province_native"),
+      pickPart(locale, "city_zh", "city_en", "city_native"),
+    ]);
+
+  return {
+    zh: build("zh"),
+    en: build("en"),
+    native: build("native"),
+  };
 }
 
 /**

@@ -195,6 +195,8 @@ html[data-city="melaka"],
 
 .ffj-city-title {
   margin: 0;
+  min-width: 0;
+  flex: 1 1 auto;
   color: color-mix(in srgb, var(--color-text) 94%, transparent);
   font-family: var(--font-body-zh);
   font-size: clamp(1.24rem, 2.1vw, 1.47rem);
@@ -203,6 +205,7 @@ html[data-city="melaka"],
 }
 
 .ffj-city-locale-toggle {
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
@@ -1274,8 +1277,11 @@ html[data-city="melaka"],
     inset 0 0 0 1px color-mix(in srgb, var(--city-primary) 16%, transparent);
 }
 
-.ffj-cuisine-dropdown-menu.is-scrollable {
+.ffj-cuisine-dropdown-menu.is-constrained {
   overflow-y: auto;
+}
+
+.ffj-cuisine-dropdown-menu.is-scrollable {
   scrollbar-width: thin;
   scrollbar-color:
     color-mix(in srgb, var(--city-primary) 86%, black)
