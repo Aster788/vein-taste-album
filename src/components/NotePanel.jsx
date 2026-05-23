@@ -227,22 +227,19 @@ export default function NotePanel({
               </div>
             ) : null}
           </dl>
-          <div className="ffj-note-radar-section">
-            <RadarChart
-              store={selectedStore}
-              labels={{
-                radar: labels?.radar ?? "Score radar",
-                noData: labels?.radarNoData ?? "No radar data yet",
-                taste: labels?.radarTaste ?? "Taste",
-                environment: labels?.radarEnvironment ?? "Environment",
-                queue: labels?.radarQueue ?? "Queue",
-                service: labels?.radarService ?? "Service",
-                packaging: labels?.radarPackaging ?? "Packaging",
-                delivery: labels?.radarDelivery ?? "Delivery",
-                personal: labels?.radarPersonal ?? "Recommend",
-              }}
-            />
-          </div>
+          <RadarChart
+            store={selectedStore}
+            labels={{
+              radar: labels?.radar ?? "Score radar",
+              taste: labels?.radarTaste ?? "Taste",
+              environment: labels?.radarEnvironment ?? "Environment",
+              queue: labels?.radarQueue ?? "Queue",
+              service: labels?.radarService ?? "Service",
+              packaging: labels?.radarPackaging ?? "Packaging",
+              delivery: labels?.radarDelivery ?? "Delivery",
+              personal: labels?.radarPersonal ?? "Recommend",
+            }}
+          />
           {showMapLink && !hasMapUrl ? (
             <p className="ffj-note-map-link-fallback">{labels?.mapUnavailable ?? "Map link unavailable"}</p>
           ) : null}

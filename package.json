@@ -12,7 +12,8 @@
     "photos:list-tallest": "node scripts/list-tallest-photos.mjs",
     "audit:boundary-offsets": "node scripts/audit-boundary-offsets.mjs",
     "audit:boundary-offsets:ci": "node scripts/audit-boundary-offsets.mjs --fail-on-regression --min-delta-pct=0 --max-open-rings=0 --max-invalid-lnglat=0",
-    "audit:multi-branch": "node scripts/audit-multi-branch-groups.mjs"
+    "audit:multi-branch": "node scripts/audit-multi-branch-groups.mjs",
+    "audit:doc-links": "node scripts/audit-doc-links.mjs"
   },
   "dependencies": {
     "chart.js": "^4.5.1",

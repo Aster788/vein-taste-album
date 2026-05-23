@@ -353,6 +353,11 @@
 
 - 图片下方页码点（● ○ ○ ○），可点击跳转
 - 图片左右各有上一张/下一张按钮
+- **轮播顺序（四段，实现见 `src/utils/storePhotos.js`）**：
+  1. basename 匹配 `dishes.json` 菜名（`dish_name_local` → `dish_name_en` → `dish_name_zh`）
+  2. basename 匹配店名（`dishes.json` 的 `store_name_*`、去括号基础名、同城同 slug 分店 `restaurants.json` 的 `name_*`）
+  3. 其余非中文数字序号：英文起头按英文字母序，中文起头按拼音序（数字起头介于英文与中文之间）
+  4. 中文数字序号（`一二三四五六七八九十` 及 `十一/二十` 等）按数值升序
 
 菜品信息区（右40%，与图片并列）：
 

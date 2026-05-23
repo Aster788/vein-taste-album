@@ -1,0 +1,62 @@
+{
+  "file": "D:/food-for-joy/src/data/restaurants.xlsx",
+  "target_cities": [
+    "上海",
+    "厦门",
+    "吉隆坡",
+    "广州",
+    "泉州",
+    "福州",
+    "苏州",
+    "重庆",
+    "青岛",
+    "马六甲"
+  ],
+  "processed_target_rows": 191,
+  "matched_rows": 188,
+  "no_match_rows": 3,
+  "skip_no_query_rows": 0,
+  "written_by_column": {
+    "lng": 184,
+    "lat": 184,
+    "address": 176,
+    "cuisine": 183,
+    "price_per_person": 172,
+    "score_overall": 183,
+    "hours": 184,
+    "phone": 184,
+    "map_url": 183,
+    "map_platform": 8
+  },
+  "protected_existing_by_column": {
+    "lng": 4,
+    "lat": 4,
+    "address": 12,
+    "cuisine": 4,
+    "price_per_person": 4,
+    "score_overall": 4,
+    "hours": 4,
+    "phone": 4,
+    "map_url": 4
+  },
+  "no_match_details": [
+    {
+      "row": 32,
+      "query": "海脚人海鲜馆 (敦拉萨国贸分店)",
+      "city_zh": "吉隆坡",
+      "reason": "no_poi"
+    },
+    {
+      "row": 34,
+      "query": "Aaagain by Grounded 22",
+      "city_zh": "马六甲",
+      "reason": "no_poi"
+    },
+    {
+      "row": 212,
+      "query": "조은찬韩国风情美食城(中天湖畔店)",
+      "city_zh": "上海",
+      "reason": "no_poi"
+    }
+  ]
+}

@@ -24,9 +24,9 @@ export default function DishInfo({
   );
 
   const photos = useMemo(() => {
-    const base = getStorePhotos(citySlug, selectedStore?.store_slug);
-    return sortPhotosByDishMatch(base, dishes);
-  }, [citySlug, selectedStore?.store_slug, dishes]);
+    const base = getStorePhotos(citySlug, selectedStore?.store_slug, selectedStore?.city_en);
+    return sortPhotosByDishMatch(base, dishes, selectedStore);
+  }, [citySlug, selectedStore?.store_slug, selectedStore?.city_en, dishes]);
 
   const activeFilename = useMemo(() => {
     if (!photos.length) return "";

@@ -1,0 +1,187 @@
+[
+  {
+    "row": 36,
+    "name_zh": "十八梯板凳面(总店)",
+    "poi_id": "B0FFLG2V95",
+    "matched_name": "十八梯邓凳面(总店)",
+    "source": "detail",
+    "written": {
+      "lng": {
+        "old": 118.029436,
+        "new": 106.570399
+      },
+      "lat": {
+        "old": 24.63996,
+        "new": 29.553986
+      },
+      "price_per_person": {
+        "old": 14,
+        "new": 18.0
+      },
+      "score_overall": {
+        "old": 3.8,
+        "new": 4.7
+      },
+      "hours": {
+        "old": "周一至周日 06:30-22:00",
+        "new": "周一至周日 00:00-24:00"
+      },
+      "phone": {
+        "old": "[]",
+        "new": "17808561423"
+      },
+      "map_url": {
+        "old": "https://www.amap.com/place/B0LGPHNSPD",
+        "new": "https://www.amap.com/place/B0FFLG2V95"
+      }
+    }
+  },
+  {
+    "row": 55,
+    "name_zh": "李氏串烧·鲜肉烧烤·江湖菜(巴南店)",
+    "poi_id": "B0JK37BRAM",
+    "matched_name": "李氏串烧鲜肉烧烤江湖菜(巴南店)",
+    "source": "detail",
+    "written": {
+      "lng": {
+        "old": 107.744024,
+        "new": 106.544954
+      },
+      "lat": {
+        "old": 29.864141,
+        "new": 29.393969
+      },
+      "price_per_person": {
+        "old": null,
+        "new": 62.0
+      },
+      "score_overall": {
+        "old": null,
+        "new": 4.4
+      },
+      "hours": {
+        "old": "[]",
+        "new": "周一至周日 17:00-03:00 2026-02-24至2026-02-28 周一至周日 全天关闭"
+      },
+      "phone": {
+        "old": "[]",
+        "new": "18696577587"
+      },
+      "map_url": {
+        "old": null,
+        "new": "https://www.amap.com/place/B0JK37BRAM"
+      }
+    }
+  },
+  {
+    "row": 58,
+    "name_zh": "肥婆肥仔海鲜档(平潭店)",
+    "poi_id": "B0JAL7FVGY",
+    "matched_name": "肥婆肥仔海鲜档(平潭店)",
+    "source": "detail",
+    "written": {
+      "lng": {
+        "old": 119.799061,
+        "new": 119.785973
+      },
+      "lat": {
+        "old": 25.511406,
+        "new": 25.494673
+      },
+      "price_per_person": {
+        "old": 99,
+        "new": 99.0
+      },
+      "score_overall": {
+        "old": 4.9,
+        "new": 4.4
+      },
+      "hours": {
+        "old": "周一至周日 11:30-23:30 2026-02-16至2026-02-17 周一至周日 全天关闭",
+        "new": "周一至周日 11:00-23:00"
+      },
+      "phone": {
+        "old": "13489000353",
+        "new": "19890574451"
+      },
+      "map_url": {
+        "old": "https://www.amap.com/place/B0J19SXCPU",
+        "new": "https://www.amap.com/place/B0JAL7FVGY"
+      }
+    }
+  },
+  {
+    "row": 190,
+    "name_zh": "石库制饼",
+    "poi_id": "B0MAN1RP4R",
+    "matched_name": null,
+    "source": "inputtips",
+    "written": {
+      "lng": {
+        "old": 113.142296,
+        "new": null
+      },
+      "lat": {
+        "old": 40.108606,
+        "new": null
+      },
+      "price_per_person": {
+        "old": null,
+        "new": null
+      },
+      "score_overall": {
+        "old": 3.8,
+        "new": null
+      },
+      "hours": {
+        "old": "[]",
+        "new": null
+      },
+      "phone": {
+        "old": "[]",
+        "new": null
+      },
+      "map_url": {
+        "old": "https://www.amap.com/place/B0LRH5980E",
+        "new": "https://www.amap.com/place/B0MAN1RP4R"
+      }
+    }
+  },
+  {
+    "row": 212,
+    "name_zh": "韩国美食一条街(井亭天地生活广场店)",
+    "poi_id": "B0FFG6Y22F",
+    "matched_name": "韩国美食一条街(井亭天地生活广场店)",
+    "source": "detail",
+    "written": {
+      "lng": {
+        "old": null,
+        "new": 121.374063
+      },
+      "lat": {
+        "old": null,
+        "new": 31.169963
+      },
+      "price_per_person": {
+        "old": null,
+        "new": null
+      },
+      "score_overall": {
+        "old": null,
+        "new": 4.7
+      },
+      "hours": {
+        "old": null,
+        "new": "周一至周日 11:00-22:00"
+      },
+      "phone": {
+        "old": null,
+        "new": null
+      },
+      "map_url": {
+        "old": null,
+        "new": "https://www.amap.com/place/B0FFG6Y22F"
+      }
+    }
+  }
+]

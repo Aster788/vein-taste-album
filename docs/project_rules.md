@@ -89,7 +89,7 @@ src/data/
 - `restaurants.xlsx` 中：
   - 必填：`city_en`、`store_slug`、`record_scope`（`branch` / `brand`）以及至少一个店名字段（`name_zh/name_en/name_local`）。
   - `store_slug` 规则：`[a-z0-9-]+`；`dishes` / `photos` 维度 `(city_en, store_slug)` 唯一；`restaurants` 允许多条 `branch` 共享同一 slug（多分店，见 `docs/data-workflow.md` §4.1）。
-  - **多分店 UI 归组**：唯一实现 [`src/utils/storeGroups.js`](../src/utils/storeGroups.js)；新增分店只改 Excel 共用 slug，禁止在组件写店名/slug 白名单。
+  - **多分店 UI 归组**：唯一实现 `[src/utils/storeGroups.js](../src/utils/storeGroups.js)`；新增分店只改 Excel 共用 slug，禁止在组件写店名/slug 白名单。
   - `record_scope` 语义：`branch`=具体门店（有坐标即可上图）；`brand`=品牌层记录（不作为地图点位）。
   - `price_per_person` 必须是数值单元格（不带货币符号，币种写 `currency`）。
   - `score_overall` 必须是数值单元格（统一 1 位小数）。
@@ -114,7 +114,7 @@ src/assets/photos/{city-folder}/{store_slug}/{dish-file}.{jpg|jpeg|png|webp|heic
 - basename 为中文数字序号（`一二三四五六七八九十`，含组合如 `十一/十二/二十`）时，仅显示图片，不显示名称文本。
 - basename 非中文数字序号时，显示 basename（不含扩展名）作为图片名称。
 - 图片真实格式强约束：扩展名与文件头必须一致；导入新城市图片前先跑 `npm run audit:photo-magic`。
-- 板块②图片排序固定三段式：先显示 basename 匹配到菜名的图片，再显示 basename 非中文数字序号的图片，最后显示 basename 为中文数字序号（含 `十一/十二/二十`）的图片，并按数字值升序排列（且这组不显示名称）。
+- 板块②图片排序固定四段式：① basename 匹配菜名；② basename 匹配店名（`dishes.json` 的 `store_name_*` 全文、其去括号基础名、以及同城同 `store_slug` 各分店 `restaurants.json` 的 `name_*` 全文）；③ 其余非中文数字序号（英文起头字母序、数字起头介于英/中、中文起头拼音序）；④ 中文数字序号最后按数值升序（这组不显示名称）。
 
 板块②排序与列表规则（已确认）：
 
@@ -157,7 +157,33 @@ src/assets/photos/{city-folder}/{store_slug}/{dish-file}.{jpg|jpeg|png|webp|heic
 
 ---
 
-## 八、参考资料位置
+## 八、文档 Markdown 链接（防误改）
+
+`docs/*.md` 里引用代码文件时，使用**可点击**链接，例如：
+
+```markdown
+[src/utils/storeGroups.js](../src/utils/storeGroups.js)
+```
+
+**禁止**在整条链接外再包一层反引号：
+
+```markdown
+`[src/utils/storeGroups.js](../src/utils/storeGroups.js)`
+```
+
+后者在预览里只是代码文字，**无法点击**，且易被编辑器「切换行内代码」或 Agent 误改。
+
+**为何总在 `data-workflow.md` §4.1 附近出现：** 该段 blockquote 同行有多处 `nlsf`、`ylxl` 等行内代码，编辑时若选中范围过大再按 ```，会把整段 `[...](...)` 一起包进反引号。
+
+**预防：**
+
+- 工作区 `.vscode/settings.json` 已对 `[markdown]` 关闭 `formatOnSave`
+- 发布前可跑：`npm run audit:doc-links`
+- 改文档时勿对含 `[text](url)` 的整段使用 Toggle Inline Code
+
+---
+
+## 九、参考资料位置
 
 
 | 文件                        | 用途                                  |
