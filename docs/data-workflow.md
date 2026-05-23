@@ -115,7 +115,8 @@ npm run data:export-translations
 
 ## 4.1) 多分店 `store_slug`（同城同品牌，通用）
 
-> **所有多分店店铺均适用**（如南里山房 `nlsf`、耶里夏丽 `ylxl` 及今后任意新增）。规则由数据驱动，前端 [`src/utils/storeGroups.js`](../src/utils/storeGroups.js) 按 `(city_en, store_slug)` 自动归组，**禁止**为单店写 UI 白名单。
+> **所有多分店店铺均适用**（如南里山房 `nlsf`、耶里夏丽 `ylxl` 及今后任意新增）。规则由数据驱动，前端按 `(city_en, store_slug)` 自动归组，**禁止**为单店写 UI 白名单。
+> 实现入口：[src/utils/storeGroups.js](../src/utils/storeGroups.js)
 
 适用：同一城市有多家分店、菜品与照片只维护一份。
 
@@ -170,6 +171,7 @@ npm run data:sync
 npm run data:sync
 npm run audit:photo-magic
 npm run audit:multi-branch
+npm run audit:doc-links
 npm run build
 ```
 
@@ -191,8 +193,9 @@ npm run audit:boundary-offsets
   - 正常加载应无提示；若 `VITE_MAPBOX_TOKEN` 为空，应显示缺失提示
   - 若出现 Token/网络/样式请求失败（例如 `ERR_PROXY_CONNECTION_FAILED`），应显示「地图加载失败，请检查 Mapbox Token 或网络连接」并带错误细节
 - 板块②图片存在但菜名没显示
-  - 先检查图片 basename 是否命中 `dish_name_local -> dish_name_en -> dish_name_zh`
-  - 若未命中：仍应展示图片；basename 为中文数字序号（`一二三四五六七八九十`）时只显示图片，否则应显示 basename（不含扩展名）作为图片名称
+  - 先检查图片 basename 是否命中 `dish_name_local -> dish_name_en -> dish_name_zh`，其次 `store_name_local -> store_name_en -> store_name_zh`
+  - 轮播顺序：菜名图 → 店名图（含 `store_name_*` 全文、基础店名、分店 `name_*`）→ 其它非序号图 → 中文序号图（数值序）
+  - 若未命中菜名：仍应展示图片；basename 为中文数字序号（`一二三四五六七八九十`）时只显示图片，否则应显示 basename（不含扩展名）作为图片名称
 - 板块②图片显示坏图标（但文件后缀是 `.jpg/.jpeg`）
   - 高概率是“扩展名是 JPG，但真实编码是 HEIC/HEIF”
   - 先运行 `npm run audit:photo-magic` 检查文件头
@@ -225,4 +228,3 @@ npm run audit:photo-magic
 
 - 若报“HEIC disguised as JPG/JPEG”，说明文件扩展名与真实编码不一致。
 - 先在本地把该图片转换为真实 JPEG（不要只改文件后缀），再重新运行自检直到通过。
-

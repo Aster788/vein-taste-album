@@ -25,7 +25,6 @@ const DEFAULT_LABELS = Object.freeze({
   packaging: "Packaging",
   delivery: "Delivery",
   personal: "Recommend",
-  noData: "No radar data yet",
 });
 
 const METRIC_PRIORITY = Object.freeze([
@@ -128,12 +127,14 @@ export default function RadarChart({ store, labels }) {
   );
 
   if (!hasAnyValue) {
-    return <p className="ffj-note-radar-empty">{mergedLabels.noData}</p>;
+    return null;
   }
 
   return (
-    <div className="ffj-note-radar-wrap" aria-label={mergedLabels.radar ?? "Score radar chart"}>
-      <Radar data={data} options={options} />
+    <div className="ffj-note-radar-section">
+      <div className="ffj-note-radar-wrap" aria-label={mergedLabels.radar ?? "Score radar chart"}>
+        <Radar data={data} options={options} />
+      </div>
     </div>
   );
 }

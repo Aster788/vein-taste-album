@@ -104,6 +104,7 @@
 - **贴纸颜色一致性强校验**：`src/assets/stickers/`** 下 SVG 在页面展示时，禁止通过 `filter`（如 `invert()` / `hue-rotate()` / `brightness()`）进行整体改色；若页面颜色与文件不一致，优先排查并移除样式层滤镜，确保呈现为素材原色。
 - **菜系贴纸与数据列**：`restaurants.json` 的 `cuisine_en` 必须对应 `stickers/cuisine/{cuisine_en}.svg`；`cuisine_zh` 为中文展示名。约定见 `docs/structure.md` §菜系筛选贴纸、`src/utils/cuisineSlugs.js`。
 - **非中国城市** `src/assets/geojson/<slug>.geojson`：新增或更新边界时，须符合 `prd.md` §5.3 小节 **「非中国城市：地图上『分区』边界的统一规则」**（选型优先级、块数区间、命名字段、许可与出处）；要素属性中应能识别数据源类型（如官方区划、开放 ADM、选举分区等，可与现有 `ffj_admin` / `ffj_source` 一类字段对齐）。
+- **文档内代码链接**：编辑 `docs/*.md` 时，文件路径用可点击 Markdown 链接 `[src/.../file.js](../src/.../file.js)`；**禁止**在整条链接外再包一层反引号（会变成不可点击的代码样式）。见 `project_rules.md` §八；可跑 `npm run audit:doc-links`。
 
 ---
 

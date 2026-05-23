@@ -2,8 +2,8 @@
  * 菜品页「多分店归组」——同城 + 相同 store_slug 的通用规则（非白名单、非店名硬编码）。
  *
  * 契约（适用于所有现有与未来分店，无需改 UI 代码）：
- * - 数据：restaurants.json 中多条 `record_scope=branch` 行共享 `(city_en, store_slug)`
- * - 地图：每条 branch 独立打点（MapPanel 读原始行，不经本模块去重）
+ * - 数据：`restaurants.json` 中 `branch` 与 `brand` 行均参与菜品列表；`brand` 不上地图
+ * - 地图：每条 `branch`（且有坐标）独立打点（MapPanel 读原始行，不经本模块去重）
  * - 菜品左侧：本模块 `getCuisineStoreGroupsByCity` 按 slug 合并为一项
  * - 菜品右侧地址：`getCuisineAddressBlock` 多行 `{分店标签}：{address}`
  * - dishes / photos：一套 `store_slug` 目录与菜品记录（见 docs/data-workflow.md §4.1）
@@ -160,16 +160,14 @@ function collectUniqueNonEmpty(values) {
  */
 
 /**
- * 按 `(city_en, store_slug)` 将 branch 行归组（排除 `record_scope=brand`）。
+ * 按 `(city_en, store_slug)` 归组。`branch` 与 `brand` 均出现在菜品页；地图仅 `branch`+坐标。
  * 单 slug 仅一行时返回长度为 1 的组（行为与单店一致）。
  * 多行同 slug 时自动合并——无需维护店名白名单。
  * @param {string} cityEn
  * @returns {CuisineStoreGroup[]}
  */
 export function getCuisineStoreGroupsByCity(cityEn) {
-  const rows = getRestaurantsByCity(cityEn).filter(
-    (row) => normalizeRecordScope(row.record_scope) !== "brand",
-  );
+  const rows = getRestaurantsByCity(cityEn);
   /** @type {Map<string, CuisineStoreGroup>} */
   const groups = new Map();
 
@@ -262,11 +260,15 @@ export function getCuisineGroupSortKey(group) {
 }
 
 /**
- * 组内代表分店行（`store_slug` 相同，任取稳定排序后首条）。
+ * 组内代表分店行：优先 `branch`；仅 `brand` 时取 brand 行。
  * @param {CuisineStoreGroup} group
  * @returns {CuisineStoreGroup['branches'][number] | null}
  */
 export function getCuisineGroupRepresentativeBranch(group) {
-  const branches = sortBranchesForDisplay(group.branches);
+  const branchRows = group.branches.filter(
+    (row) => normalizeRecordScope(row.record_scope) !== "brand",
+  );
+  const pool = branchRows.length > 0 ? branchRows : group.branches;
+  const branches = sortBranchesForDisplay(pool);
   return branches[0] ?? null;
 }
