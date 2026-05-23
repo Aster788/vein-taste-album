@@ -122,23 +122,51 @@ export default function PhotoPanel({
     onChangeActivePhotoIndex(nextIndex);
   };
 
-  const goPrev = () => {
+  const goPrev = useCallback(() => {
     if (!hasPhotos) return;
     triggerTransition();
     onChangeActivePhotoIndex((prev) => {
       const current = Math.min(Math.max(0, prev), photoCount - 1);
       return (current - 1 + photoCount) % photoCount;
     });
-  };
+  }, [hasPhotos, onChangeActivePhotoIndex, photoCount, triggerTransition]);
 
-  const goNext = () => {
+  const goNext = useCallback(() => {
     if (!hasPhotos) return;
     triggerTransition();
     onChangeActivePhotoIndex((prev) => {
       const current = Math.min(Math.max(0, prev), photoCount - 1);
       return (current + 1) % photoCount;
     });
-  };
+  }, [hasPhotos, onChangeActivePhotoIndex, photoCount, triggerTransition]);
+
+  useEffect(() => {
+    if (!hasPhotos || photoCount <= 1 || isLightboxOpen) return undefined;
+
+    const isTypingTarget = (target) => {
+      if (!(target instanceof HTMLElement)) return false;
+      const tag = target.tagName;
+      return (
+        tag === "INPUT" ||
+        tag === "TEXTAREA" ||
+        tag === "SELECT" ||
+        target.isContentEditable
+      );
+    };
+
+    const onKeyDown = (event) => {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      if (isTypingTarget(event.target)) return;
+      event.preventDefault();
+      if (event.key === "ArrowLeft") goPrev();
+      else goNext();
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [goNext, goPrev, hasPhotos, isLightboxOpen, photoCount]);
 
   useEffect(() => {
     if (!isLightboxOpen) return undefined;
@@ -152,20 +180,12 @@ export default function PhotoPanel({
       if (!hasPhotos || photoCount <= 1) return;
       if (event.key === "ArrowLeft") {
         event.preventDefault();
-        triggerTransition();
-        onChangeActivePhotoIndex((prev) => {
-          const current = Math.min(Math.max(0, prev), photoCount - 1);
-          return (current - 1 + photoCount) % photoCount;
-        });
+        goPrev();
         return;
       }
       if (event.key === "ArrowRight") {
         event.preventDefault();
-        triggerTransition();
-        onChangeActivePhotoIndex((prev) => {
-          const current = Math.min(Math.max(0, prev), photoCount - 1);
-          return (current + 1) % photoCount;
-        });
+        goNext();
       }
     };
 
@@ -177,13 +197,7 @@ export default function PhotoPanel({
       document.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = prevOverflow;
     };
-  }, [
-    isLightboxOpen,
-    hasPhotos,
-    photoCount,
-    onChangeActivePhotoIndex,
-    triggerTransition,
-  ]);
+  }, [goNext, goPrev, hasPhotos, isLightboxOpen, photoCount]);
 
   const openLightbox = () => {
     if (!hasPhotos || !activePhoto) return;
