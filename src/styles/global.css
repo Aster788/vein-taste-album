@@ -2537,17 +2537,24 @@ html[data-city="melaka"],
   align-items: center;
   justify-content: center;
   gap: clamp(0.18rem, 1vh, 0.42rem);
+  flex: 1 1 auto;
+  align-self: stretch;
+  min-height: 0;
   max-height: 100%;
   width: 100%;
+  overflow: hidden;
 }
 
 .ffj-book__spine-col {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  line-height: 1.2;
-  letter-spacing: 0.05em;
-  text-align: center;
-  /* 竖排一列到底，避免 max-height 过紧时出现第二竖列（如「马来西亚·吉隆坡」） */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 0 1 auto;
+  min-height: 0;
+  inline-size: 1.15em;
+  line-height: 1;
+  letter-spacing: 0;
   white-space: nowrap;
   /* `--ffj-spine-*` 由 Book.jsx 按 `--city-primary` 对比度写入（见 spineContrast.js） */
   color: var(
@@ -2561,21 +2568,33 @@ html[data-city="melaka"],
   );
 }
 
+.ffj-book__spine-char {
+  display: block;
+  flex: 0 0 auto;
+  line-height: 1;
+  text-align: center;
+}
+
 .ffj-book__spine-col--zh {
   font-family: var(--font-body-zh);
   font-size: clamp(0.88rem, min(2.75vw, 4.2vh), 1.35rem);
   font-weight: 400;
-  flex: 0 1 auto;
-  max-height: 68%;
+}
+
+.ffj-book__spine-en-flow {
+  display: block;
+  writing-mode: vertical-rl;
+  text-orientation: sideways;
+  text-align: center;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
 }
 
 .ffj-book__spine-col--en {
   font-family: var(--font-body-en);
   font-weight: 700;
-  letter-spacing: 0.05em;
   font-size: clamp(0.78rem, min(2.35vw, 3.6vh), 1.12rem);
-  flex: 0 1 auto;
-  max-height: 30%;
 }
 
 /* 书架书槽变窄时略收竖排字号，避免贴边（详情页等其它场景仍用上方默认） */

@@ -6,6 +6,10 @@ import {
 
 const FORCE_LIGHT_SPINE_INK_SLUGS = Object.freeze(new Set(["suzhou", "melaka"]));
 
+function splitSpineChars(text) {
+  return [...text];
+}
+
 /**
  * 书架单本书：书脊 + 书口 + 封面 3D 组装；父级 `li` 写入 `--ffj-book-yaw-scroll`，抽出由 hover 样式控制（见 Bookshelf.jsx、global.css）。
  * 城市配色由外层 `li.ffj-bookshelf-book-slot[data-city]` 注入的 CSS 变量提供。
@@ -75,10 +79,16 @@ export default function Book({ city, isTransitioning = false }) {
               <div className="ffj-book__spine-text">
                 <div className="ffj-book__spine-stack">
                   <div className="ffj-book__spine-col ffj-book__spine-col--zh">
-                    {zhCountry}·{city_zh}
+                    {splitSpineChars(`${zhCountry}·${city_zh}`).map((ch, i) => (
+                      <span key={i} className="ffj-book__spine-char">
+                        {ch}
+                      </span>
+                    ))}
                   </div>
                   <div className="ffj-book__spine-col ffj-book__spine-col--en">
-                    {enCountry} · {city_en}
+                    <span className="ffj-book__spine-en-flow">
+                      {`${enCountry} · ${city_en}`}
+                    </span>
                   </div>
                 </div>
               </div>
