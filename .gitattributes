@@ -1,0 +1,15 @@
+# Normalize line endings across macOS / Windows / Linux.
+* text=auto eol=lf
+
+# Binary assets — never apply line-ending conversion.
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
+*.pdf binary
+*.zip binary
