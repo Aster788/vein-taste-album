@@ -1,0 +1,2878 @@
+{
+  "matched": [
+    {
+      "name_zh": "Black Salt·黑盐印度融合菜(K11店)",
+      "mode": "place",
+      "matched_name": "礼厚茶肆k11店",
+      "poi_id": "B0KARAG4IE"
+    },
+    {
+      "name_zh": "Archie’s餐厅(凯旋路2280弄小区店)",
+      "mode": "place",
+      "matched_name": "Archie’s餐厅(凯旋路2280弄小区店)",
+      "poi_id": "B0FFG8JDFH"
+    },
+    {
+      "name_zh": "上海1号私藏菜(静安店)",
+      "mode": "place",
+      "matched_name": "上海1号私藏菜(黄浦店)",
+      "poi_id": "B00157991S"
+    },
+    {
+      "name_zh": "上海紫竹万怡酒店",
+      "mode": "place",
+      "matched_name": "上海紫竹万怡酒店",
+      "poi_id": "B0FFJG19JA"
+    },
+    {
+      "name_zh": "CHICKEN&EGG葡式霹雳烤鸡(悟锦世纪大楼店)",
+      "mode": "place",
+      "matched_name": "CHICKEN&EGG葡式霹雳烤鸡(悟锦世纪大楼店)",
+      "poi_id": "B0FFH9U6YY"
+    },
+    {
+      "name_zh": "8PINTS八品脱(常熟路店)",
+      "mode": "place",
+      "matched_name": "8PINTS八品脱(常熟路店)",
+      "poi_id": "B0I1ZANU4P"
+    },
+    {
+      "name_zh": "AK28炸鸡SINCE1996(交大店)",
+      "mode": "place",
+      "matched_name": "AK28炸鸡SINCE1996(交大店)",
+      "poi_id": "B0KKPO80G6"
+    },
+    {
+      "name_zh": "复兴面王(万象城店)",
+      "mode": "place",
+      "matched_name": "复兴面王(老西门店)",
+      "poi_id": "B0L2KMG3PE"
+    },
+    {
+      "name_zh": "JESSY&JERRY(前滩太古里店)",
+      "mode": "place",
+      "matched_name": "JESSY&JERRY(前滩太古里店)",
+      "poi_id": "B0KRRZWE8J"
+    },
+    {
+      "name_zh": "九十叶·抹茶专门店(上海·太古里店)",
+      "mode": "place",
+      "matched_name": "九十叶·抹茶专门店(上海·太古里店)",
+      "poi_id": "B0K1XNXSJD"
+    },
+    {
+      "name_zh": "BEIGEL TREE贝果树·纽约贝果博物馆(陆家嘴中心店)",
+      "mode": "place",
+      "matched_name": "BEIGEL TREE贝果树·纽约贝果博物馆(陆家嘴中心店)",
+      "poi_id": "B0KUX7Z71E"
+    },
+    {
+      "name_zh": "AZUL意大利餐厅(上海白玉兰广场店)",
+      "mode": "place",
+      "matched_name": "AZUL意大利餐厅(上海白玉兰广场店)",
+      "poi_id": "B0HRO7MDAJ"
+    },
+    {
+      "name_zh": "凤凰湘语(浦东旗舰店)",
+      "mode": "place",
+      "matched_name": "凤凰湘语(浦东旗舰店)",
+      "poi_id": "B0FFL7O08C"
+    },
+    {
+      "name_zh": "海尚·生活广场",
+      "mode": "place",
+      "matched_name": "海尚·生活广场",
+      "poi_id": "B0FFF2J7E6"
+    },
+    {
+      "name_zh": "育音堂音乐公园",
+      "mode": "place",
+      "matched_name": "育音堂音乐公园",
+      "poi_id": "B0FFK039C0"
+    },
+    {
+      "name_zh": "上海天文馆(上海科技馆分馆)",
+      "mode": "place",
+      "matched_name": "上海天文馆(上海科技馆分馆)",
+      "poi_id": "B0FFHGVTPF"
+    },
+    {
+      "name_zh": "望丘山(长宁龙之梦店)",
+      "mode": "place",
+      "matched_name": "望丘山(长宁龙之梦店)",
+      "poi_id": "B0K34H310Q"
+    },
+    {
+      "name_zh": "菊樱寿司(南桥百联店)",
+      "mode": "place",
+      "matched_name": "菊樱寿司(南桥百联店)",
+      "poi_id": "B0FFH6144S"
+    },
+    {
+      "name_zh": "湊湊火锅·茶憩(百联南方购物中心店)",
+      "mode": "place",
+      "matched_name": "湊湊火锅·茶憩(百联南方购物中心店)",
+      "poi_id": "B0FFIRP6XC"
+    },
+    {
+      "name_zh": "牛New寿喜烧(南桥店)",
+      "mode": "place",
+      "matched_name": "牛New寿喜烧(虹桥天地购物中心店)",
+      "poi_id": "B0HURK3NRR"
+    },
+    {
+      "name_zh": "东北筋饼骨头王奉贤店",
+      "mode": "place",
+      "matched_name": "东北筋饼骨头王奉贤店",
+      "poi_id": "B0FFIQF11Z"
+    },
+    {
+      "name_zh": "宫廷糕点(上海陆家嘴世纪大道地铁站如家商旅酒店店)",
+      "mode": "place",
+      "matched_name": "宫廷糕点(上海陆家嘴世纪大道地铁站如家商旅酒店店)",
+      "poi_id": "B0FFI6EU55"
+    },
+    {
+      "name_zh": "山石榴·贵州菜(前滩太古里店)",
+      "mode": "place",
+      "matched_name": "山石榴·贵州菜(前滩太古里店)",
+      "poi_id": "B0HRL50MAQ"
+    },
+    {
+      "name_zh": "釜山鱼饼(井亭大厦店)",
+      "mode": "place",
+      "matched_name": "釜山鱼饼(井亭大厦店)",
+      "poi_id": "B0FFFQ64TS"
+    },
+    {
+      "name_zh": "88食堂·烤肉酱蟹(虹泉路店)",
+      "mode": "place",
+      "matched_name": "88食堂·烤肉酱蟹(虹泉路店)",
+      "poi_id": "B0HBTO40LN"
+    },
+    {
+      "name_zh": "BARBARIAN(武定路店)",
+      "mode": "place",
+      "matched_name": "BARBARIAN(武定路店)",
+      "poi_id": "B0FFK28IQ6"
+    },
+    {
+      "name_zh": "东北四季饺子王(华轻梅陇购物中心店)",
+      "mode": "place",
+      "matched_name": "东北四季饺子王(华轻梅陇购物中心店)",
+      "poi_id": "B0G3D52EJB"
+    },
+    {
+      "name_zh": "AMINO AMIGO(静安嘉里中心店)",
+      "mode": "place",
+      "matched_name": "AMINO AMIGO(静安嘉里中心店)",
+      "poi_id": "B0IBLZDHQQ"
+    },
+    {
+      "name_zh": "AMINO AMIGO(晶耀前滩店)",
+      "mode": "place",
+      "matched_name": "AMINO AMIGO(晶耀前滩店)",
+      "poi_id": "B0L0JZFE4U"
+    },
+    {
+      "name_zh": "Chili's奇利斯美式小餐馆(西岸梦中心1F层)",
+      "mode": "place",
+      "matched_name": "Chili's奇利斯美式小餐馆(西岸梦中心1F层)",
+      "poi_id": "B0K1GHTYC0"
+    },
+    {
+      "name_zh": "温暖你的猪(漕河泾M+店)",
+      "mode": "place",
+      "matched_name": "温暖你的猪(越界锦和店)",
+      "poi_id": "B0LUULRZUJ"
+    },
+    {
+      "name_zh": "翠富楼·粤式点心·啫啫煲(美罗城店)",
+      "mode": "place",
+      "matched_name": "翠富楼·粤式点心·啫啫煲(美罗城店)",
+      "poi_id": "B0J3TDJR1K"
+    },
+    {
+      "name_zh": "HOLY BAGEL(耀华店)",
+      "mode": "place",
+      "matched_name": "HOLY BAGEL(耀华店)",
+      "poi_id": "B0JD27SRZC"
+    },
+    {
+      "name_zh": "国际饭店蝴蝶酥(上海一店)",
+      "mode": "place",
+      "matched_name": "国际饭店蝴蝶酥(上海一店)",
+      "poi_id": "B0L69C2D2X"
+    },
+    {
+      "name_zh": "饿梨酱(前滩公园巷店)",
+      "mode": "place",
+      "matched_name": "饿梨酱(前滩公园巷店)",
+      "poi_id": "B0LUY1KGQQ"
+    },
+    {
+      "name_zh": "龙华素斋(龙华路店)",
+      "mode": "place",
+      "matched_name": "龙华素斋(龙华路店)",
+      "poi_id": "B001570TYB"
+    },
+    {
+      "name_zh": "欧记大排档(大悦城店)",
+      "mode": "place",
+      "matched_name": "欧记大排档(大悦城店)",
+      "poi_id": "B0LDU7GJLZ"
+    },
+    {
+      "name_zh": "ROOTS Bar&Cafe",
+      "mode": "place",
+      "matched_name": "ROOTS Bar&Cafe",
+      "poi_id": "B0I06GP1EM"
+    },
+    {
+      "name_zh": "派悦坊.甜品.蛋糕(长宁龙之梦店)",
+      "mode": "place",
+      "matched_name": "派悦坊.甜品.蛋糕(长宁龙之梦店)",
+      "poi_id": "B0M67LYRZK"
+    },
+    {
+      "name_zh": "桂满陇(徐汇万科)",
+      "mode": "place",
+      "matched_name": "桂满陇(徐汇万科)",
+      "poi_id": "B0KDVSQ6QR"
+    },
+    {
+      "name_zh": "the Roll'ING手作瑞士卷专门店(大宁久光店)",
+      "mode": "place",
+      "matched_name": "the Roll'ING手作瑞士卷专门店(大宁久光店)",
+      "poi_id": "B0KAV7F9YF"
+    },
+    {
+      "name_zh": "Blue Bottle Coffee蓝瓶咖啡(张园店)",
+      "mode": "place",
+      "matched_name": "Blue Bottle Coffee蓝瓶咖啡(张园店)",
+      "poi_id": "B0IK6MJ311"
+    },
+    {
+      "name_zh": "巴波萨烧烤",
+      "mode": "place",
+      "matched_name": "巴波萨烧烤",
+      "poi_id": "B0FFGUD61K"
+    },
+    {
+      "name_zh": "Apollo(复兴西路丁香花园店)",
+      "mode": "place",
+      "matched_name": "Apollo(复兴西路丁香花园店)",
+      "poi_id": "B0FFJ1ABWS"
+    },
+    {
+      "name_zh": "萨莉亚意式餐厅(中星城店)",
+      "mode": "place",
+      "matched_name": "萨莉亚意式餐厅(中星城店)",
+      "poi_id": "B00157GM3P"
+    },
+    {
+      "name_zh": "Wagas沃歌斯(上海莘庄龙之梦)",
+      "mode": "place",
+      "matched_name": "Wagas沃歌斯(上海莘庄龙之梦)",
+      "poi_id": "B0L0BZTQGJ"
+    },
+    {
+      "name_zh": "沪西老弄堂面馆(静安寺店)",
+      "mode": "place",
+      "matched_name": "沪西老弄堂面馆(静安寺店)",
+      "poi_id": "B0I3KZ95RQ"
+    },
+    {
+      "name_zh": "HOTCRUSH趁热集合·现烤面包(上海荟聚店)",
+      "mode": "place",
+      "matched_name": "HOTCRUSH趁热集合·现烤面包(上海荟聚店)",
+      "poi_id": "B0K2OU8EQN"
+    },
+    {
+      "name_zh": "Punch Monday Bakery(晶耀前滩南区店)",
+      "mode": "place",
+      "matched_name": "Punch Monday Bakery",
+      "poi_id": "B0KDOLKOA2"
+    },
+    {
+      "name_zh": "苹果花园(襄阳南路店)",
+      "mode": "place",
+      "matched_name": "苹果花园(襄阳南路店)",
+      "poi_id": "B00155KHNW"
+    },
+    {
+      "name_zh": "潘小烧-云南烧烤(环宇城店)",
+      "mode": "place",
+      "matched_name": "潘小烧-云南烧烤(环宇城店)",
+      "poi_id": "B0KU1DTDGC"
+    },
+    {
+      "name_zh": "莉莲蛋挞(上海南站店)",
+      "mode": "geocode",
+      "lng": 121.430041,
+      "lat": 31.154579
+    },
+    {
+      "name_zh": "虹口糕团店",
+      "mode": "geocode",
+      "lng": 121.42907,
+      "lat": 31.159888
+    },
+    {
+      "name_zh": "彩云间(海思路店)",
+      "mode": "geocode",
+      "lng": 121.51057,
+      "lat": 30.829078
+    }
+  ],
+  "no_match": [],
+  "protected": [],
+  "written": [
+    {
+      "name_zh": "Black Salt·黑盐印度融合菜(K11店)",
+      "column": "lng",
+      "value": 121.473767
+    },
+    {
+      "name_zh": "Black Salt·黑盐印度融合菜(K11店)",
+      "column": "lat",
+      "value": 31.223317
+    },
+    {
+      "name_zh": "Black Salt·黑盐印度融合菜(K11店)",
+      "column": "address",
+      "value": "淮海中路300号上海k11购物艺术中心B2层"
+    },
+    {
+      "name_zh": "Black Salt·黑盐印度融合菜(K11店)",
+      "column": "cuisine_zh",
+      "value": "冷饮店"
+    },
+    {
+      "name_zh": "Black Salt·黑盐印度融合菜(K11店)",
+      "column": "price_per_person",
+      "value": 22
+    },
+    {
+      "name_zh": "Black Salt·黑盐印度融合菜(K11店)",
+      "column": "score_overall",
+      "value": 4.5
+    },
+    {
+      "name_zh": "Black Salt·黑盐印度融合菜(K11店)",
+      "column": "hours",
+      "value": "周一至周日 10:00-18:00 2026-02-15至2026-02-23 周一至周日 10:00-18:00"
+    },
+    {
+      "name_zh": "Black Salt·黑盐印度融合菜(K11店)",
+      "column": "phone",
+      "value": "15921674400"
+    },
+    {
+      "name_zh": "Black Salt·黑盐印度融合菜(K11店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0KARAG4IE"
+    },
+    {
+      "name_zh": "Black Salt·黑盐印度融合菜(K11店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "Archie’s餐厅(凯旋路2280弄小区店)",
+      "column": "lng",
+      "value": 121.426799
+    },
+    {
+      "name_zh": "Archie’s餐厅(凯旋路2280弄小区店)",
+      "column": "lat",
+      "value": 31.188337
+    },
+    {
+      "name_zh": "Archie’s餐厅(凯旋路2280弄小区店)",
+      "column": "address",
+      "value": "徐虹北路6弄8号(凯旋路与徐虹北路交叉口格林豪泰酒店东70米)"
+    },
+    {
+      "name_zh": "Archie’s餐厅(凯旋路2280弄小区店)",
+      "column": "cuisine_zh",
+      "value": "中餐厅"
+    },
+    {
+      "name_zh": "Archie’s餐厅(凯旋路2280弄小区店)",
+      "column": "price_per_person",
+      "value": 179
+    },
+    {
+      "name_zh": "Archie’s餐厅(凯旋路2280弄小区店)",
+      "column": "score_overall",
+      "value": 4.4
+    },
+    {
+      "name_zh": "Archie’s餐厅(凯旋路2280弄小区店)",
+      "column": "hours",
+      "value": "周一至周日 11:30-14:30,17:30-21:30"
+    },
+    {
+      "name_zh": "Archie’s餐厅(凯旋路2280弄小区店)",
+      "column": "phone",
+      "value": "13661976723"
+    },
+    {
+      "name_zh": "Archie’s餐厅(凯旋路2280弄小区店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0FFG8JDFH"
+    },
+    {
+      "name_zh": "Archie’s餐厅(凯旋路2280弄小区店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "上海1号私藏菜(静安店)",
+      "column": "lng",
+      "value": 121.48127
+    },
+    {
+      "name_zh": "上海1号私藏菜(静安店)",
+      "column": "lat",
+      "value": 31.225242
+    },
+    {
+      "name_zh": "上海1号私藏菜(静安店)",
+      "column": "address",
+      "value": "市辖区西藏南路237号恒积大厦6楼"
+    },
+    {
+      "name_zh": "上海1号私藏菜(静安店)",
+      "column": "cuisine_zh",
+      "value": "上海菜"
+    },
+    {
+      "name_zh": "上海1号私藏菜(静安店)",
+      "column": "price_per_person",
+      "value": 119
+    },
+    {
+      "name_zh": "上海1号私藏菜(静安店)",
+      "column": "score_overall",
+      "value": 4.7
+    },
+    {
+      "name_zh": "上海1号私藏菜(静安店)",
+      "column": "hours",
+      "value": "周一至周日 11:00-14:00,17:00-21:00"
+    },
+    {
+      "name_zh": "上海1号私藏菜(静安店)",
+      "column": "phone",
+      "value": "021-33317177"
+    },
+    {
+      "name_zh": "上海1号私藏菜(静安店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B00157991S"
+    },
+    {
+      "name_zh": "上海1号私藏菜(静安店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "上海紫竹万怡酒店",
+      "column": "lng",
+      "value": 121.465153
+    },
+    {
+      "name_zh": "上海紫竹万怡酒店",
+      "column": "lat",
+      "value": 31.021264
+    },
+    {
+      "name_zh": "上海紫竹万怡酒店",
+      "column": "address",
+      "value": "紫星路588号3幢"
+    },
+    {
+      "name_zh": "上海紫竹万怡酒店",
+      "column": "cuisine_zh",
+      "value": "经济型连锁酒店"
+    },
+    {
+      "name_zh": "上海紫竹万怡酒店",
+      "column": "score_overall",
+      "value": 4.5
+    },
+    {
+      "name_zh": "上海紫竹万怡酒店",
+      "column": "phone",
+      "value": "021-34029000"
+    },
+    {
+      "name_zh": "上海紫竹万怡酒店",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0FFJG19JA"
+    },
+    {
+      "name_zh": "上海紫竹万怡酒店",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "CHICKEN&EGG葡式霹雳烤鸡(悟锦世纪大楼店)",
+      "column": "lng",
+      "value": 121.452295
+    },
+    {
+      "name_zh": "CHICKEN&EGG葡式霹雳烤鸡(悟锦世纪大楼店)",
+      "column": "lat",
+      "value": 31.217346
+    },
+    {
+      "name_zh": "CHICKEN&EGG葡式霹雳烤鸡(悟锦世纪大楼店)",
+      "column": "address",
+      "value": "富民路291号悟锦世纪大楼1楼"
+    },
+    {
+      "name_zh": "CHICKEN&EGG葡式霹雳烤鸡(悟锦世纪大楼店)",
+      "column": "cuisine_zh",
+      "value": "西餐厅(综合风味)"
+    },
+    {
+      "name_zh": "CHICKEN&EGG葡式霹雳烤鸡(悟锦世纪大楼店)",
+      "column": "price_per_person",
+      "value": 105
+    },
+    {
+      "name_zh": "CHICKEN&EGG葡式霹雳烤鸡(悟锦世纪大楼店)",
+      "column": "score_overall",
+      "value": 4.6
+    },
+    {
+      "name_zh": "CHICKEN&EGG葡式霹雳烤鸡(悟锦世纪大楼店)",
+      "column": "hours",
+      "value": "周五至周六 11:00-01:00；周一至周四,周日 11:00-24:00"
+    },
+    {
+      "name_zh": "CHICKEN&EGG葡式霹雳烤鸡(悟锦世纪大楼店)",
+      "column": "phone",
+      "value": "021-61212606;13818956471"
+    },
+    {
+      "name_zh": "CHICKEN&EGG葡式霹雳烤鸡(悟锦世纪大楼店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0FFH9U6YY"
+    },
+    {
+      "name_zh": "CHICKEN&EGG葡式霹雳烤鸡(悟锦世纪大楼店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "8PINTS八品脱(常熟路店)",
+      "column": "lng",
+      "value": 121.448965
+    },
+    {
+      "name_zh": "8PINTS八品脱(常熟路店)",
+      "column": "lat",
+      "value": 31.214423
+    },
+    {
+      "name_zh": "8PINTS八品脱(常熟路店)",
+      "column": "address",
+      "value": "常熟路163号常华小区(常熟路地铁站8号口步行70米)"
+    },
+    {
+      "name_zh": "8PINTS八品脱(常熟路店)",
+      "column": "cuisine_zh",
+      "value": "中餐厅"
+    },
+    {
+      "name_zh": "8PINTS八品脱(常熟路店)",
+      "column": "price_per_person",
+      "value": 66
+    },
+    {
+      "name_zh": "8PINTS八品脱(常熟路店)",
+      "column": "score_overall",
+      "value": 4.5
+    },
+    {
+      "name_zh": "8PINTS八品脱(常熟路店)",
+      "column": "hours",
+      "value": "周一至周四,周日 10:30-24:00；周五至周六 10:30-01:00"
+    },
+    {
+      "name_zh": "8PINTS八品脱(常熟路店)",
+      "column": "phone",
+      "value": "15515665713;17821536214"
+    },
+    {
+      "name_zh": "8PINTS八品脱(常熟路店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0I1ZANU4P"
+    },
+    {
+      "name_zh": "8PINTS八品脱(常熟路店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "AK28炸鸡SINCE1996(交大店)",
+      "column": "lng",
+      "value": 121.434425
+    },
+    {
+      "name_zh": "AK28炸鸡SINCE1996(交大店)",
+      "column": "lat",
+      "value": 31.017575
+    },
+    {
+      "name_zh": "AK28炸鸡SINCE1996(交大店)",
+      "column": "address",
+      "value": "东川路811弄50号一层2室"
+    },
+    {
+      "name_zh": "AK28炸鸡SINCE1996(交大店)",
+      "column": "cuisine_zh",
+      "value": "生活服务场所"
+    },
+    {
+      "name_zh": "AK28炸鸡SINCE1996(交大店)",
+      "column": "price_per_person",
+      "value": 40
+    },
+    {
+      "name_zh": "AK28炸鸡SINCE1996(交大店)",
+      "column": "score_overall",
+      "value": 3.7
+    },
+    {
+      "name_zh": "AK28炸鸡SINCE1996(交大店)",
+      "column": "hours",
+      "value": "周一至周日 09:00-23:00"
+    },
+    {
+      "name_zh": "AK28炸鸡SINCE1996(交大店)",
+      "column": "phone",
+      "value": "15618839803"
+    },
+    {
+      "name_zh": "AK28炸鸡SINCE1996(交大店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0KKPO80G6"
+    },
+    {
+      "name_zh": "AK28炸鸡SINCE1996(交大店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "复兴面王(万象城店)",
+      "column": "lng",
+      "value": 121.484659
+    },
+    {
+      "name_zh": "复兴面王(万象城店)",
+      "column": "lat",
+      "value": 31.217582
+    },
+    {
+      "name_zh": "复兴面王(万象城店)",
+      "column": "address",
+      "value": "盐城路38号1层(老西门地铁站2号口步行200米)"
+    },
+    {
+      "name_zh": "复兴面王(万象城店)",
+      "column": "cuisine_zh",
+      "value": "中餐厅"
+    },
+    {
+      "name_zh": "复兴面王(万象城店)",
+      "column": "price_per_person",
+      "value": 42
+    },
+    {
+      "name_zh": "复兴面王(万象城店)",
+      "column": "score_overall",
+      "value": 4.4
+    },
+    {
+      "name_zh": "复兴面王(万象城店)",
+      "column": "hours",
+      "value": "周一至周日 10:00-22:00"
+    },
+    {
+      "name_zh": "复兴面王(万象城店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0L2KMG3PE"
+    },
+    {
+      "name_zh": "复兴面王(万象城店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "JESSY&JERRY(前滩太古里店)",
+      "column": "lng",
+      "value": 121.481974
+    },
+    {
+      "name_zh": "JESSY&JERRY(前滩太古里店)",
+      "column": "lat",
+      "value": 31.152496
+    },
+    {
+      "name_zh": "JESSY&JERRY(前滩太古里店)",
+      "column": "address",
+      "value": "东育路500弄1-9号前滩太古里B1层"
+    },
+    {
+      "name_zh": "JESSY&JERRY(前滩太古里店)",
+      "column": "cuisine_zh",
+      "value": "餐饮相关"
+    },
+    {
+      "name_zh": "JESSY&JERRY(前滩太古里店)",
+      "column": "price_per_person",
+      "value": 133
+    },
+    {
+      "name_zh": "JESSY&JERRY(前滩太古里店)",
+      "column": "score_overall",
+      "value": 4.5
+    },
+    {
+      "name_zh": "JESSY&JERRY(前滩太古里店)",
+      "column": "hours",
+      "value": "周一至周日 10:00-21:30"
+    },
+    {
+      "name_zh": "JESSY&JERRY(前滩太古里店)",
+      "column": "phone",
+      "value": "13120599076"
+    },
+    {
+      "name_zh": "JESSY&JERRY(前滩太古里店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0KRRZWE8J"
+    },
+    {
+      "name_zh": "JESSY&JERRY(前滩太古里店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "九十叶·抹茶专门店(上海·太古里店)",
+      "column": "lng",
+      "value": 121.482089
+    },
+    {
+      "name_zh": "九十叶·抹茶专门店(上海·太古里店)",
+      "column": "lat",
+      "value": 31.15227
+    },
+    {
+      "name_zh": "九十叶·抹茶专门店(上海·太古里店)",
+      "column": "address",
+      "value": "上海市浦东新区东育路500弄1-9号前滩太古里石区一层S-L1-popup点位(近大草坪)"
+    },
+    {
+      "name_zh": "九十叶·抹茶专门店(上海·太古里店)",
+      "column": "cuisine_zh",
+      "value": "冷饮店"
+    },
+    {
+      "name_zh": "九十叶·抹茶专门店(上海·太古里店)",
+      "column": "price_per_person",
+      "value": 37
+    },
+    {
+      "name_zh": "九十叶·抹茶专门店(上海·太古里店)",
+      "column": "score_overall",
+      "value": 4.5
+    },
+    {
+      "name_zh": "九十叶·抹茶专门店(上海·太古里店)",
+      "column": "hours",
+      "value": "周一至周日 10:00-22:00"
+    },
+    {
+      "name_zh": "九十叶·抹茶专门店(上海·太古里店)",
+      "column": "phone",
+      "value": "18302159577"
+    },
+    {
+      "name_zh": "九十叶·抹茶专门店(上海·太古里店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0K1XNXSJD"
+    },
+    {
+      "name_zh": "九十叶·抹茶专门店(上海·太古里店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "BEIGEL TREE贝果树·纽约贝果博物馆(陆家嘴中心店)",
+      "column": "lng",
+      "value": 121.51603
+    },
+    {
+      "name_zh": "BEIGEL TREE贝果树·纽约贝果博物馆(陆家嘴中心店)",
+      "column": "lat",
+      "value": 31.230688
+    },
+    {
+      "name_zh": "BEIGEL TREE贝果树·纽约贝果博物馆(陆家嘴中心店)",
+      "column": "address",
+      "value": "陆家嘴街道浦东南路889号陆家嘴中心1楼122号"
+    },
+    {
+      "name_zh": "BEIGEL TREE贝果树·纽约贝果博物馆(陆家嘴中心店)",
+      "column": "cuisine_zh",
+      "value": "博物馆"
+    },
+    {
+      "name_zh": "BEIGEL TREE贝果树·纽约贝果博物馆(陆家嘴中心店)",
+      "column": "price_per_person",
+      "value": 46
+    },
+    {
+      "name_zh": "BEIGEL TREE贝果树·纽约贝果博物馆(陆家嘴中心店)",
+      "column": "score_overall",
+      "value": 4.5
+    },
+    {
+      "name_zh": "BEIGEL TREE贝果树·纽约贝果博物馆(陆家嘴中心店)",
+      "column": "hours",
+      "value": "周一至周日 10:00-22:00"
+    },
+    {
+      "name_zh": "BEIGEL TREE贝果树·纽约贝果博物馆(陆家嘴中心店)",
+      "column": "phone",
+      "value": "18845135436"
+    },
+    {
+      "name_zh": "BEIGEL TREE贝果树·纽约贝果博物馆(陆家嘴中心店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0KUX7Z71E"
+    },
+    {
+      "name_zh": "BEIGEL TREE贝果树·纽约贝果博物馆(陆家嘴中心店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "AZUL意大利餐厅(上海白玉兰广场店)",
+      "column": "lng",
+      "value": 121.49793
+    },
+    {
+      "name_zh": "AZUL意大利餐厅(上海白玉兰广场店)",
+      "column": "lat",
+      "value": 31.249351
+    },
+    {
+      "name_zh": "AZUL意大利餐厅(上海白玉兰广场店)",
+      "column": "address",
+      "value": "东长治路588号白玉兰广场3楼(国际客运中心地铁站出入口旁)"
+    },
+    {
+      "name_zh": "AZUL意大利餐厅(上海白玉兰广场店)",
+      "column": "cuisine_zh",
+      "value": "意式菜品餐厅"
+    },
+    {
+      "name_zh": "AZUL意大利餐厅(上海白玉兰广场店)",
+      "column": "price_per_person",
+      "value": 112
+    },
+    {
+      "name_zh": "AZUL意大利餐厅(上海白玉兰广场店)",
+      "column": "score_overall",
+      "value": 4.5
+    },
+    {
+      "name_zh": "AZUL意大利餐厅(上海白玉兰广场店)",
+      "column": "hours",
+      "value": "周一至周日 11:00-22:00"
+    },
+    {
+      "name_zh": "AZUL意大利餐厅(上海白玉兰广场店)",
+      "column": "phone",
+      "value": "021-65251636"
+    },
+    {
+      "name_zh": "AZUL意大利餐厅(上海白玉兰广场店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0HRO7MDAJ"
+    },
+    {
+      "name_zh": "AZUL意大利餐厅(上海白玉兰广场店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "凤凰湘语(浦东旗舰店)",
+      "column": "lng",
+      "value": 121.476651
+    },
+    {
+      "name_zh": "凤凰湘语(浦东旗舰店)",
+      "column": "lat",
+      "value": 31.152959
+    },
+    {
+      "name_zh": "凤凰湘语(浦东旗舰店)",
+      "column": "address",
+      "value": "耀体路212号三层L310+L312(晶耀前滩T2北区)"
+    },
+    {
+      "name_zh": "凤凰湘语(浦东旗舰店)",
+      "column": "cuisine_zh",
+      "value": "餐饮相关"
+    },
+    {
+      "name_zh": "凤凰湘语(浦东旗舰店)",
+      "column": "price_per_person",
+      "value": 149
+    },
+    {
+      "name_zh": "凤凰湘语(浦东旗舰店)",
+      "column": "score_overall",
+      "value": 4.6
+    },
+    {
+      "name_zh": "凤凰湘语(浦东旗舰店)",
+      "column": "hours",
+      "value": "周一至周日 11:00-14:00,17:00-21:00"
+    },
+    {
+      "name_zh": "凤凰湘语(浦东旗舰店)",
+      "column": "phone",
+      "value": "18302152777"
+    },
+    {
+      "name_zh": "凤凰湘语(浦东旗舰店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0FFL7O08C"
+    },
+    {
+      "name_zh": "凤凰湘语(浦东旗舰店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "海尚·生活广场",
+      "column": "lng",
+      "value": 121.508007
+    },
+    {
+      "name_zh": "海尚·生活广场",
+      "column": "lat",
+      "value": 30.837511
+    },
+    {
+      "name_zh": "海尚·生活广场",
+      "column": "address",
+      "value": "海湾镇海泉路555弄"
+    },
+    {
+      "name_zh": "海尚·生活广场",
+      "column": "cuisine_zh",
+      "value": "特色商业街"
+    },
+    {
+      "name_zh": "海尚·生活广场",
+      "column": "score_overall",
+      "value": 4.4
+    },
+    {
+      "name_zh": "海尚·生活广场",
+      "column": "hours",
+      "value": "周一至周日 00:00-24:00"
+    },
+    {
+      "name_zh": "海尚·生活广场",
+      "column": "phone",
+      "value": "15978508635"
+    },
+    {
+      "name_zh": "海尚·生活广场",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0FFF2J7E6"
+    },
+    {
+      "name_zh": "海尚·生活广场",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "育音堂音乐公园",
+      "column": "lng",
+      "value": 121.422275
+    },
+    {
+      "name_zh": "育音堂音乐公园",
+      "column": "lat",
+      "value": 31.219175
+    },
+    {
+      "name_zh": "育音堂音乐公园",
+      "column": "address",
+      "value": "愚园路1398号B1层B1-02"
+    },
+    {
+      "name_zh": "育音堂音乐公园",
+      "column": "cuisine_zh",
+      "value": "娱乐场所"
+    },
+    {
+      "name_zh": "育音堂音乐公园",
+      "column": "price_per_person",
+      "value": 120
+    },
+    {
+      "name_zh": "育音堂音乐公园",
+      "column": "score_overall",
+      "value": 4.7
+    },
+    {
+      "name_zh": "育音堂音乐公园",
+      "column": "hours",
+      "value": "周一至周日 19:00-24:00"
+    },
+    {
+      "name_zh": "育音堂音乐公园",
+      "column": "phone",
+      "value": "021-52378662"
+    },
+    {
+      "name_zh": "育音堂音乐公园",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0FFK039C0"
+    },
+    {
+      "name_zh": "育音堂音乐公园",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "上海天文馆(上海科技馆分馆)",
+      "column": "lng",
+      "value": 121.926924
+    },
+    {
+      "name_zh": "上海天文馆(上海科技馆分馆)",
+      "column": "lat",
+      "value": 30.9128
+    },
+    {
+      "name_zh": "上海天文馆(上海科技馆分馆)",
+      "column": "address",
+      "value": "临港大道380号"
+    },
+    {
+      "name_zh": "上海天文馆(上海科技馆分馆)",
+      "column": "cuisine_zh",
+      "value": "天文馆"
+    },
+    {
+      "name_zh": "上海天文馆(上海科技馆分馆)",
+      "column": "score_overall",
+      "value": 4.9
+    },
+    {
+      "name_zh": "上海天文馆(上海科技馆分馆)",
+      "column": "hours",
+      "value": "02/01-12/31 周二-周五, 周日 09:30-17:00开放；02/01-12/31 周六 09:30-20:00开放；02/01-12/31 周一 全天不开放；端午节,中秋节,国庆节 09:30-20:00开放"
+    },
+    {
+      "name_zh": "上海天文馆(上海科技馆分馆)",
+      "column": "phone",
+      "value": "021-50685563;19314523702"
+    },
+    {
+      "name_zh": "上海天文馆(上海科技馆分馆)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0FFHGVTPF"
+    },
+    {
+      "name_zh": "上海天文馆(上海科技馆分馆)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "望丘山(长宁龙之梦店)",
+      "column": "lng",
+      "value": 121.416664
+    },
+    {
+      "name_zh": "望丘山(长宁龙之梦店)",
+      "column": "lat",
+      "value": 31.219135
+    },
+    {
+      "name_zh": "望丘山(长宁龙之梦店)",
+      "column": "address",
+      "value": "长宁路1018号龙之梦城市生活中心B2-A10"
+    },
+    {
+      "name_zh": "望丘山(长宁龙之梦店)",
+      "column": "cuisine_zh",
+      "value": "中餐厅"
+    },
+    {
+      "name_zh": "望丘山(长宁龙之梦店)",
+      "column": "price_per_person",
+      "value": 47
+    },
+    {
+      "name_zh": "望丘山(长宁龙之梦店)",
+      "column": "score_overall",
+      "value": 4.3
+    },
+    {
+      "name_zh": "望丘山(长宁龙之梦店)",
+      "column": "hours",
+      "value": "周一至周日 10:00-22:00"
+    },
+    {
+      "name_zh": "望丘山(长宁龙之梦店)",
+      "column": "phone",
+      "value": "13260605579"
+    },
+    {
+      "name_zh": "望丘山(长宁龙之梦店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0K34H310Q"
+    },
+    {
+      "name_zh": "望丘山(长宁龙之梦店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "菊樱寿司(南桥百联店)",
+      "column": "lng",
+      "value": 121.485188
+    },
+    {
+      "name_zh": "菊樱寿司(南桥百联店)",
+      "column": "lat",
+      "value": 30.914576
+    },
+    {
+      "name_zh": "菊樱寿司(南桥百联店)",
+      "column": "address",
+      "value": "南桥镇百齐路288号二期三楼G41-WQ3F0007"
+    },
+    {
+      "name_zh": "菊樱寿司(南桥百联店)",
+      "column": "cuisine_zh",
+      "value": "日本料理"
+    },
+    {
+      "name_zh": "菊樱寿司(南桥百联店)",
+      "column": "price_per_person",
+      "value": 85
+    },
+    {
+      "name_zh": "菊樱寿司(南桥百联店)",
+      "column": "score_overall",
+      "value": 4
+    },
+    {
+      "name_zh": "菊樱寿司(南桥百联店)",
+      "column": "hours",
+      "value": "周一至周日 10:00-21:30"
+    },
+    {
+      "name_zh": "菊樱寿司(南桥百联店)",
+      "column": "phone",
+      "value": "021-57188909"
+    },
+    {
+      "name_zh": "菊樱寿司(南桥百联店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0FFH6144S"
+    },
+    {
+      "name_zh": "菊樱寿司(南桥百联店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "湊湊火锅·茶憩(百联南方购物中心店)",
+      "column": "lng",
+      "value": 121.400672
+    },
+    {
+      "name_zh": "湊湊火锅·茶憩(百联南方购物中心店)",
+      "column": "lat",
+      "value": 31.132058
+    },
+    {
+      "name_zh": "湊湊火锅·茶憩(百联南方购物中心店)",
+      "column": "address",
+      "value": "上海市闵行区沪闵路7388号G04-F05-1-006a号商铺"
+    },
+    {
+      "name_zh": "湊湊火锅·茶憩(百联南方购物中心店)",
+      "column": "cuisine_zh",
+      "value": "火锅店"
+    },
+    {
+      "name_zh": "湊湊火锅·茶憩(百联南方购物中心店)",
+      "column": "price_per_person",
+      "value": 154
+    },
+    {
+      "name_zh": "湊湊火锅·茶憩(百联南方购物中心店)",
+      "column": "score_overall",
+      "value": 4.3
+    },
+    {
+      "name_zh": "湊湊火锅·茶憩(百联南方购物中心店)",
+      "column": "hours",
+      "value": "周一至周日 10:00-23:00"
+    },
+    {
+      "name_zh": "湊湊火锅·茶憩(百联南方购物中心店)",
+      "column": "phone",
+      "value": "021-52967705;021-52967706;15021506080"
+    },
+    {
+      "name_zh": "湊湊火锅·茶憩(百联南方购物中心店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0FFIRP6XC"
+    },
+    {
+      "name_zh": "湊湊火锅·茶憩(百联南方购物中心店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "牛New寿喜烧(南桥店)",
+      "column": "lng",
+      "value": 121.315018
+    },
+    {
+      "name_zh": "牛New寿喜烧(南桥店)",
+      "column": "lat",
+      "value": 31.192133
+    },
+    {
+      "name_zh": "牛New寿喜烧(南桥店)",
+      "column": "address",
+      "value": "申长路688号虹桥天地购物中心3F-318"
+    },
+    {
+      "name_zh": "牛New寿喜烧(南桥店)",
+      "column": "cuisine_zh",
+      "value": "日本料理"
+    },
+    {
+      "name_zh": "牛New寿喜烧(南桥店)",
+      "column": "price_per_person",
+      "value": 183
+    },
+    {
+      "name_zh": "牛New寿喜烧(南桥店)",
+      "column": "score_overall",
+      "value": 4.7
+    },
+    {
+      "name_zh": "牛New寿喜烧(南桥店)",
+      "column": "hours",
+      "value": "周六至周日 10:30-14:30,16:00-22:00；周一至周五 11:00-14:30,16:30-22:00"
+    },
+    {
+      "name_zh": "牛New寿喜烧(南桥店)",
+      "column": "phone",
+      "value": "021-54335051"
+    },
+    {
+      "name_zh": "牛New寿喜烧(南桥店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0HURK3NRR"
+    },
+    {
+      "name_zh": "牛New寿喜烧(南桥店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "东北筋饼骨头王奉贤店",
+      "column": "lng",
+      "value": 121.510576
+    },
+    {
+      "name_zh": "东北筋饼骨头王奉贤店",
+      "column": "lat",
+      "value": 30.829052
+    },
+    {
+      "name_zh": "东北筋饼骨头王奉贤店",
+      "column": "address",
+      "value": "海思路789弄6号105室"
+    },
+    {
+      "name_zh": "东北筋饼骨头王奉贤店",
+      "column": "cuisine_zh",
+      "value": "东北菜"
+    },
+    {
+      "name_zh": "东北筋饼骨头王奉贤店",
+      "column": "price_per_person",
+      "value": 68
+    },
+    {
+      "name_zh": "东北筋饼骨头王奉贤店",
+      "column": "score_overall",
+      "value": 4.3
+    },
+    {
+      "name_zh": "东北筋饼骨头王奉贤店",
+      "column": "hours",
+      "value": "周一至周日 10:00-22:00"
+    },
+    {
+      "name_zh": "东北筋饼骨头王奉贤店",
+      "column": "phone",
+      "value": "18217724111"
+    },
+    {
+      "name_zh": "东北筋饼骨头王奉贤店",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0FFIQF11Z"
+    },
+    {
+      "name_zh": "东北筋饼骨头王奉贤店",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "宫廷糕点(上海陆家嘴世纪大道地铁站如家商旅酒店店)",
+      "column": "lng",
+      "value": 121.52957
+    },
+    {
+      "name_zh": "宫廷糕点(上海陆家嘴世纪大道地铁站如家商旅酒店店)",
+      "column": "lat",
+      "value": 31.229903
+    },
+    {
+      "name_zh": "宫廷糕点(上海陆家嘴世纪大道地铁站如家商旅酒店店)",
+      "column": "address",
+      "value": "福山路307号(世纪大道地铁站6号口步行290米)"
+    },
+    {
+      "name_zh": "宫廷糕点(上海陆家嘴世纪大道地铁站如家商旅酒店店)",
+      "column": "cuisine_zh",
+      "value": "糕饼店"
+    },
+    {
+      "name_zh": "宫廷糕点(上海陆家嘴世纪大道地铁站如家商旅酒店店)",
+      "column": "price_per_person",
+      "value": 17
+    },
+    {
+      "name_zh": "宫廷糕点(上海陆家嘴世纪大道地铁站如家商旅酒店店)",
+      "column": "score_overall",
+      "value": 4.4
+    },
+    {
+      "name_zh": "宫廷糕点(上海陆家嘴世纪大道地铁站如家商旅酒店店)",
+      "column": "hours",
+      "value": "周一至周日 08:00-20:00 2026-02-10至2026-02-25 周一至周日 全天关闭"
+    },
+    {
+      "name_zh": "宫廷糕点(上海陆家嘴世纪大道地铁站如家商旅酒店店)",
+      "column": "phone",
+      "value": "17307012070;17307012080"
+    },
+    {
+      "name_zh": "宫廷糕点(上海陆家嘴世纪大道地铁站如家商旅酒店店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0FFI6EU55"
+    },
+    {
+      "name_zh": "宫廷糕点(上海陆家嘴世纪大道地铁站如家商旅酒店店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "山石榴·贵州菜(前滩太古里店)",
+      "column": "lng",
+      "value": 121.480562
+    },
+    {
+      "name_zh": "山石榴·贵州菜(前滩太古里店)",
+      "column": "lat",
+      "value": 31.152639
+    },
+    {
+      "name_zh": "山石榴·贵州菜(前滩太古里店)",
+      "column": "address",
+      "value": "东育路500弄1-9号前滩太古里L3层"
+    },
+    {
+      "name_zh": "山石榴·贵州菜(前滩太古里店)",
+      "column": "cuisine_zh",
+      "value": "云贵菜"
+    },
+    {
+      "name_zh": "山石榴·贵州菜(前滩太古里店)",
+      "column": "price_per_person",
+      "value": 142
+    },
+    {
+      "name_zh": "山石榴·贵州菜(前滩太古里店)",
+      "column": "score_overall",
+      "value": 4.7
+    },
+    {
+      "name_zh": "山石榴·贵州菜(前滩太古里店)",
+      "column": "hours",
+      "value": "周一至周五 11:00-14:00,17:00-21:00；周六至周日 11:00-14:30,16:30-21:00"
+    },
+    {
+      "name_zh": "山石榴·贵州菜(前滩太古里店)",
+      "column": "phone",
+      "value": "17802141771"
+    },
+    {
+      "name_zh": "山石榴·贵州菜(前滩太古里店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0HRL50MAQ"
+    },
+    {
+      "name_zh": "山石榴·贵州菜(前滩太古里店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "釜山鱼饼(井亭大厦店)",
+      "column": "lng",
+      "value": 121.374883
+    },
+    {
+      "name_zh": "釜山鱼饼(井亭大厦店)",
+      "column": "lat",
+      "value": 31.170356
+    },
+    {
+      "name_zh": "釜山鱼饼(井亭大厦店)",
+      "column": "address",
+      "value": "虹泉路1000号井亭Seoul Plaza F1层"
+    },
+    {
+      "name_zh": "釜山鱼饼(井亭大厦店)",
+      "column": "cuisine_zh",
+      "value": "韩国料理"
+    },
+    {
+      "name_zh": "釜山鱼饼(井亭大厦店)",
+      "column": "price_per_person",
+      "value": 21
+    },
+    {
+      "name_zh": "釜山鱼饼(井亭大厦店)",
+      "column": "score_overall",
+      "value": 4.5
+    },
+    {
+      "name_zh": "釜山鱼饼(井亭大厦店)",
+      "column": "hours",
+      "value": "周一至周日 10:30-21:00"
+    },
+    {
+      "name_zh": "釜山鱼饼(井亭大厦店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0FFFQ64TS"
+    },
+    {
+      "name_zh": "釜山鱼饼(井亭大厦店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "88食堂·烤肉酱蟹(虹泉路店)",
+      "column": "lng",
+      "value": 121.374601
+    },
+    {
+      "name_zh": "88食堂·烤肉酱蟹(虹泉路店)",
+      "column": "lat",
+      "value": 31.170556
+    },
+    {
+      "name_zh": "88食堂·烤肉酱蟹(虹泉路店)",
+      "column": "address",
+      "value": "井亭大厦b座104室(吴叔公隔壁商场进门左侧首家)"
+    },
+    {
+      "name_zh": "88食堂·烤肉酱蟹(虹泉路店)",
+      "column": "cuisine_zh",
+      "value": "韩国料理"
+    },
+    {
+      "name_zh": "88食堂·烤肉酱蟹(虹泉路店)",
+      "column": "price_per_person",
+      "value": 99
+    },
+    {
+      "name_zh": "88食堂·烤肉酱蟹(虹泉路店)",
+      "column": "score_overall",
+      "value": 4.5
+    },
+    {
+      "name_zh": "88食堂·烤肉酱蟹(虹泉路店)",
+      "column": "hours",
+      "value": "周六至周日 11:00-21:30；周一至周五 11:00-14:00,16:00-21:30"
+    },
+    {
+      "name_zh": "88食堂·烤肉酱蟹(虹泉路店)",
+      "column": "phone",
+      "value": "15306161059;15800584285"
+    },
+    {
+      "name_zh": "88食堂·烤肉酱蟹(虹泉路店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0HBTO40LN"
+    },
+    {
+      "name_zh": "88食堂·烤肉酱蟹(虹泉路店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "BARBARIAN(武定路店)",
+      "column": "lng",
+      "value": 121.442774
+    },
+    {
+      "name_zh": "BARBARIAN(武定路店)",
+      "column": "lat",
+      "value": 31.229936
+    },
+    {
+      "name_zh": "BARBARIAN(武定路店)",
+      "column": "address",
+      "value": "武定路1019号"
+    },
+    {
+      "name_zh": "BARBARIAN(武定路店)",
+      "column": "cuisine_zh",
+      "value": "餐饮相关"
+    },
+    {
+      "name_zh": "BARBARIAN(武定路店)",
+      "column": "price_per_person",
+      "value": 216
+    },
+    {
+      "name_zh": "BARBARIAN(武定路店)",
+      "column": "score_overall",
+      "value": 4.7
+    },
+    {
+      "name_zh": "BARBARIAN(武定路店)",
+      "column": "hours",
+      "value": "周六至周日 11:00-01:00；周一至周五 16:00-01:00"
+    },
+    {
+      "name_zh": "BARBARIAN(武定路店)",
+      "column": "phone",
+      "value": "13701991174"
+    },
+    {
+      "name_zh": "BARBARIAN(武定路店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0FFK28IQ6"
+    },
+    {
+      "name_zh": "BARBARIAN(武定路店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "东北四季饺子王(华轻梅陇购物中心店)",
+      "column": "lng",
+      "value": 121.421821
+    },
+    {
+      "name_zh": "东北四季饺子王(华轻梅陇购物中心店)",
+      "column": "lat",
+      "value": 31.139176
+    },
+    {
+      "name_zh": "东北四季饺子王(华轻梅陇购物中心店)",
+      "column": "address",
+      "value": "梅陇商业中心(龙洲路995号)四楼4008室"
+    },
+    {
+      "name_zh": "东北四季饺子王(华轻梅陇购物中心店)",
+      "column": "cuisine_zh",
+      "value": "东北菜"
+    },
+    {
+      "name_zh": "东北四季饺子王(华轻梅陇购物中心店)",
+      "column": "price_per_person",
+      "value": 58
+    },
+    {
+      "name_zh": "东北四季饺子王(华轻梅陇购物中心店)",
+      "column": "score_overall",
+      "value": 4.4
+    },
+    {
+      "name_zh": "东北四季饺子王(华轻梅陇购物中心店)",
+      "column": "hours",
+      "value": "周一至周日 10:30-22:30 2026-02-12至2026-02-28 周一至周日 全天关闭"
+    },
+    {
+      "name_zh": "东北四季饺子王(华轻梅陇购物中心店)",
+      "column": "phone",
+      "value": "16602163241"
+    },
+    {
+      "name_zh": "东北四季饺子王(华轻梅陇购物中心店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0G3D52EJB"
+    },
+    {
+      "name_zh": "东北四季饺子王(华轻梅陇购物中心店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "AMINO AMIGO(静安嘉里中心店)",
+      "column": "lng",
+      "value": 121.449576
+    },
+    {
+      "name_zh": "AMINO AMIGO(静安嘉里中心店)",
+      "column": "lat",
+      "value": 31.223879
+    },
+    {
+      "name_zh": "AMINO AMIGO(静安嘉里中心店)",
+      "column": "address",
+      "value": "南京西路1563号静安嘉里中心北区B楼NB-1516"
+    },
+    {
+      "name_zh": "AMINO AMIGO(静安嘉里中心店)",
+      "column": "cuisine_zh",
+      "value": "西餐厅(综合风味)"
+    },
+    {
+      "name_zh": "AMINO AMIGO(静安嘉里中心店)",
+      "column": "price_per_person",
+      "value": 104
+    },
+    {
+      "name_zh": "AMINO AMIGO(静安嘉里中心店)",
+      "column": "score_overall",
+      "value": 4.6
+    },
+    {
+      "name_zh": "AMINO AMIGO(静安嘉里中心店)",
+      "column": "hours",
+      "value": "周一至周日 11:00-21:00"
+    },
+    {
+      "name_zh": "AMINO AMIGO(静安嘉里中心店)",
+      "column": "phone",
+      "value": "021-53555331"
+    },
+    {
+      "name_zh": "AMINO AMIGO(静安嘉里中心店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0IBLZDHQQ"
+    },
+    {
+      "name_zh": "AMINO AMIGO(静安嘉里中心店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "AMINO AMIGO(晶耀前滩店)",
+      "column": "lng",
+      "value": 121.476706
+    },
+    {
+      "name_zh": "AMINO AMIGO(晶耀前滩店)",
+      "column": "lat",
+      "value": 31.153003
+    },
+    {
+      "name_zh": "AMINO AMIGO(晶耀前滩店)",
+      "column": "address",
+      "value": "耀体路212号一层L112+L120单元"
+    },
+    {
+      "name_zh": "AMINO AMIGO(晶耀前滩店)",
+      "column": "cuisine_zh",
+      "value": "西餐厅(综合风味)"
+    },
+    {
+      "name_zh": "AMINO AMIGO(晶耀前滩店)",
+      "column": "price_per_person",
+      "value": 120
+    },
+    {
+      "name_zh": "AMINO AMIGO(晶耀前滩店)",
+      "column": "score_overall",
+      "value": 4.5
+    },
+    {
+      "name_zh": "AMINO AMIGO(晶耀前滩店)",
+      "column": "hours",
+      "value": "周一至周日 11:00-21:00"
+    },
+    {
+      "name_zh": "AMINO AMIGO(晶耀前滩店)",
+      "column": "phone",
+      "value": "021-58861718"
+    },
+    {
+      "name_zh": "AMINO AMIGO(晶耀前滩店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0L0JZFE4U"
+    },
+    {
+      "name_zh": "AMINO AMIGO(晶耀前滩店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "Chili's奇利斯美式小餐馆(西岸梦中心1F层)",
+      "column": "lng",
+      "value": 121.465526
+    },
+    {
+      "name_zh": "Chili's奇利斯美式小餐馆(西岸梦中心1F层)",
+      "column": "lat",
+      "value": 31.158691
+    },
+    {
+      "name_zh": "Chili's奇利斯美式小餐馆(西岸梦中心1F层)",
+      "column": "address",
+      "value": "龙腾大道2266号Gate M西岸梦中心1F层"
+    },
+    {
+      "name_zh": "Chili's奇利斯美式小餐馆(西岸梦中心1F层)",
+      "column": "cuisine_zh",
+      "value": "咖啡厅"
+    },
+    {
+      "name_zh": "Chili's奇利斯美式小餐馆(西岸梦中心1F层)",
+      "column": "price_per_person",
+      "value": 131
+    },
+    {
+      "name_zh": "Chili's奇利斯美式小餐馆(西岸梦中心1F层)",
+      "column": "score_overall",
+      "value": 4.6
+    },
+    {
+      "name_zh": "Chili's奇利斯美式小餐馆(西岸梦中心1F层)",
+      "column": "hours",
+      "value": "周一至周五 11:00-23:30；周六至周日 10:30-24:00 2026-02-17至2026-02-23 周一至周日 11:00-18:00"
+    },
+    {
+      "name_zh": "Chili's奇利斯美式小餐馆(西岸梦中心1F层)",
+      "column": "phone",
+      "value": "15801799391"
+    },
+    {
+      "name_zh": "Chili's奇利斯美式小餐馆(西岸梦中心1F层)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0K1GHTYC0"
+    },
+    {
+      "name_zh": "Chili's奇利斯美式小餐馆(西岸梦中心1F层)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "温暖你的猪(漕河泾M+店)",
+      "column": "lng",
+      "value": 121.412248
+    },
+    {
+      "name_zh": "温暖你的猪(漕河泾M+店)",
+      "column": "lat",
+      "value": 31.170668
+    },
+    {
+      "name_zh": "温暖你的猪(漕河泾M+店)",
+      "column": "address",
+      "value": "田林路140号锦和尚城"
+    },
+    {
+      "name_zh": "温暖你的猪(漕河泾M+店)",
+      "column": "cuisine_zh",
+      "value": "生活服务场所"
+    },
+    {
+      "name_zh": "温暖你的猪(漕河泾M+店)",
+      "column": "price_per_person",
+      "value": 53
+    },
+    {
+      "name_zh": "温暖你的猪(漕河泾M+店)",
+      "column": "score_overall",
+      "value": 4.5
+    },
+    {
+      "name_zh": "温暖你的猪(漕河泾M+店)",
+      "column": "hours",
+      "value": "周一至周日 09:00-21:00"
+    },
+    {
+      "name_zh": "温暖你的猪(漕河泾M+店)",
+      "column": "phone",
+      "value": "17621621704"
+    },
+    {
+      "name_zh": "温暖你的猪(漕河泾M+店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0LUULRZUJ"
+    },
+    {
+      "name_zh": "温暖你的猪(漕河泾M+店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "翠富楼·粤式点心·啫啫煲(美罗城店)",
+      "column": "lng",
+      "value": 121.439675
+    },
+    {
+      "name_zh": "翠富楼·粤式点心·啫啫煲(美罗城店)",
+      "column": "lat",
+      "value": 31.193143
+    },
+    {
+      "name_zh": "翠富楼·粤式点心·啫啫煲(美罗城店)",
+      "column": "address",
+      "value": "肇嘉浜路1111号美罗城8F层"
+    },
+    {
+      "name_zh": "翠富楼·粤式点心·啫啫煲(美罗城店)",
+      "column": "cuisine_zh",
+      "value": "广东菜(粤菜)"
+    },
+    {
+      "name_zh": "翠富楼·粤式点心·啫啫煲(美罗城店)",
+      "column": "price_per_person",
+      "value": 88
+    },
+    {
+      "name_zh": "翠富楼·粤式点心·啫啫煲(美罗城店)",
+      "column": "score_overall",
+      "value": 4.5
+    },
+    {
+      "name_zh": "翠富楼·粤式点心·啫啫煲(美罗城店)",
+      "column": "hours",
+      "value": "周一至周日 07:00-21:00 2026-02-16至2026-02-16 周一 07:00-15:00"
+    },
+    {
+      "name_zh": "翠富楼·粤式点心·啫啫煲(美罗城店)",
+      "column": "phone",
+      "value": "021-51187217"
+    },
+    {
+      "name_zh": "翠富楼·粤式点心·啫啫煲(美罗城店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0J3TDJR1K"
+    },
+    {
+      "name_zh": "翠富楼·粤式点心·啫啫煲(美罗城店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "HOLY BAGEL(耀华店)",
+      "column": "lng",
+      "value": 121.476984
+    },
+    {
+      "name_zh": "HOLY BAGEL(耀华店)",
+      "column": "lat",
+      "value": 31.167992
+    },
+    {
+      "name_zh": "HOLY BAGEL(耀华店)",
+      "column": "address",
+      "value": "济明路533弄1号104室"
+    },
+    {
+      "name_zh": "HOLY BAGEL(耀华店)",
+      "column": "cuisine_zh",
+      "value": "糕饼店"
+    },
+    {
+      "name_zh": "HOLY BAGEL(耀华店)",
+      "column": "price_per_person",
+      "value": 52
+    },
+    {
+      "name_zh": "HOLY BAGEL(耀华店)",
+      "column": "score_overall",
+      "value": 4.5
+    },
+    {
+      "name_zh": "HOLY BAGEL(耀华店)",
+      "column": "hours",
+      "value": "周一至周日 07:30-20:00 2026-02-16至2026-02-22 周一至周日 全天关闭"
+    },
+    {
+      "name_zh": "HOLY BAGEL(耀华店)",
+      "column": "phone",
+      "value": "19512560918"
+    },
+    {
+      "name_zh": "HOLY BAGEL(耀华店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0JD27SRZC"
+    },
+    {
+      "name_zh": "HOLY BAGEL(耀华店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "国际饭店蝴蝶酥(上海一店)",
+      "column": "lng",
+      "value": 121.479992
+    },
+    {
+      "name_zh": "国际饭店蝴蝶酥(上海一店)",
+      "column": "lat",
+      "value": 31.24905
+    },
+    {
+      "name_zh": "国际饭店蝴蝶酥(上海一店)",
+      "column": "address",
+      "value": "河南北路447号"
+    },
+    {
+      "name_zh": "国际饭店蝴蝶酥(上海一店)",
+      "column": "cuisine_zh",
+      "value": "餐饮相关"
+    },
+    {
+      "name_zh": "国际饭店蝴蝶酥(上海一店)",
+      "column": "price_per_person",
+      "value": 54
+    },
+    {
+      "name_zh": "国际饭店蝴蝶酥(上海一店)",
+      "column": "score_overall",
+      "value": 4.3
+    },
+    {
+      "name_zh": "国际饭店蝴蝶酥(上海一店)",
+      "column": "hours",
+      "value": "周一至周日 08:00-24:00"
+    },
+    {
+      "name_zh": "国际饭店蝴蝶酥(上海一店)",
+      "column": "phone",
+      "value": "13164710583"
+    },
+    {
+      "name_zh": "国际饭店蝴蝶酥(上海一店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0L69C2D2X"
+    },
+    {
+      "name_zh": "国际饭店蝴蝶酥(上海一店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "饿梨酱(前滩公园巷店)",
+      "column": "lng",
+      "value": 121.474943
+    },
+    {
+      "name_zh": "饿梨酱(前滩公园巷店)",
+      "column": "lat",
+      "value": 31.15303
+    },
+    {
+      "name_zh": "饿梨酱(前滩公园巷店)",
+      "column": "address",
+      "value": "耀龙路1378号前滩公园巷E2栋3楼308号(晶耀前滩与公园巷连接处)"
+    },
+    {
+      "name_zh": "饿梨酱(前滩公园巷店)",
+      "column": "cuisine_zh",
+      "value": "餐饮相关"
+    },
+    {
+      "name_zh": "饿梨酱(前滩公园巷店)",
+      "column": "price_per_person",
+      "value": 59
+    },
+    {
+      "name_zh": "饿梨酱(前滩公园巷店)",
+      "column": "score_overall",
+      "value": 4.3
+    },
+    {
+      "name_zh": "饿梨酱(前滩公园巷店)",
+      "column": "hours",
+      "value": "周一至周日 10:00-21:00"
+    },
+    {
+      "name_zh": "饿梨酱(前滩公园巷店)",
+      "column": "phone",
+      "value": "16621070530"
+    },
+    {
+      "name_zh": "饿梨酱(前滩公园巷店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0LUY1KGQQ"
+    },
+    {
+      "name_zh": "饿梨酱(前滩公园巷店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "龙华素斋(龙华路店)",
+      "column": "lng",
+      "value": 121.45245
+    },
+    {
+      "name_zh": "龙华素斋(龙华路店)",
+      "column": "lat",
+      "value": 31.176213
+    },
+    {
+      "name_zh": "龙华素斋(龙华路店)",
+      "column": "address",
+      "value": "龙华路2787号(龙华古寺东侧,近龙华西路)"
+    },
+    {
+      "name_zh": "龙华素斋(龙华路店)",
+      "column": "cuisine_zh",
+      "value": "中式素菜馆"
+    },
+    {
+      "name_zh": "龙华素斋(龙华路店)",
+      "column": "price_per_person",
+      "value": 30
+    },
+    {
+      "name_zh": "龙华素斋(龙华路店)",
+      "column": "score_overall",
+      "value": 4.7
+    },
+    {
+      "name_zh": "龙华素斋(龙华路店)",
+      "column": "hours",
+      "value": "周一至周日 08:00-18:00"
+    },
+    {
+      "name_zh": "龙华素斋(龙华路店)",
+      "column": "phone",
+      "value": "021-64574805"
+    },
+    {
+      "name_zh": "龙华素斋(龙华路店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B001570TYB"
+    },
+    {
+      "name_zh": "龙华素斋(龙华路店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "欧记大排档(大悦城店)",
+      "column": "lng",
+      "value": 121.472042
+    },
+    {
+      "name_zh": "欧记大排档(大悦城店)",
+      "column": "lat",
+      "value": 31.244047
+    },
+    {
+      "name_zh": "欧记大排档(大悦城店)",
+      "column": "address",
+      "value": "西藏北路198号N910室"
+    },
+    {
+      "name_zh": "欧记大排档(大悦城店)",
+      "column": "cuisine_zh",
+      "value": "中餐厅"
+    },
+    {
+      "name_zh": "欧记大排档(大悦城店)",
+      "column": "price_per_person",
+      "value": 111
+    },
+    {
+      "name_zh": "欧记大排档(大悦城店)",
+      "column": "score_overall",
+      "value": 4.7
+    },
+    {
+      "name_zh": "欧记大排档(大悦城店)",
+      "column": "hours",
+      "value": "周一至周日 11:00-01:00"
+    },
+    {
+      "name_zh": "欧记大排档(大悦城店)",
+      "column": "phone",
+      "value": "13122106703"
+    },
+    {
+      "name_zh": "欧记大排档(大悦城店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0LDU7GJLZ"
+    },
+    {
+      "name_zh": "欧记大排档(大悦城店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "ROOTS Bar&Cafe",
+      "column": "lng",
+      "value": 121.45862
+    },
+    {
+      "name_zh": "ROOTS Bar&Cafe",
+      "column": "lat",
+      "value": 31.221428
+    },
+    {
+      "name_zh": "ROOTS Bar&Cafe",
+      "column": "address",
+      "value": "进贤路196-2号"
+    },
+    {
+      "name_zh": "ROOTS Bar&Cafe",
+      "column": "cuisine_zh",
+      "value": "服装鞋帽皮具店"
+    },
+    {
+      "name_zh": "ROOTS Bar&Cafe",
+      "column": "price_per_person",
+      "value": 62
+    },
+    {
+      "name_zh": "ROOTS Bar&Cafe",
+      "column": "score_overall",
+      "value": 4.4
+    },
+    {
+      "name_zh": "ROOTS Bar&Cafe",
+      "column": "hours",
+      "value": "周一至周日 11:00-02:00"
+    },
+    {
+      "name_zh": "ROOTS Bar&Cafe",
+      "column": "phone",
+      "value": "13262868725"
+    },
+    {
+      "name_zh": "ROOTS Bar&Cafe",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0I06GP1EM"
+    },
+    {
+      "name_zh": "ROOTS Bar&Cafe",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "派悦坊.甜品.蛋糕(长宁龙之梦店)",
+      "column": "lng",
+      "value": 121.41739
+    },
+    {
+      "name_zh": "派悦坊.甜品.蛋糕(长宁龙之梦店)",
+      "column": "lat",
+      "value": 31.219552
+    },
+    {
+      "name_zh": "派悦坊.甜品.蛋糕(长宁龙之梦店)",
+      "column": "address",
+      "value": "长宁路1018号1层L1-SPK36号"
+    },
+    {
+      "name_zh": "派悦坊.甜品.蛋糕(长宁龙之梦店)",
+      "column": "cuisine_zh",
+      "value": "糕饼店"
+    },
+    {
+      "name_zh": "派悦坊.甜品.蛋糕(长宁龙之梦店)",
+      "column": "price_per_person",
+      "value": 44
+    },
+    {
+      "name_zh": "派悦坊.甜品.蛋糕(长宁龙之梦店)",
+      "column": "score_overall",
+      "value": 3.8
+    },
+    {
+      "name_zh": "派悦坊.甜品.蛋糕(长宁龙之梦店)",
+      "column": "hours",
+      "value": "周一至周日 10:00-22:00"
+    },
+    {
+      "name_zh": "派悦坊.甜品.蛋糕(长宁龙之梦店)",
+      "column": "phone",
+      "value": "17611602271"
+    },
+    {
+      "name_zh": "派悦坊.甜品.蛋糕(长宁龙之梦店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0M67LYRZK"
+    },
+    {
+      "name_zh": "派悦坊.甜品.蛋糕(长宁龙之梦店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "桂满陇(徐汇万科)",
+      "column": "lng",
+      "value": 121.430941
+    },
+    {
+      "name_zh": "桂满陇(徐汇万科)",
+      "column": "lat",
+      "value": 31.157475
+    },
+    {
+      "name_zh": "桂满陇(徐汇万科)",
+      "column": "address",
+      "value": "沪闵路9191号徐汇万科广场B1层"
+    },
+    {
+      "name_zh": "桂满陇(徐汇万科)",
+      "column": "cuisine_zh",
+      "value": "中餐厅"
+    },
+    {
+      "name_zh": "桂满陇(徐汇万科)",
+      "column": "price_per_person",
+      "value": 81
+    },
+    {
+      "name_zh": "桂满陇(徐汇万科)",
+      "column": "score_overall",
+      "value": 4.5
+    },
+    {
+      "name_zh": "桂满陇(徐汇万科)",
+      "column": "hours",
+      "value": "周一至周日 10:30-21:00"
+    },
+    {
+      "name_zh": "桂满陇(徐汇万科)",
+      "column": "phone",
+      "value": "13003181476"
+    },
+    {
+      "name_zh": "桂满陇(徐汇万科)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0KDVSQ6QR"
+    },
+    {
+      "name_zh": "桂满陇(徐汇万科)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "the Roll'ING手作瑞士卷专门店(大宁久光店)",
+      "column": "lng",
+      "value": 121.451399
+    },
+    {
+      "name_zh": "the Roll'ING手作瑞士卷专门店(大宁久光店)",
+      "column": "lat",
+      "value": 31.276116
+    },
+    {
+      "name_zh": "the Roll'ING手作瑞士卷专门店(大宁久光店)",
+      "column": "address",
+      "value": "共和新路2188号大宁久光中心B2-09(近裕莲茶楼)"
+    },
+    {
+      "name_zh": "the Roll'ING手作瑞士卷专门店(大宁久光店)",
+      "column": "cuisine_zh",
+      "value": "甜品店"
+    },
+    {
+      "name_zh": "the Roll'ING手作瑞士卷专门店(大宁久光店)",
+      "column": "price_per_person",
+      "value": 49
+    },
+    {
+      "name_zh": "the Roll'ING手作瑞士卷专门店(大宁久光店)",
+      "column": "score_overall",
+      "value": 4.1
+    },
+    {
+      "name_zh": "the Roll'ING手作瑞士卷专门店(大宁久光店)",
+      "column": "hours",
+      "value": "周一至周日 10:00-21:30"
+    },
+    {
+      "name_zh": "the Roll'ING手作瑞士卷专门店(大宁久光店)",
+      "column": "phone",
+      "value": "13122651908"
+    },
+    {
+      "name_zh": "the Roll'ING手作瑞士卷专门店(大宁久光店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0KAV7F9YF"
+    },
+    {
+      "name_zh": "the Roll'ING手作瑞士卷专门店(大宁久光店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "Blue Bottle Coffee蓝瓶咖啡(张园店)",
+      "column": "lng",
+      "value": 121.459592
+    },
+    {
+      "name_zh": "Blue Bottle Coffee蓝瓶咖啡(张园店)",
+      "column": "lat",
+      "value": 31.227822
+    },
+    {
+      "name_zh": "Blue Bottle Coffee蓝瓶咖啡(张园店)",
+      "column": "address",
+      "value": "茂名北路258号张园L1层W5-1A"
+    },
+    {
+      "name_zh": "Blue Bottle Coffee蓝瓶咖啡(张园店)",
+      "column": "cuisine_zh",
+      "value": "咖啡厅"
+    },
+    {
+      "name_zh": "Blue Bottle Coffee蓝瓶咖啡(张园店)",
+      "column": "price_per_person",
+      "value": 48
+    },
+    {
+      "name_zh": "Blue Bottle Coffee蓝瓶咖啡(张园店)",
+      "column": "score_overall",
+      "value": 4.7
+    },
+    {
+      "name_zh": "Blue Bottle Coffee蓝瓶咖啡(张园店)",
+      "column": "hours",
+      "value": "周一至周日 08:00-22:00"
+    },
+    {
+      "name_zh": "Blue Bottle Coffee蓝瓶咖啡(张园店)",
+      "column": "phone",
+      "value": "021-62376316"
+    },
+    {
+      "name_zh": "Blue Bottle Coffee蓝瓶咖啡(张园店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0IK6MJ311"
+    },
+    {
+      "name_zh": "Blue Bottle Coffee蓝瓶咖啡(张园店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "巴波萨烧烤",
+      "column": "lng",
+      "value": 121.66281
+    },
+    {
+      "name_zh": "巴波萨烧烤",
+      "column": "lat",
+      "value": 31.145585
+    },
+    {
+      "name_zh": "巴波萨烧烤",
+      "column": "address",
+      "value": "川沙镇黄赵路310号上海迪士尼乐园"
+    },
+    {
+      "name_zh": "巴波萨烧烤",
+      "column": "cuisine_zh",
+      "value": "特色/地方风味餐厅"
+    },
+    {
+      "name_zh": "巴波萨烧烤",
+      "column": "price_per_person",
+      "value": 119
+    },
+    {
+      "name_zh": "巴波萨烧烤",
+      "column": "score_overall",
+      "value": 4.6
+    },
+    {
+      "name_zh": "巴波萨烧烤",
+      "column": "hours",
+      "value": "周一至周日 10:30-20:30"
+    },
+    {
+      "name_zh": "巴波萨烧烤",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0FFGUD61K"
+    },
+    {
+      "name_zh": "巴波萨烧烤",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "Apollo(复兴西路丁香花园店)",
+      "column": "lng",
+      "value": 121.443428
+    },
+    {
+      "name_zh": "Apollo(复兴西路丁香花园店)",
+      "column": "lat",
+      "value": 31.213893
+    },
+    {
+      "name_zh": "Apollo(复兴西路丁香花园店)",
+      "column": "address",
+      "value": "安福路201号(近乌鲁木齐中路)"
+    },
+    {
+      "name_zh": "Apollo(复兴西路丁香花园店)",
+      "column": "cuisine_zh",
+      "value": "体育休闲服务场所"
+    },
+    {
+      "name_zh": "Apollo(复兴西路丁香花园店)",
+      "column": "price_per_person",
+      "value": 183
+    },
+    {
+      "name_zh": "Apollo(复兴西路丁香花园店)",
+      "column": "score_overall",
+      "value": 4.5
+    },
+    {
+      "name_zh": "Apollo(复兴西路丁香花园店)",
+      "column": "hours",
+      "value": "周一至周日 11:00-23:00"
+    },
+    {
+      "name_zh": "Apollo(复兴西路丁香花园店)",
+      "column": "phone",
+      "value": "021-54040998"
+    },
+    {
+      "name_zh": "Apollo(复兴西路丁香花园店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0FFJ1ABWS"
+    },
+    {
+      "name_zh": "Apollo(复兴西路丁香花园店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "萨莉亚意式餐厅(中星城店)",
+      "column": "lng",
+      "value": 121.428623
+    },
+    {
+      "name_zh": "萨莉亚意式餐厅(中星城店)",
+      "column": "lat",
+      "value": 31.158762
+    },
+    {
+      "name_zh": "萨莉亚意式餐厅(中星城店)",
+      "column": "address",
+      "value": "浦北路9号中星城F3层(上海南站地铁站8号口步行370米)"
+    },
+    {
+      "name_zh": "萨莉亚意式餐厅(中星城店)",
+      "column": "cuisine_zh",
+      "value": "意式菜品餐厅"
+    },
+    {
+      "name_zh": "萨莉亚意式餐厅(中星城店)",
+      "column": "price_per_person",
+      "value": 57
+    },
+    {
+      "name_zh": "萨莉亚意式餐厅(中星城店)",
+      "column": "score_overall",
+      "value": 4.6
+    },
+    {
+      "name_zh": "萨莉亚意式餐厅(中星城店)",
+      "column": "hours",
+      "value": "周一至周日 10:00-21:30"
+    },
+    {
+      "name_zh": "萨莉亚意式餐厅(中星城店)",
+      "column": "phone",
+      "value": "021-64827650"
+    },
+    {
+      "name_zh": "萨莉亚意式餐厅(中星城店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B00157GM3P"
+    },
+    {
+      "name_zh": "萨莉亚意式餐厅(中星城店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "Wagas沃歌斯(上海莘庄龙之梦)",
+      "column": "lng",
+      "value": 121.379029
+    },
+    {
+      "name_zh": "Wagas沃歌斯(上海莘庄龙之梦)",
+      "column": "lat",
+      "value": 31.107983
+    },
+    {
+      "name_zh": "Wagas沃歌斯(上海莘庄龙之梦)",
+      "column": "address",
+      "value": "上海城区上海城区沪闵路6088号凯德龙之梦01层28号"
+    },
+    {
+      "name_zh": "Wagas沃歌斯(上海莘庄龙之梦)",
+      "column": "cuisine_zh",
+      "value": "西餐厅(综合风味)"
+    },
+    {
+      "name_zh": "Wagas沃歌斯(上海莘庄龙之梦)",
+      "column": "price_per_person",
+      "value": 80
+    },
+    {
+      "name_zh": "Wagas沃歌斯(上海莘庄龙之梦)",
+      "column": "score_overall",
+      "value": 4.3
+    },
+    {
+      "name_zh": "Wagas沃歌斯(上海莘庄龙之梦)",
+      "column": "hours",
+      "value": "周一至周日 08:00-22:00"
+    },
+    {
+      "name_zh": "Wagas沃歌斯(上海莘庄龙之梦)",
+      "column": "phone",
+      "value": "021-34293117;19117286820"
+    },
+    {
+      "name_zh": "Wagas沃歌斯(上海莘庄龙之梦)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0L0BZTQGJ"
+    },
+    {
+      "name_zh": "Wagas沃歌斯(上海莘庄龙之梦)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "沪西老弄堂面馆(静安寺店)",
+      "column": "lng",
+      "value": 121.443044
+    },
+    {
+      "name_zh": "沪西老弄堂面馆(静安寺店)",
+      "column": "lat",
+      "value": 31.225096
+    },
+    {
+      "name_zh": "沪西老弄堂面馆(静安寺店)",
+      "column": "address",
+      "value": "北京西路1738号(静安寺地铁站1号口步行360米)"
+    },
+    {
+      "name_zh": "沪西老弄堂面馆(静安寺店)",
+      "column": "cuisine_zh",
+      "value": "中餐厅"
+    },
+    {
+      "name_zh": "沪西老弄堂面馆(静安寺店)",
+      "column": "price_per_person",
+      "value": 50
+    },
+    {
+      "name_zh": "沪西老弄堂面馆(静安寺店)",
+      "column": "score_overall",
+      "value": 4.7
+    },
+    {
+      "name_zh": "沪西老弄堂面馆(静安寺店)",
+      "column": "hours",
+      "value": "周一至周日 10:00-15:00,16:00-20:30"
+    },
+    {
+      "name_zh": "沪西老弄堂面馆(静安寺店)",
+      "column": "phone",
+      "value": "13127639656"
+    },
+    {
+      "name_zh": "沪西老弄堂面馆(静安寺店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0I3KZ95RQ"
+    },
+    {
+      "name_zh": "沪西老弄堂面馆(静安寺店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "HOTCRUSH趁热集合·现烤面包(上海荟聚店)",
+      "column": "lng",
+      "value": 121.356904
+    },
+    {
+      "name_zh": "HOTCRUSH趁热集合·现烤面包(上海荟聚店)",
+      "column": "lat",
+      "value": 31.221752
+    },
+    {
+      "name_zh": "HOTCRUSH趁热集合·现烤面包(上海荟聚店)",
+      "column": "address",
+      "value": "金钟路788号上海荟聚中心LG1层C17B号"
+    },
+    {
+      "name_zh": "HOTCRUSH趁热集合·现烤面包(上海荟聚店)",
+      "column": "cuisine_zh",
+      "value": "糕饼店"
+    },
+    {
+      "name_zh": "HOTCRUSH趁热集合·现烤面包(上海荟聚店)",
+      "column": "price_per_person",
+      "value": 45
+    },
+    {
+      "name_zh": "HOTCRUSH趁热集合·现烤面包(上海荟聚店)",
+      "column": "score_overall",
+      "value": 4.5
+    },
+    {
+      "name_zh": "HOTCRUSH趁热集合·现烤面包(上海荟聚店)",
+      "column": "hours",
+      "value": "周一至周日 10:00-22:00 2026-02-16至2026-02-16 周一 全天关闭"
+    },
+    {
+      "name_zh": "HOTCRUSH趁热集合·现烤面包(上海荟聚店)",
+      "column": "phone",
+      "value": "17717915273"
+    },
+    {
+      "name_zh": "HOTCRUSH趁热集合·现烤面包(上海荟聚店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0K2OU8EQN"
+    },
+    {
+      "name_zh": "HOTCRUSH趁热集合·现烤面包(上海荟聚店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "Punch Monday Bakery(晶耀前滩南区店)",
+      "column": "lng",
+      "value": 121.475513
+    },
+    {
+      "name_zh": "Punch Monday Bakery(晶耀前滩南区店)",
+      "column": "lat",
+      "value": 31.218987
+    },
+    {
+      "name_zh": "Punch Monday Bakery(晶耀前滩南区店)",
+      "column": "address",
+      "value": "兴业路123弄6号新天地时尚一期南里6号楼L204"
+    },
+    {
+      "name_zh": "Punch Monday Bakery(晶耀前滩南区店)",
+      "column": "cuisine_zh",
+      "value": "糕饼店"
+    },
+    {
+      "name_zh": "Punch Monday Bakery(晶耀前滩南区店)",
+      "column": "price_per_person",
+      "value": 41
+    },
+    {
+      "name_zh": "Punch Monday Bakery(晶耀前滩南区店)",
+      "column": "score_overall",
+      "value": 4.7
+    },
+    {
+      "name_zh": "Punch Monday Bakery(晶耀前滩南区店)",
+      "column": "hours",
+      "value": "周一至周日 10:00-22:00 2026-02-16至2026-02-17 周一至周日 全天关闭"
+    },
+    {
+      "name_zh": "Punch Monday Bakery(晶耀前滩南区店)",
+      "column": "phone",
+      "value": "18930333513"
+    },
+    {
+      "name_zh": "Punch Monday Bakery(晶耀前滩南区店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0KDOLKOA2"
+    },
+    {
+      "name_zh": "Punch Monday Bakery(晶耀前滩南区店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "苹果花园(襄阳南路店)",
+      "column": "lng",
+      "value": 121.45788
+    },
+    {
+      "name_zh": "苹果花园(襄阳南路店)",
+      "column": "lat",
+      "value": 31.209803
+    },
+    {
+      "name_zh": "苹果花园(襄阳南路店)",
+      "column": "address",
+      "value": "襄阳南路289号(近永嘉路)"
+    },
+    {
+      "name_zh": "苹果花园(襄阳南路店)",
+      "column": "cuisine_zh",
+      "value": "糕饼店"
+    },
+    {
+      "name_zh": "苹果花园(襄阳南路店)",
+      "column": "price_per_person",
+      "value": 19
+    },
+    {
+      "name_zh": "苹果花园(襄阳南路店)",
+      "column": "score_overall",
+      "value": 4.6
+    },
+    {
+      "name_zh": "苹果花园(襄阳南路店)",
+      "column": "hours",
+      "value": "周一至周日 07:00-21:00"
+    },
+    {
+      "name_zh": "苹果花园(襄阳南路店)",
+      "column": "phone",
+      "value": "18116051767"
+    },
+    {
+      "name_zh": "苹果花园(襄阳南路店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B00155KHNW"
+    },
+    {
+      "name_zh": "苹果花园(襄阳南路店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "潘小烧-云南烧烤(环宇城店)",
+      "column": "lng",
+      "value": 121.4088
+    },
+    {
+      "name_zh": "潘小烧-云南烧烤(环宇城店)",
+      "column": "lat",
+      "value": 31.250466
+    },
+    {
+      "name_zh": "潘小烧-云南烧烤(环宇城店)",
+      "column": "address",
+      "value": "铜川路699弄1号上海真如环宇城MAX LG1层"
+    },
+    {
+      "name_zh": "潘小烧-云南烧烤(环宇城店)",
+      "column": "cuisine_zh",
+      "value": "中餐厅"
+    },
+    {
+      "name_zh": "潘小烧-云南烧烤(环宇城店)",
+      "column": "price_per_person",
+      "value": 102
+    },
+    {
+      "name_zh": "潘小烧-云南烧烤(环宇城店)",
+      "column": "score_overall",
+      "value": 4.5
+    },
+    {
+      "name_zh": "潘小烧-云南烧烤(环宇城店)",
+      "column": "hours",
+      "value": "周一至周日 11:00-24:00 2026-02-16至2026-02-23 周一至周日 10:00-22:00"
+    },
+    {
+      "name_zh": "潘小烧-云南烧烤(环宇城店)",
+      "column": "phone",
+      "value": "13585618130;15921200357"
+    },
+    {
+      "name_zh": "潘小烧-云南烧烤(环宇城店)",
+      "column": "map_url",
+      "value": "https://www.amap.com/place/B0KU1DTDGC"
+    },
+    {
+      "name_zh": "潘小烧-云南烧烤(环宇城店)",
+      "column": "map_platform",
+      "value": "amap"
+    },
+    {
+      "name_zh": "莉莲蛋挞(上海南站店)",
+      "column": "lng",
+      "value": 121.430041
+    },
+    {
+      "name_zh": "莉莲蛋挞(上海南站店)",
+      "column": "lat",
+      "value": 31.154579
+    },
+    {
+      "name_zh": "虹口糕团店",
+      "column": "lng",
+      "value": 121.42907
+    },
+    {
+      "name_zh": "虹口糕团店",
+      "column": "lat",
+      "value": 31.159888
+    },
+    {
+      "name_zh": "彩云间(海思路店)",
+      "column": "lng",
+      "value": 121.51057
+    },
+    {
+      "name_zh": "彩云间(海思路店)",
+      "column": "lat",
+      "value": 30.829078
+    }
+  ],
+  "missing_rows": []
+}

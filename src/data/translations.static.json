@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-05-20T13:38:51.521Z",
+  "generated_at": "2026-06-01T14:14:53.612Z",
   "source": "google-translate-v2",
   "translations": {
     "{\"t\":\"小吃\",\"s\":\"zh-cn\",\"d\":\"en\"}": "snack",
@@ -102,6 +102,13 @@
     "{\"t\":\"No. 64, 64-1 & 64, 2, Jalan Tokong, Melaka Tengah, 75200 Melaka, Malaysia\",\"s\":\"zh-cn\",\"d\":\"en\"}": "No. 64, 64-1 & 64, 2, Jalan Tokong, Melaka Tengah, 75200 Melaka, Malaysia",
     "{\"t\":\"周一、周三至周日 10:30–22:00 | 周二 休息\",\"s\":\"zh-cn\",\"d\":\"en\"}": "Monday, Wednesday to Sunday 10:30–22:00 | Closed on Tuesdays",
     "{\"t\":\"16, Jalan Kampung Pantai, 75200 Melaka, Malaysia\",\"s\":\"zh-cn\",\"d\":\"en\"}": "16, Jalan Kampung Pantai, 75200 Melaka, Malaysia",
-    "{\"t\":\"周一至周二 休息 | 周三至周六 07:00–14:00 | 周日 07:00–13:00\",\"s\":\"zh-cn\",\"d\":\"en\"}": "Closed Monday to Tuesday | Wednesday to Saturday 07:00–14:00 | Sunday 07:00–13:00"
+    "{\"t\":\"周一至周二 休息 | 周三至周六 07:00–14:00 | 周日 07:00–13:00\",\"s\":\"zh-cn\",\"d\":\"en\"}": "Closed Monday to Tuesday | Wednesday to Saturday 07:00–14:00 | Sunday 07:00–13:00",
+    "{\"t\":\"街头小吃\",\"s\":\"zh-cn\",\"d\":\"en\"}": "Street food",
+    "{\"t\":\"街头小吃\",\"s\":\"zh-cn\",\"d\":\"ko\"}": "길거리 음식",
+    "{\"t\":\"牛岛\",\"s\":\"zh-cn\",\"d\":\"en\"}": "Udo",
+    "{\"t\":\"牛岛\",\"s\":\"zh-cn\",\"d\":\"ko\"}": "우도",
+    "{\"t\":\"冰淇淋\",\"s\":\"zh-cn\",\"d\":\"en\"}": "ice cream",
+    "{\"t\":\"冰淇淋\",\"s\":\"zh-cn\",\"d\":\"ko\"}": "아이스크림",
+    "{\"t\":\"果汁\",\"s\":\"zh-cn\",\"d\":\"en\"}": "juice"
   }
 }
