@@ -1,0 +1,7 @@
+{
+  "[markdown]": {
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": null
+  },
+  "markdown.validate.enabled": true
+}

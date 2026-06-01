@@ -28,10 +28,11 @@
   - `store_slug`
   - `record_scope`（`branch` / `brand`）
   - `name_zh/name_en/name_local` 至少一个
+- 菜系列（推荐成对填写）：`cuisine_zh`（中文展示）、`cuisine_en`（贴纸 slug，与 `stickers/cuisine/{cuisine_en}.svg` 一致）。见 [structure.md](structure.md) §菜系筛选贴纸
 - `dishes.xlsx` 至少满足：
   - `city_en`
   - `store_slug`
-  - `dish_name_zh/dish_name_en/dish_name_local` 至少一个
+  - `dish_name_zh/dish_name_en/dish_name_local` 至少一个（三列全空的行不会写入 `dishes.json`；**不影响**该店 `photos` 文件夹内图片展示）
 
 价格单位规则（必须统一）：
 
@@ -56,7 +57,7 @@ npm run data:sync
 
 ## 2) 静态翻译落盘流程（推荐）
 
-触发：非中国城市可变文案（如 `cuisine/address/hours`）有缺失语言，需要一次补齐并固定。
+触发：非中国城市可变文案（如 `address`/`hours`/字段标签等，**不含**店名、菜名、`cuisine_zh`）有缺失语言，需要一次补齐并固定。
 
 ### 前置
 
@@ -95,11 +96,12 @@ npm run data:export-translations
     - `native_iso639_1`
     - `native_button_label`
 3. 增加该城市边界文件：`src/assets/geojson/<slug>.geojson`
-4. 补齐城市贴纸与图片目录（按 `store_slug`）
-5. 跑数据同步：`npm run data:sync`
-6. 需要时跑静态翻译导出：`npm run data:export-translations`
-7. 跑边界审计：`npm run audit:boundary-offsets`
-8. 跑构建验证：`npm run build`
+4. 补齐城市贴纸：`src/assets/stickers/cities/`；菜系贴纸按表中出现的 `cuisine_en` 准备 `src/assets/stickers/cuisine/{cuisine_en}.svg`（见 [structure.md](structure.md)）
+5. 补齐店铺图片目录（按 `store_slug`）：`src/assets/photos/{city-folder}/{store_slug}/`
+6. 跑数据同步：`npm run data:sync`
+7. 需要时跑静态翻译导出：`npm run data:export-translations`
+8. 跑边界审计：`npm run audit:boundary-offsets`
+9. 跑构建验证：`npm run build`
 
 ---
 
@@ -109,7 +111,9 @@ npm run data:export-translations
 - `branch + 有效 lng/lat`：具体门店，可上图。
 - `branch + 无效/缺失 lng/lat`：具体门店，暂不上图（待补坐标）；即使后续确认不再补坐标，也保持 `branch`，不要为了“不上图”改成 `brand`。
 
-地图上点规则：必须同时满足 `record_scope=branch` 且有有效 `lng/lat`；`branch` 但缺坐标会被自动过滤，不上图。
+地图上点规则（`getMappableRestaurantsByCity`）：须 `record_scope=branch`、有效 `lng/lat`，且**不**满足：`record_scope=brand`、`closed` 为 `yes`（不区分大小写）、`address` trim 后为 `连锁店`。`branch` 但缺坐标会被自动过滤；`closed=yes` 或地址「连锁店」的店在菜品页仍展示。
+
+`restaurants.xlsx` 可选列 `closed`：`yes` 表示已关闭；同步后写入 `restaurants.json`。
 
 ---
 
@@ -134,8 +138,9 @@ npm run data:export-translations
 
 ### 页面行为（数据驱动，无白名单）
 
-- 地图：每个分店独立打点（`getMappableRestaurantsByCity`，不去重）
-- 菜品：左侧列表合并为一项（`getCuisineStoreGroupsByCity`）；右侧地址多行展示各分店
+- 地图：每个**地图可见**分店独立打点（`getMappableRestaurantsByCity`，不去重；排除 brand / closed / 连锁店地址）；单 slug 单店标签去括号后缀，同 slug 多 `branch` 标签保留完整 `name_zh`（`pickMapTagDisplayName`）
+- 菜品：左侧列表按 `(city_en, store_slug)` 合并为一项（`getCuisineStoreGroupsByCity`）；右侧地址多行展示各分店
+- 菜系筛选：下拉项贴纸由 `cuisine_en` 加载，中文名用 `cuisine_zh`；排序与语言切换解耦（见 `prd-ui-spec.md` §4.3）
 
 ### 校验
 
@@ -188,7 +193,7 @@ npm run audit:boundary-offsets
 - `data:sync` 后 `restaurants=0`
   - 检查 `restaurants.xlsx` 是否缺 `store_slug` 或名称三选一全空
 - 地图店铺不上图
-  - 检查是否 `record_scope=branch` 且 `lng/lat` 有效
+  - 检查是否满足地图可见：`record_scope=branch`、`lng/lat` 有效，且非 `closed=yes`、非 `address=连锁店`、非 `record_scope=brand`
 - 地图一直显示“加载中...”
   - 正常加载应无提示；若 `VITE_MAPBOX_TOKEN` 为空，应显示缺失提示
   - 若出现 Token/网络/样式请求失败（例如 `ERR_PROXY_CONNECTION_FAILED`），应显示「地图加载失败，请检查 Mapbox Token 或网络连接」并带错误细节
@@ -204,6 +209,9 @@ npm run audit:boundary-offsets
   - 检查 `src/data/city_meta.json` 的 `detail_locale_mode` 与 `native_*` 字段
 - 翻译落盘没有变化
   - 检查 `.env` key 与 `VITE_ENABLE_MT=true` 是否开启（仅导出时临时开启）
+- 菜系筛选无贴纸或显示 `other`
+  - 检查 `cuisine_en` 是否与 `src/assets/stickers/cuisine/{cuisine_en}.svg` 文件名一致
+  - 检查 `src/utils/cuisineSlugs.js` 的 `CUISINE_BY_EN` 是否含该 slug；DEV 控制台会有 Missing sticker 警告
 
 ---
 

@@ -2,8 +2,8 @@
  * 菜品页「多分店归组」——同城 + 相同 store_slug 的通用规则（非白名单、非店名硬编码）。
  *
  * 契约（适用于所有现有与未来分店，无需改 UI 代码）：
- * - 数据：`restaurants.json` 中 `branch` 与 `brand` 行均参与菜品列表；`brand` 不上地图
- * - 地图：每条 `branch`（且有坐标）独立打点（MapPanel 读原始行，不经本模块去重）
+ * - 数据：`restaurants.json` 中 `branch` 与 `brand` 行均参与菜品列表；地图排除 `brand`、`closed=yes`、地址「连锁店」
+ * - 地图：每条可上图 `branch` 独立打点（`getMappableRestaurantsByCity`）；单 slug 单店标签去括号后缀，同城同 slug 多 branch 标签保留完整店名（`pickMapTagDisplayName`）
  * - 菜品左侧：本模块 `getCuisineStoreGroupsByCity` 按 slug 合并为一项
  * - 菜品右侧地址：`getCuisineAddressBlock` 多行 `{分店标签}：{address}`
  * - dishes / photos：一套 `store_slug` 目录与菜品记录（见 docs/data-workflow.md §4.1）
@@ -78,10 +78,53 @@ export function stripBranchSuffix(name) {
   return stripped || text;
 }
 
+function pickRestaurantDisplayName(row) {
+  const zh = String(row?.name_zh ?? "").trim();
+  if (zh !== "") return zh;
+  const en = String(row?.name_en ?? "").trim();
+  if (en !== "") return en;
+  return String(row?.name_local ?? "").trim();
+}
+
 /**
- * 地图标签文案：按完整店名（name_zh / name_en / name_local，由 MapPanel 选定）展示；
- * 空间不足时仅从末尾截断并加省略号，不单独抽取括号内分店后缀。
- * @see docs/prd.md §5.1 多分店 — 地图标签显示完整 name_zh
+ * 同城 `store_slug` 下 branch 行数 ≥ 2 的 slug 集合（地图多分店标签用）。
+ * @param {string} cityEn
+ * @returns {Set<string>}
+ */
+export function getMapMultiBranchSlugSet(cityEn) {
+  const counts = new Map();
+  getRestaurantsByCity(cityEn).forEach((row) => {
+    if (normalizeRecordScope(row.record_scope) !== "branch") return;
+    const slug = normalizeStoreSlug(row.store_slug);
+    if (slug === "") return;
+    counts.set(slug, (counts.get(slug) || 0) + 1);
+  });
+  const multi = new Set();
+  counts.forEach((count, slug) => {
+    if (count >= 2) multi.add(slug);
+  });
+  return multi;
+}
+
+/**
+ * 地图标签展示名：单店去末尾括号分店后缀；同城同 slug 多 branch 保留完整店名。
+ * 详情区仍用原始 `name_zh`（见 MapPanel `toSelectedStore`）。
+ * @param {{ store_slug?: string, name_zh?: string, name_en?: string, name_local?: string }} row
+ * @param {Set<string>} multiBranchSlugs
+ * @returns {string}
+ */
+export function pickMapTagDisplayName(row, multiBranchSlugs) {
+  const full = pickRestaurantDisplayName(row);
+  if (full === "") return "";
+  const slug = normalizeStoreSlug(row?.store_slug);
+  if (slug !== "" && multiBranchSlugs.has(slug)) return full;
+  return stripBranchSuffix(full);
+}
+
+/**
+ * 地图标签截断：在 `pickMapTagDisplayName` 结果上按字数从末尾加省略号；
+ * 禁止只展示括号内分店后缀（如仅「打浦桥店」）。
+ * @see docs/prd.md §5.1 多分店 — 地图标签
  * @param {string | null | undefined} name
  * @param {number} maxChars
  * @returns {string}

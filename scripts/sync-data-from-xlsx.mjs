@@ -95,6 +95,7 @@ function normalizeRestaurant(row) {
     cuisine_zh: cuisineZh,
     cuisine_en: cuisineEn,
     address: normalizeOptionalString(picked.address),
+    closed: normalizeOptionalString(picked.closed),
     lng: normalizeOptionalNumber(picked.lng),
     lat: normalizeOptionalNumber(picked.lat),
     price_per_person: normalizeOptionalNumber(picked.price_per_person),

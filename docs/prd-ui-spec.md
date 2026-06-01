@@ -187,10 +187,13 @@
 
 **店铺标注：**
 
-- 每家收藏美食店，根据经纬度显示标注点（圆点图标，颜色使用城市主色）
+- 数据源：`getMappableRestaurantsByCity`（`branch` + 有效坐标，且排除 `brand`、`closed=yes`、`address=连锁店`；菜品页仍展示被排除的店）
+- 每家**地图可见**的收藏美食店，根据经纬度显示标注点（圆点图标，颜色使用城市主色）
 - 标注点上方连线引出店铺名称标签（线段连接，标签为圆角小矩形）
-- **店铺名标签文案**：属于「店铺名展示」，**不跟随**详情页右上角语言切换；固定优先级为 `name_zh → name_en → name_local`（字段定义见 §5.1；三者皆空则不展示标签）
-- **多分店地图标签**：同城同 `store_slug` 的各 branch 仍各打一个点、各一条标签；标签 React key 与 GeoJSON `store_key` 按 `(city_en, store_slug, lng, lat)` 唯一，禁止仅用 slug。每条标签文案为对应 branch 行的完整店名（`name_zh → name_en → name_local`，与 §5.1 / `docs/prd.md` 一致）；空间不足时由 `formatMapTagLabel` 从完整店名末尾截断加省略号，**禁止**单独展示括号内分店后缀（如仅显示 `打浦桥店` / `荟聚店`）
+- **店铺名标签文案**：属于「店铺名展示」，**不跟随**详情页右上角语言切换；固定优先级为 `name_zh → name_en → name_local`（字段定义见 §5.1；三者皆空则不展示标签）。实现：`pickMapTagDisplayName`（[`src/utils/storeGroups.js`](../src/utils/storeGroups.js)）
+- **单店标签**：同城该 `store_slug` 仅一条 `branch` 时，标签去掉末尾括号及括号内分店后缀（例：`3号仓库·创意中国菜(五角场店)` → `3号仓库·创意中国菜`）
+- **多分店地图标签**：同城同 `store_slug` 的 `branch` 行 ≥ 2 时，各 branch 仍各打一个点、各一条标签；标签 React key 与 GeoJSON `store_key` 按 `(city_en, store_slug, lng, lat)` 唯一，禁止仅用 slug。每条标签保留**完整**店名（例：`南里山房(上海来福士广场店)`）。空间不足时由 `formatMapTagLabel` 从标签文案末尾截断加省略号，**禁止**单独展示括号内分店后缀（如仅显示 `打浦桥店` / `荟聚店`）
+- **点击标签后的店铺详情**：笔记区店名展示完整 `name_zh`（不受标签去括号影响）
 - 右侧书脊处：竖向便利贴标签，按一级标签对应的菜系类型分类（如韩餐、日料、中国菜、融合菜）
 - 点击菜系标签：对应类型标注点+连线+店铺名称标签高亮，其余变灰；再次点击取消筛选
 
@@ -254,7 +257,7 @@
   - 标签数量未超出可视区时不显示滚动条
   - 标签数量超出可视区时显示纵向滚动条
   - 滚动条颜色需与当前城市主色保持一致（含悬浮态）
-- 菜系数据与贴纸：`restaurants.json` 使用 `cuisine_zh`（展示）+ `cuisine_en`（贴纸 slug，对应 `src/assets/stickers/cuisine/{cuisine_en}.svg`）；见 `docs/structure.md`、`src/utils/cuisineSlugs.js`
+- 菜系数据与贴纸：`restaurants.json` 使用 `cuisine_zh`（中文展示，含地图右侧标签文案）+ `cuisine_en`（贴纸 slug，**与** `src/assets/stickers/cuisine/{cuisine_en}.svg` **文件名一致**，如 `chuan-cuisine.svg`）。`cuisine_en` 为贴纸与筛选键的准绳；缺 SVG 时回退 `other.svg`。见 [docs/structure.md](structure.md) §菜系筛选贴纸、`src/utils/cuisineSlugs.js`
 
 ---
 
@@ -273,7 +276,7 @@
 
 **菜系筛选（左页顶部）：**
 
-- 视觉呈现：`下拉按钮 + 下拉框列表`（非横向标签组），下拉框每项为 `贴纸 + 菜系名 + 店铺总数`（不显示序号）
+- 视觉呈现：`下拉按钮 + 下拉框列表`（非横向标签组），下拉框每项为 `贴纸（由 cuisine_en 加载）+ 菜系名（cuisine_zh）+ 店铺总数`（不显示序号）
 - 位置：放在顶部 `切换按钮 + Cuisine` 这一行下方，与其左侧基线对齐
 - 标签规则：默认项为“全部”，且“全部”始终位于第一个
 - 交互逻辑：

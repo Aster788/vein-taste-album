@@ -68,7 +68,7 @@
   - 宽度上限按文案脚本而非当前语言按钮判定：`zh=4em`、`en=12em`、`ja=4.5em`、`ko=5.5em`、`th=6.2em`
   - 英文文案统一小写展示
   - 标签区需支持超量纵向滚动，滚动条颜色跟随城市主色
-  - 菜系英文展示文案见 `cuisineSlugs.js` 的 `CUISINE_BY_EN`（数据填表以 `cuisine_zh` / `cuisine_en` 为准，不再用组件内正则猜贴纸）
+  - 菜系筛选与地图标签：展示文案用 `cuisine_zh`；贴纸与筛选键用 `cuisine_en`（须与 `stickers/cuisine/{cuisine_en}.svg` 文件名一致）。英文兜底文案见 `cuisineSlugs.js` 的 `CUISINE_BY_EN`（不以组件内正则猜贴纸）
 
 ---
 
@@ -90,11 +90,11 @@ src/data/
   - 必填：`city_en`、`store_slug`、`record_scope`（`branch` / `brand`）以及至少一个店名字段（`name_zh/name_en/name_local`）。
   - `store_slug` 规则：`[a-z0-9-]+`；`dishes` / `photos` 维度 `(city_en, store_slug)` 唯一；`restaurants` 允许多条 `branch` 共享同一 slug（多分店，见 `docs/data-workflow.md` §4.1）。
   - **多分店 UI 归组**：唯一实现 `[src/utils/storeGroups.js](../src/utils/storeGroups.js)`；新增分店只改 Excel 共用 slug，禁止在组件写店名/slug 白名单。
-  - `record_scope` 语义：`branch`=具体门店（有坐标即可上图）；`brand`=品牌层记录（不作为地图点位）。
+  - `record_scope` 语义：`branch`=具体门店；`brand`=品牌层记录（不作为地图点位）。地图另排除 `closed=yes`、`address=连锁店`（见 `getMappableRestaurantsByCity` / `docs/prd.md` §5.1）。
   - `price_per_person` 必须是数值单元格（不带货币符号，币种写 `currency`）。
   - `score_overall` 必须是数值单元格（统一 1 位小数）。
   - `is_china` 仅允许小写字符串 `true` / `false`。
-  - **菜系与贴纸**：`cuisine_zh`（中文展示名）、`cuisine_en`（对应 `src/assets/stickers/cuisine/{cuisine_en}.svg`）。筛选与贴纸加载以 `cuisine_en` 为准；详见 `docs/structure.md` 与 `src/utils/cuisineSlugs.js`。
+  - **菜系与贴纸**：`cuisine_zh`（中文展示名）、`cuisine_en`（贴纸 slug，对应 `src/assets/stickers/cuisine/{cuisine_en}.svg`，如 `chuan-cuisine`、`russian-cuisine`）。**`cuisine_en` 为贴纸文件名的唯一准绳**；筛选、地图高亮、下拉贴纸均以 `cuisine_en` 为准。注册表与命名约定见 [docs/structure.md](structure.md) §菜系筛选贴纸、`src/utils/cuisineSlugs.js`。缺 SVG 时运行时回退 `other.svg`。
 - 数据变更后的执行顺序：
   - 先运行 `npm run data:sync`（xlsx -> restaurants.json/dishes.json）
   - 如需固化 MT 结果，再运行 `npm run data:export-translations`（输出 `translations.static.json`）
