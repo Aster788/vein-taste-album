@@ -50,8 +50,12 @@ Required fields (per data row):
 
 Scope and map behavior:
 
-- `record_scope=branch`: concrete branch record, can render map point when `lng` and `lat` exist.
+- `record_scope=branch`: concrete branch record; map point when `lng`/`lat` exist and row is not excluded (see below).
 - `record_scope=brand`: brand-level record, does not render map point.
+- `closed`: optional; `yes` (case-insensitive) = closed — excluded from map, still on cuisine page.
+- `address` exactly `连锁店` (after trim): chain placeholder — excluded from map, still on cuisine page.
+
+Map eligibility (`getMappableRestaurantsByCity`): `branch` + valid coordinates + not (`brand` | `closed=yes` | `address=连锁店`).
 
 Slug/scope hygiene rules:
 
@@ -72,14 +76,18 @@ These two columns link each store to a sticker under `src/assets/stickers/cuisin
 
 | Column | Role |
 | ------ | ---- |
-| `cuisine_zh` | Chinese label shown in filters and store detail |
-| `cuisine_en` | Sticker slug; must match `{cuisine_en}.svg` in `stickers/cuisine/` (e.g. `hotpot`, `sichuan-cuisine`) |
+| `cuisine_zh` | Chinese label shown in filters, map tags, and store detail |
+| `cuisine_en` | Sticker slug; **must exactly match** `{cuisine_en}.svg` in `stickers/cuisine/` (e.g. `hotpot`, `chuan-cuisine`, `russian-cuisine`) |
 
 Rules:
 
-- Fill both when possible. `cuisine_en` is the source of truth for which icon to show.
+- Fill **both** when possible. **`cuisine_en` is the source of truth** for the sticker file name and filter key; `cuisine_zh` is the source of truth for Chinese display text.
+- `cuisine_en` format: lowercase `[a-z0-9-]+`. Many regional cuisines use a `-cuisine` suffix (e.g. `korean-cuisine`, `western-cuisine`); some use short slugs (e.g. `noodle`, `hotpot`). Do not reuse deprecated slugs such as `japanese`, `korean`, `sichuan-cuisine`, `western-food`, `russian` (without `-cuisine` where applicable).
+- Keep `(cuisine_zh, cuisine_en)` pairs consistent across rows: one Chinese label should map to one slug (e.g. all 川菜 rows use `chuan-cuisine`, not mixed with old `sichuan-cuisine`).
+- Preferred unified `cuisine_zh` labels (when applicable): 面食、零食、黔菜、西式、俄罗斯菜 — align with `CUISINE_BY_EN` in `src/utils/cuisineSlugs.js`.
+- When adding a new slug: add SVG → add `CUISINE_BY_EN` entry → fill Excel. If SVG is missing, UI falls back to `other.svg` until the asset exists.
 - Legacy column `cuisine` is still synced: if `cuisine_zh` is empty, sync copies `cuisine` into `cuisine_zh`.
-- See `docs/structure.md` (菜系筛选贴纸) and `src/utils/cuisineSlugs.js` for the slug registry and DEV warnings when a slug has no SVG.
+- See [docs/structure.md](../docs/structure.md)（菜系筛选贴纸）and `src/utils/cuisineSlugs.js` for the full slug registry and DEV warnings when a slug has no SVG.
 
 ### Multi-branch stores (same `store_slug` in one city)
 
@@ -170,6 +178,8 @@ Required fields (per data row):
 
 - `store_slug`
 - at least one of: `dish_name_zh`, `dish_name_en`, `dish_name_local`
+
+Rows with all three dish names empty are skipped on sync (they do not block photo display; see `src/assets/photos/{city}/{store_slug}/`).
 
 Optional columns:
 

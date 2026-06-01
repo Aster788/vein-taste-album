@@ -19,6 +19,8 @@ import {
 import {
   buildMapBranchKey,
   formatMapTagLabel,
+  getMapMultiBranchSlugSet,
+  pickMapTagDisplayName,
 } from "../utils/storeGroups.js";
 import placeholderMapUrl from "../assets/fallback-maps/placeholder-map.svg?url";
 import dalianStaticMapUrl from "../assets/fallback-maps/dalian-static-map.png?url";
@@ -346,12 +348,13 @@ async function loadCityBoundaryGeoJson(citySlug) {
 function buildRestaurantPointsGeoJson(citySlug) {
   const cityEn = cityEnFromBookshelfSlug(citySlug);
   const rows = getMappableRestaurantsByCity(cityEn);
+  const multiBranchSlugs = getMapMultiBranchSlugSet(cityEn);
   const seenKeys = new Set();
   const features = rows
     .map((row) => {
       const point = lngLatForMapbox(row);
       if (!Number.isFinite(point?.lng) || !Number.isFinite(point?.lat)) return null;
-      const displayName = pickRestaurantDisplayName(row);
+      const displayName = pickMapTagDisplayName(row, multiBranchSlugs);
       const storeKey = buildMapBranchKey(row);
       if (seenKeys.has(storeKey)) return null;
       seenKeys.add(storeKey);
@@ -689,6 +692,7 @@ function buildRestaurantTagLayouts(map, pointGeoJson) {
       const storeName =
         String(feature?.properties?.display_name ?? "").trim() ||
         pickRestaurantDisplayName(feature?.properties);
+      const storeNameFull = pickRestaurantDisplayName(feature?.properties);
       const desiredMaxChars = getRestaurantTagMaxChars(zoom, storeName.length);
       if (storeName === "") return null;
 
@@ -699,6 +703,7 @@ function buildRestaurantTagLayouts(map, pointGeoJson) {
         projectedX: projected.x,
         projectedY: projected.y,
         storeName,
+        storeNameFull: storeNameFull || storeName,
         desiredMaxChars,
         selectedStore: toSelectedStore(feature?.properties),
       };
@@ -1244,7 +1249,7 @@ export default function MapPanel({
             onClick={() => onSelectStore?.(layout.selectedStore)}
             onMouseEnter={() => onInteractiveHoverChange?.(true)}
             onMouseLeave={() => onInteractiveHoverChange?.(false)}
-            aria-label={`查看 ${layout.storeName} 的店铺信息`}
+            aria-label={`查看 ${layout.storeNameFull ?? layout.storeName} 的店铺信息`}
             style={{
               left: `${layout.bubbleLeft}px`,
               top: `${layout.bubbleTop}px`,

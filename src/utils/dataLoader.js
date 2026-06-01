@@ -22,6 +22,28 @@ function hasValidCoordinates(row) {
   return Number.isFinite(row?.lng) && Number.isFinite(row?.lat);
 }
 
+function isRestaurantClosed(row) {
+  return String(row?.closed ?? "")
+    .trim()
+    .toLowerCase() === "yes";
+}
+
+function isChainStorePlaceholderAddress(row) {
+  return String(row?.address ?? "").trim() === "连锁店";
+}
+
+/**
+ * 地图页排除：brand、已关闭、地址为「连锁店」占位（菜品页仍展示）。
+ * @param {typeof restaurants[number]} row
+ * @returns {boolean}
+ */
+export function isExcludedFromMap(row) {
+  if (normalizeRecordScope(row?.record_scope) === "brand") return true;
+  if (isRestaurantClosed(row)) return true;
+  if (isChainStorePlaceholderAddress(row)) return true;
+  return false;
+}
+
 /**
  * 统一城市键：大小写不敏感（`Dalian` / `dalian` 一致）。
  * @param {string | undefined | null} cityEn
@@ -90,13 +112,16 @@ export function getRestaurantsByCity(cityEn) {
 }
 
 /**
- * 仅返回可上地图的具体门店（branch 且坐标完整）。
+ * 仅返回可上地图的具体门店（branch、坐标完整，且非关闭/连锁店占位/brand）。
  * @param {string} cityEn
  * @returns {typeof restaurants}
  */
 export function getMappableRestaurantsByCity(cityEn) {
   return getRestaurantsByCity(cityEn).filter(
-    (row) => normalizeRecordScope(row.record_scope) === "branch" && hasValidCoordinates(row),
+    (row) =>
+      normalizeRecordScope(row.record_scope) === "branch" &&
+      hasValidCoordinates(row) &&
+      !isExcludedFromMap(row),
   );
 }
 

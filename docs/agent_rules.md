@@ -102,7 +102,12 @@
 - 涉及 **任意贴纸 SVG**（`src/assets/stickers/cities/`、`page/`、`cuisine/`）：在汇报“可用”前，必须核查是否含整幅 viewBox 黑/白底框或大面积底卡 path；如存在，先清理再接入，避免在书脊/Slogan/筛选/拍立得出现黑白方块。
 - **黑/白背景一票否决**：只要存在覆盖全画布的黑色或白色背景层（含 `#000/#000000/#010000/#fff/#ffffff` 或近似纯黑纯白），即判定该 SVG 不可用，必须改成透明背景后才能合入。
 - **贴纸颜色一致性强校验**：`src/assets/stickers/`** 下 SVG 在页面展示时，禁止通过 `filter`（如 `invert()` / `hue-rotate()` / `brightness()`）进行整体改色；若页面颜色与文件不一致，优先排查并移除样式层滤镜，确保呈现为素材原色。
-- **菜系贴纸与数据列**：`restaurants.json` 的 `cuisine_en` 必须对应 `stickers/cuisine/{cuisine_en}.svg`；`cuisine_zh` 为中文展示名。约定见 `docs/structure.md` §菜系筛选贴纸、`src/utils/cuisineSlugs.js`。
+- **菜系贴纸与数据列**：
+  - `cuisine_en` 必须与 `stickers/cuisine/{cuisine_en}.svg` **文件名完全一致**（小写、`[a-z0-9-]+`）；改 slug 时同步重命名 SVG，勿保留 `japanese.svg` 等旧名。
+  - `cuisine_zh` 为中文展示名（筛选、地图标签）；与 `cuisine_en` 成对维护，禁止同一 `cuisine_zh` 对应多个 `cuisine_en`。
+  - 当前约定示例：川菜 → `chuan-cuisine`；韩餐/日料 → `korean-cuisine` / `japanese-cuisine`；东南亚菜 → `southeast-asian-cuisine`；东北菜 → `northeast-cuisine`；西式 → `western-cuisine`；俄罗斯菜 → `russian-cuisine`；面食 → `noodle`。
+  - 核对前读 `src/utils/cuisineSlugs.js` 的 `CUISINE_BY_EN` 与磁盘 `stickers/cuisine/` 列表；缺 SVG 会回退 `other.svg` 并在 DEV 告警。
+  - 详见 [docs/structure.md](structure.md) §菜系筛选贴纸、[src/data/README.md](../src/data/README.md) §Cuisine fields。
 - **非中国城市** `src/assets/geojson/<slug>.geojson`：新增或更新边界时，须符合 `prd.md` §5.3 小节 **「非中国城市：地图上『分区』边界的统一规则」**（选型优先级、块数区间、命名字段、许可与出处）；要素属性中应能识别数据源类型（如官方区划、开放 ADM、选举分区等，可与现有 `ffj_admin` / `ffj_source` 一类字段对齐）。
 - **文档内代码链接**：编辑 `docs/*.md` 时，文件路径用可点击 Markdown 链接 `[src/.../file.js](../src/.../file.js)`；**禁止**在整条链接外再包一层反引号（会变成不可点击的代码样式）。见 `project_rules.md` §八；可跑 `npm run audit:doc-links`。
 
