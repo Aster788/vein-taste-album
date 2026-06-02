@@ -2034,6 +2034,35 @@ html[data-city="melaka"],
   justify-content: center;
 }
 
+.ffj-bookshelf-slogan-avatar {
+  position: absolute;
+  inset-block-start: clamp(-3.8rem, -8vh, -0.8rem);
+  inset-inline-start: clamp(-18.2rem, -24.2vw, -10.2rem);
+  width: clamp(7.17rem, 17.35vw, 12.07rem);
+  height: clamp(9.05rem, 28.67vh, 15.09rem);
+  transform: rotate(-15deg);
+  object-fit: contain;
+  pointer-events: none;
+  opacity: 0.98;
+  filter: drop-shadow(0 8px 12px rgb(49 67 86 / 0.12));
+}
+
+.ffj-bookshelf-avatar-welcome {
+  position: absolute;
+  inset-inline-start: clamp(-12.4rem, -17.6vw, -7.6rem);
+  inset-block-start: clamp(6.3rem, 14.1vh, 9.8rem);
+  color: #545d67;
+  font-family: var(--font-handwriting);
+  font-size: clamp(1.05rem, 2.2vw, 1.5rem);
+  letter-spacing: 0.025em;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  transform: translate(0.2rem, 0.2rem);
+  text-shadow: 0 1px 0 rgb(255 255 255 / 0.55);
+}
+
 .ffj-bookshelf-slogan-earth {
   position: absolute;
   inset-block-start: 50%;
@@ -2052,6 +2081,7 @@ html[data-city="melaka"],
   flex-direction: column;
   align-items: center;
   text-align: center;
+  padding-inline-start: 0.25ch;
   /* 右侧预留压缩到贴纸宽 + 约半个汉字，视觉更贴近 */
   padding-inline-end: calc(clamp(2.35rem, 5.5vw, 3.5rem) + 0.5ch);
   /* 英文行字号 = 中文 60%（PRD §3.2） */

@@ -8,6 +8,7 @@ import { getBookshelfCities } from "../utils/dataLoader.js";
 /* Slogan 旁 page 贴纸须透明底、无整幅黑/白底 path（与书脊 cities 贴纸同旨，见 Book.jsx 注释） */
 import earthStickerUrl from "../assets/stickers/page/earth.svg?url";
 import footprintsStickerUrl from "../assets/stickers/page/footprints.svg?url";
+import evelynAvatarUrl from "../assets/photos/evelyn-transparent.png";
 
 export default function Bookshelf() {
   const { setCitySlug } = useLanguage();
@@ -432,6 +433,17 @@ export default function Bookshelf() {
           className="ffj-bookshelf-slogan"
           aria-labelledby="ffj-bookshelf-slogan-cn"
         >
+          <img
+            className="ffj-bookshelf-slogan-avatar"
+            src={evelynAvatarUrl}
+            alt="Evelyn 动漫头像"
+            width={128}
+            height={128}
+            decoding="async"
+          />
+          <span className="ffj-bookshelf-avatar-welcome" aria-hidden>
+            Welcome~
+          </span>
           <div
             className={`ffj-bookshelf-slogan-lines${isTypingDone ? " is-floating" : ""}`}
           >
