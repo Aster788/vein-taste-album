@@ -4,6 +4,7 @@
  */
 export const CITY_SLUGS = Object.freeze([
   "shanghai",
+  "nanjing",
   "suzhou",
   "qingdao",
   "chongqing",
@@ -31,6 +32,7 @@ export const NON_CHINA_CITY_SLUGS = Object.freeze(["jeju", "kuala-lumpur", "mela
  */
 export const CITY_STICKER_FILENAME_BY_SLUG = Object.freeze({
   shanghai: "shanghai-oriental-pearl-tower.svg",
+  nanjing: "nanjing-plum-blossom.svg",
   suzhou: "suzhou-huqiuta.svg",
   qingdao: "qingdao-beer.svg",
   chongqing: "chongqing-chili.svg",
@@ -87,6 +89,16 @@ export const BOOKSHELF_CITY_DISPLAY_BY_SLUG = Object.freeze({
     country_en: "China",
     city_zh: "上海",
     city_en: "Shanghai",
+    city_native: "",
+    is_china: true,
+  },
+  nanjing: {
+    country_zh: "中国",
+    country_en: "China",
+    province_zh: "江苏",
+    province_en: "Jiangsu",
+    city_zh: "南京",
+    city_en: "Nanjing",
     city_native: "",
     is_china: true,
   },

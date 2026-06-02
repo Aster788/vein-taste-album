@@ -302,9 +302,22 @@ export function getBasenameWithoutExtension(filename) {
  * @param {ReadonlyArray<{ href: string, filename: string }>} photos
  * @param {ReadonlyArray<Record<string, unknown>>} dishes
  * @param {Record<string, unknown> | null | undefined} [restaurant]
+ *   强烈建议传入当前店铺（如 `selectedStore`）：
+ *   - 可补充同城同 `store_slug` 分店 `name_*` 键，保障「菜名图 > 店名图 > 其它」稳定成立；
+ *   - 若省略，函数会退化为仅依赖 `dishes` 的店名键，可能导致店名图优先级命中不足。
  * @returns {Array<{ href: string, filename: string }>}
  */
 export function sortPhotosByDishMatch(photos, dishes, restaurant = null) {
+  if (
+    import.meta.env?.DEV &&
+    (restaurant == null || String(restaurant?.store_slug ?? "").trim() === "")
+  ) {
+    console.warn(
+      "[storePhotos] sortPhotosByDishMatch called without valid restaurant; " +
+        "store-name priority may degrade. Pass selectedStore to keep " +
+        "`dish > store > misc > numerals` ordering stable.",
+    );
+  }
   const storeNameKeys = collectStoreNameKeys(dishes, restaurant);
 
   const getBucket = (filename) => {

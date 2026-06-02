@@ -174,9 +174,8 @@ npm run data:sync
 
 ```bash
 npm run data:sync
-npm run audit:photo-magic
+npm run audit:all
 npm run audit:multi-branch
-npm run audit:doc-links
 npm run build
 ```
 
@@ -200,6 +199,7 @@ npm run audit:boundary-offsets
 - 板块②图片存在但菜名没显示
   - 先检查图片 basename 是否命中 `dish_name_local -> dish_name_en -> dish_name_zh`，其次 `store_name_local -> store_name_en -> store_name_zh`
   - 轮播顺序：菜名图 → 店名图（含 `store_name_*` 全文、基础店名、分店 `name_*`）→ 其它非序号图 → 中文序号图（数值序）
+  - 代码调用约束：`sortPhotosByDishMatch` 必须传当前店铺对象（`selectedStore`）作为第 3 参数，避免店名图匹配降级为“仅 dishes 键”
   - 若未命中菜名：仍应展示图片；basename 为中文数字序号（`一二三四五六七八九十`）时只显示图片，否则应显示 basename（不含扩展名）作为图片名称
 - 板块②图片显示坏图标（但文件后缀是 `.jpg/.jpeg`）
   - 高概率是“扩展名是 JPG，但真实编码是 HEIC/HEIF”
