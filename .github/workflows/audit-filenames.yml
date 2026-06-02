@@ -1,0 +1,36 @@
+name: Audit Filenames
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/assets/**"
+      - "public/**"
+      - "static/**"
+      - "scripts/audit-filenames.mjs"
+      - "scripts/scan-photo-magic.mjs"
+      - "scripts/audit-doc-links.mjs"
+      - "package.json"
+      - "package-lock.json"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run aggregated audits
+        run: npm run audit:all
