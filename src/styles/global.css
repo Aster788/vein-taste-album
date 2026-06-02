@@ -1638,6 +1638,7 @@ html[data-city="melaka"],
   flex: 0 0 auto;
   min-height: 0;
   width: 100%;
+  container-type: inline-size;
   border-radius: 12px;
   display: grid;
   justify-items: center;
@@ -1647,16 +1648,19 @@ html[data-city="melaka"],
 }
 
 .ffj-photo-polaroid {
+  --ffj-polaroid-pad-block: 0.44rem;
+  --ffj-polaroid-pad-inline: 0.44rem;
   margin: 0;
-  width: auto;
+  width: max-content;
   max-width: 100%;
   /* 避免依赖百分比高度导致的塌陷/超大留白 */
   max-height: clamp(17.5rem, 58dvh, 44rem);
   background: #fff;
   border-radius: 8px;
-  padding: 0.44rem;
+  padding-block: var(--ffj-polaroid-pad-block);
+  padding-inline: var(--ffj-polaroid-pad-inline);
   box-sizing: border-box;
-  display: flex;
+  display: inline-flex;
   align-items: flex-start;
   justify-content: center;
   /* 保留略加强的外阴影（无 inset） */
@@ -1683,7 +1687,10 @@ html[data-city="melaka"],
   display: block;
   width: auto;
   height: auto;
-  max-width: min(100%, 34rem);
+  max-width: min(
+    34rem,
+    calc(100cqi - 2 * var(--ffj-polaroid-pad-inline))
+  );
   max-height: clamp(16.5rem, 54dvh, 40rem);
   object-fit: contain;
   border-radius: 4px;
