@@ -10,6 +10,7 @@
 | slug           | 贴纸语义 | 文件名                                 |
 | -------------- | ---- | ----------------------------------- |
 | `shanghai`     | 东方明珠 | `shanghai-oriental-pearl-tower.svg` |
+| `nanjing`      | 梅花   | `nanjing-plum-blossom.svg`          |
 | `suzhou`       | 虎丘塔  | `suzhou-huqiuta.svg`                |
 | `qingdao`      | 啤酒杯  | `qingdao-beer.svg`                  |
 | `chongqing`    | 辣椒   | `chongqing-chili.svg`               |
