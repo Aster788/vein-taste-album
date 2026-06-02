@@ -149,6 +149,7 @@ src/assets/photos/{city-folder}/{store_slug}/{dish-file}.{jpg|jpeg|png|webp|heic
 3. **不要修改 JSON 文件的字段名**，字段名一旦改变会破坏整个数据关联逻辑
 4. **不要把颜色值写死在组件里**，必须引用 `global.css` 中的 CSS 变量
 5. **不要自行决定字体**，字体规范见 prd.md 第二节
+5.1 **不要在业务组件分散硬编码颜色**：统一使用 CSS 变量；Mapbox 底图调色可集中定义在 `MapPanel` 单点维护（禁止散落到其它组件）
 6. **所有贴纸 SVG（`stickers/cities`、`stickers/page`、`stickers/cuisine`）必须透明底**：禁止整幅 viewBox 黑/白底框、禁止大面积纯色卡纸底；否则会在书脊/Slogan/筛选/拍立得区域出现黑白方块。
   - **硬性验收标准**：任何贴纸 SVG 都不允许存在“覆盖全画布（接近 `0,0` 到 `512,512`）的黑色或白色背景 path/rect”（含 `#000/#000000/#010000/#fff/#ffffff` 及近似纯黑纯白）。
   - 如素材自带背景层，必须先删除或改为透明再接入页面。
