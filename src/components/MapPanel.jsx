@@ -337,9 +337,9 @@ function normalizeBoundaryGeoJson(rawData) {
   return null;
 }
 
-async function loadCityBoundaryGeoJson(citySlug) {
+async function loadCityBoundaryGeoJson(citySlug, signal) {
   const geoJsonUrl = new URL(`../assets/geojson/${citySlug}.geojson`, import.meta.url).href;
-  const response = await fetch(geoJsonUrl);
+  const response = await fetch(geoJsonUrl, { signal });
   if (!response.ok) return null;
   const rawData = await response.json();
   const normalized = normalizeBoundaryGeoJson(rawData);
@@ -437,7 +437,6 @@ function getRestaurantPointRadiusPx(zoom) {
 
 function getRestaurantTagMaxChars(zoom, fullLength) {
   const safeLength = Math.max(0, Number(fullLength) || 0);
-  if (safeLength <= 7) return safeLength;
   return safeLength;
 }
 
@@ -1024,9 +1023,10 @@ export default function MapPanel({
     if (!map || !isMapReady) return;
 
     let isCancelled = false;
+    const controller = new AbortController();
 
     const mountCityBoundary = async () => {
-      const boundaryGeoJson = await loadCityBoundaryGeoJson(citySlug);
+      const boundaryGeoJson = await loadCityBoundaryGeoJson(citySlug, controller.signal);
       if (isCancelled) return;
 
       const { primary: boundaryLineColor, secondary: boundaryHaloColor } = getCityMapLineColors(citySlug);
@@ -1099,10 +1099,14 @@ export default function MapPanel({
       });
     };
 
-    mountCityBoundary();
+    mountCityBoundary().catch((error) => {
+      if (error?.name === "AbortError") return;
+      console.error("[MapPanel] Failed to load boundary geojson", error);
+    });
 
     return () => {
       isCancelled = true;
+      controller.abort();
     };
   }, [citySlug, isMapReady]);
 

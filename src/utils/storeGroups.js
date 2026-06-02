@@ -14,12 +14,7 @@
  * @see docs/prd-ui-spec.md §4.3 菜品页
  */
 import { getDishesByCity, getRestaurantsByCity, normalizeCityEn } from "./dataLoader.js";
-
-const ZH_PINYIN_COLLATOR = new Intl.Collator("zh-Hans-CN-u-co-pinyin", {
-  usage: "sort",
-  sensitivity: "base",
-  numeric: true,
-});
+import { comparePinyinWithNumericRule, normalizeSortText } from "./sortText.js";
 
 function normalizeRecordScope(recordScope) {
   return String(recordScope ?? "")
@@ -33,25 +28,6 @@ function normalizeStoreSlug(value) {
   return String(value ?? "")
     .trim()
     .toLowerCase();
-}
-
-function normalizeSortText(value) {
-  return String(value ?? "")
-    .trim()
-    .replace(/^[\s\p{P}\p{S}]+/gu, "");
-}
-
-function isNumericLeading(text) {
-  return /^\d/.test(text);
-}
-
-function comparePinyinWithNumericRule(leftText, rightText) {
-  const leftNumeric = isNumericLeading(leftText);
-  const rightNumeric = isNumericLeading(rightText);
-  if (leftNumeric !== rightNumeric) {
-    return leftNumeric ? 1 : -1;
-  }
-  return ZH_PINYIN_COLLATOR.compare(leftText, rightText);
 }
 
 /**

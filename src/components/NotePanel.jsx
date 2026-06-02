@@ -148,12 +148,6 @@ export default function NotePanel({
   const priceText = formatPrice(selectedStore?.pricePerPerson, selectedStore?.currency);
   const hoursText = formatHours(selectedStore?.hours);
   const phoneText = formatPhone(selectedStore?.phone);
-  const openMapInNewTab = (event) => {
-    if (!hasMapUrl) return;
-    event.preventDefault();
-    window.open(mapUrl, "_blank", "noopener,noreferrer");
-  };
-
   return (
     <section className={`ffj-note-panel ${hasSelection ? "is-filled" : ""}`} aria-live="polite">
       <div className="ffj-note-panel-lines" aria-hidden="true" />
@@ -168,7 +162,6 @@ export default function NotePanel({
                   href={mapUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={openMapInNewTab}
                   onMouseEnter={() => {
                     warmupMapOrigin(mapUrl);
                     onInteractiveHoverChange?.(true);

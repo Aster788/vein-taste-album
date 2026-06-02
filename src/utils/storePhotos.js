@@ -1,6 +1,7 @@
 import restaurantsData from "../data/restaurants.json";
 import { cityEnFromBookshelfSlug, normalizeCityEn } from "./dataLoader.js";
 import { stripBranchSuffix } from "./storeGroups.js";
+import { isNumericLeading, normalizeSortText } from "./sortText.js";
 
 const PHOTO_MODULES = import.meta.glob(
   "../assets/photos/*/*/*.{jpg,jpeg,png,webp,heic,JPG,JPEG,PNG,WEBP,HEIC}",
@@ -193,22 +194,12 @@ const ZH_PINYIN_COLLATOR = new Intl.Collator("zh-Hans-CN-u-co-pinyin", {
   numeric: true,
 });
 
-function normalizeSortBasename(value) {
-  return String(value ?? "")
-    .trim()
-    .replace(/^[\s\p{P}\p{S}]+/gu, "");
-}
-
-function isNumericLeadingBasename(text) {
-  return /^\d/.test(text);
-}
-
 /** @returns {0 | 1 | 2} — 0 英文起头，1 数字起头，2 中文起头，3 其它 */
 function getMiscBasenameScriptRank(basename) {
-  const text = normalizeSortBasename(basename);
+  const text = normalizeSortText(basename);
   if (text === "") return 3;
   if (/^[a-zA-Z]/.test(text)) return 0;
-  if (isNumericLeadingBasename(text)) return 1;
+  if (isNumericLeading(text)) return 1;
   if (/^[\u4e00-\u9fff\u3400-\u4dbf\uf900-\ufaff]/.test(text)) return 2;
   return 3;
 }
@@ -220,8 +211,8 @@ function getMiscBasenameScriptRank(basename) {
  * @returns {number}
  */
 function compareMiscBasenames(leftBasename, rightBasename) {
-  const left = normalizeSortBasename(leftBasename);
-  const right = normalizeSortBasename(rightBasename);
+  const left = normalizeSortText(leftBasename);
+  const right = normalizeSortText(rightBasename);
   const leftRank = getMiscBasenameScriptRank(left);
   const rightRank = getMiscBasenameScriptRank(right);
   if (leftRank !== rightRank) return leftRank - rightRank;

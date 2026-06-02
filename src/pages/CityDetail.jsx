@@ -33,34 +33,10 @@ import {
   getCuisineGroupSortKey,
   getCuisineStoreGroupsByCity,
 } from "../utils/storeGroups.js";
+import { comparePinyinWithNumericRule, normalizeSortText } from "../utils/sortText.js";
 import DishInfo from "../components/DishInfo.jsx";
 import NotePanel from "../components/NotePanel.jsx";
 import PhotoPanel from "../components/PhotoPanel.jsx";
-
-const ZH_PINYIN_COLLATOR = new Intl.Collator("zh-Hans-CN-u-co-pinyin", {
-  usage: "sort",
-  sensitivity: "base",
-  numeric: true,
-});
-
-function normalizeSortText(value) {
-  return String(value ?? "")
-    .trim()
-    .replace(/^[\s\p{P}\p{S}]+/gu, "");
-}
-
-function isNumericLeading(text) {
-  return /^\d/.test(text);
-}
-
-function comparePinyinWithNumericRule(leftText, rightText) {
-  const leftNumeric = isNumericLeading(leftText);
-  const rightNumeric = isNumericLeading(rightText);
-  if (leftNumeric !== rightNumeric) {
-    return leftNumeric ? 1 : -1;
-  }
-  return ZH_PINYIN_COLLATOR.compare(leftText, rightText);
-}
 
 function splitCuisineLabelLines(label, detailLocale) {
   const text = String(label ?? "").trim();
@@ -129,6 +105,30 @@ function splitLabelByUnits(text, script, maxUnits) {
     lines.push(chars.slice(start, start + hardLimit).join(""));
   }
   return lines;
+}
+
+function useDismissOnOutsideAndEscape(open, ref, onClose) {
+  useEffect(() => {
+    if (!open) return;
+
+    const onPointerDown = (event) => {
+      if (!ref.current?.contains(event.target)) {
+        onClose();
+      }
+    };
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open, ref, onClose]);
 }
 
 export default function CityDetail() {
@@ -427,49 +427,12 @@ export default function CityDetail() {
     };
   }, [valid, slug, setCitySlug]);
 
-  useEffect(() => {
-    if (!isSectionMenuOpen) return;
-
-    const onPointerDown = (event) => {
-      if (!sectionMenuRef.current?.contains(event.target)) {
-        setSectionMenuOpen(false);
-      }
-    };
-    const onKeyDown = (event) => {
-      if (event.key === "Escape") {
-        setSectionMenuOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", onPointerDown);
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("mousedown", onPointerDown);
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, [isSectionMenuOpen]);
-
-  useEffect(() => {
-    if (!isCuisineMenuOpen) return;
-
-    const onPointerDown = (event) => {
-      if (!cuisineMenuRef.current?.contains(event.target)) {
-        setCuisineMenuOpen(false);
-      }
-    };
-    const onKeyDown = (event) => {
-      if (event.key === "Escape") {
-        setCuisineMenuOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", onPointerDown);
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("mousedown", onPointerDown);
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, [isCuisineMenuOpen]);
+  useDismissOnOutsideAndEscape(isSectionMenuOpen, sectionMenuRef, () => {
+    setSectionMenuOpen(false);
+  });
+  useDismissOnOutsideAndEscape(isCuisineMenuOpen, cuisineMenuRef, () => {
+    setCuisineMenuOpen(false);
+  });
 
   useEffect(() => {
     setSelectedStore(null);
@@ -565,27 +528,9 @@ export default function CityDetail() {
     };
   }, [activeSection, cuisineStoreGroups, selectedCuisineGroup]);
 
-  useEffect(() => {
-    if (!isCuisineSortHintOpen) return;
-
-    const onPointerDown = (event) => {
-      if (!cuisineSortHintRef.current?.contains(event.target)) {
-        setCuisineSortHintOpen(false);
-      }
-    };
-    const onKeyDown = (event) => {
-      if (event.key === "Escape") {
-        setCuisineSortHintOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", onPointerDown);
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("mousedown", onPointerDown);
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, [isCuisineSortHintOpen]);
+  useDismissOnOutsideAndEscape(isCuisineSortHintOpen, cuisineSortHintRef, () => {
+    setCuisineSortHintOpen(false);
+  });
 
   useLayoutEffect(() => {
     if (!isCuisineMenuOpen) {

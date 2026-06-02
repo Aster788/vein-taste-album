@@ -37,6 +37,7 @@ export default function Bookshelf() {
   const [isTypingDone, setIsTypingDone] = useState(false);
   const [typingPhase, setTypingPhase] = useState("cn");
   const [transitioningBook, setTransitioningBook] = useState(null);
+  const navigateTimerRef = useRef(0);
 
   const scrollBookToCenter = (bookIndex) => {
     const scroller = scrollRef.current;
@@ -73,9 +74,14 @@ export default function Bookshelf() {
       rect,
     });
 
+    if (navigateTimerRef.current) {
+      window.clearTimeout(navigateTimerRef.current);
+    }
+
     // 延迟导航，让动画播放至展开阶段（总时长 1.4s 的约 80%）
-    setTimeout(() => {
+    navigateTimerRef.current = window.setTimeout(() => {
       navigate(`/${city.slug}`);
+      navigateTimerRef.current = 0;
     }, 1100);
   };
 
@@ -90,6 +96,15 @@ export default function Bookshelf() {
     setCitySlug(null);
     delete document.documentElement.dataset.city;
   }, [setCitySlug]);
+
+  useEffect(() => {
+    return () => {
+      if (navigateTimerRef.current) {
+        window.clearTimeout(navigateTimerRef.current);
+        navigateTimerRef.current = 0;
+      }
+    };
+  }, []);
 
   useEffect(() => {
     setTypedCn("");
