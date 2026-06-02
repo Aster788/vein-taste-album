@@ -28,7 +28,7 @@ export default function PhotoPanel({
     const base = getStorePhotos(citySlug, selectedStore?.store_slug);
     if (!selectedStore) return base;
     const dishes = getDishesForRestaurant(selectedStore);
-    return sortPhotosByDishMatch(base, dishes);
+    return sortPhotosByDishMatch(base, dishes, selectedStore);
   }, [citySlug, selectedStore]);
 
   const photoCount = photos.length;

@@ -2013,7 +2013,7 @@
     "price": null,
     "currency": "",
     "taste": 3,
-    "note": null
+    "note": "配方在此：白朗姆 45ml+青柠汁 7.5ml+椰浆 30ml+芒果 90ml+大半盒酸奶"
   },
   {
     "store_slug": "9-islands",
@@ -2111,7 +2111,7 @@
     "price": "7.9",
     "currency": "CNY",
     "taste": 4,
-    "note": null
+    "note": "还记得第一次吃是在看完Xtina的livehouse后"
   },
   {
     "store_slug": "aldi",
@@ -2363,7 +2363,7 @@
     "price": "24",
     "currency": "CNY",
     "taste": 2,
-    "note": null
+    "note": "答应我果茶别再点不加糖了 好吗"
   },
   {
     "store_slug": "amsz",
@@ -2573,7 +2573,7 @@
     "price": "85",
     "currency": "CNY",
     "taste": 4,
-    "note": null
+    "note": "三文鱼系列没有不好吃的！"
   },
   {
     "store_slug": "baker-spice",
@@ -2615,7 +2615,7 @@
     "price": "28",
     "currency": "CNY",
     "taste": 3,
-    "note": null
+    "note": "好甜啊"
   },
   {
     "store_slug": "basdban",
@@ -2629,7 +2629,7 @@
     "price": "48",
     "currency": "CNY",
     "taste": 4,
-    "note": null
+    "note": "把芒果作为夹心简直太妙了 \n但很难吃得不狼狈"
   },
   {
     "store_slug": "basdban",
@@ -2685,7 +2685,7 @@
     "price": null,
     "currency": "",
     "taste": 3,
-    "note": null
+    "note": "太好了 因为迪士尼团建&经费充足 没花钱就吃上了"
   },
   {
     "store_slug": "bc",
@@ -2769,7 +2769,7 @@
     "price": "78",
     "currency": "CNY",
     "taste": 3,
-    "note": null
+    "note": "饭是唯一败笔 不知道改良了没 \n当时店员过来问吃得咋样的时候 认真说了建议"
   },
   {
     "store_slug": "bco",
@@ -2965,7 +2965,7 @@
     "price": null,
     "currency": "",
     "taste": 3,
-    "note": null
+    "note": "吃两三块就会腻"
   },
   {
     "store_slug": "black-salt",
@@ -2987,10 +2987,24 @@
     "store_name_en": "Black Salt",
     "store_name_local": null,
     "city_en": "shanghai",
-    "dish_name_zh": "香料炒菠菜",
+    "dish_name_zh": "香料炒菠菜(大份)",
     "dish_name_en": "Masala Palak",
     "dish_name_local": null,
     "price": "38",
+    "currency": "CNY",
+    "taste": 5,
+    "note": "这道菜改变了我对菠菜的刻板印象"
+  },
+  {
+    "store_slug": "black-salt",
+    "store_name_zh": "黑盐印度融合菜(K11店)",
+    "store_name_en": "Black Salt",
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "香料炒菠菜(小份)",
+    "dish_name_en": "Masala Palak",
+    "dish_name_local": null,
+    "price": "24",
     "currency": "CNY",
     "taste": 5,
     "note": null
@@ -3038,6 +3052,48 @@
     "note": null
   },
   {
+    "store_slug": "black-salt",
+    "store_name_zh": "黑盐印度融合菜(K11店)",
+    "store_name_en": "Black Salt",
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "咖喱汁牛腩宽面",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "68",
+    "currency": "CNY",
+    "taste": 4,
+    "note": "咖喱汁很浓郁 牛腩给的也毫不吝啬 \n属于吃了会幸福的一道菜"
+  },
+  {
+    "store_slug": "black-salt",
+    "store_name_zh": "黑盐印度融合菜(K11店)",
+    "store_name_en": "Black Salt",
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "香茅柠檬冰茶",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "18",
+    "currency": "CNY",
+    "taste": 2,
+    "note": null
+  },
+  {
+    "store_slug": "black-salt",
+    "store_name_zh": "黑盐印度融合菜(K11店)",
+    "store_name_en": "Black Salt",
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "虾片",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": null,
+    "currency": "CNY",
+    "taste": 2,
+    "note": "有点软掉了 不太好吃"
+  },
+  {
     "store_slug": "blue-bottle",
     "store_name_zh": "蓝瓶咖啡(张园店)",
     "store_name_en": "Blue Bottle Coffee",
@@ -3047,8 +3103,8 @@
     "dish_name_en": null,
     "dish_name_local": null,
     "price": null,
-    "currency": "",
-    "taste": 3,
+    "currency": "CNY",
+    "taste": 2,
     "note": null
   },
   {
@@ -3637,7 +3693,7 @@
     "price": null,
     "currency": "",
     "taste": 3,
-    "note": null
+    "note": "2025 组里聚餐"
   },
   {
     "store_slug": "chilis",
@@ -3847,7 +3903,7 @@
     "price": "24",
     "currency": "CNY",
     "taste": 4,
-    "note": null
+    "note": "世界上最好吃的拔丝地瓜"
   },
   {
     "store_slug": "dbsjjzw",
@@ -3959,7 +4015,7 @@
     "price": "28",
     "currency": "CNY",
     "taste": 1,
-    "note": null
+    "note": "没懂这道甜品 感觉把糖倒我嘴里了"
   },
   {
     "store_slug": "dnynsc",
@@ -4056,7 +4112,7 @@
     "dish_name_local": null,
     "price": "32",
     "currency": "CNY",
-    "taste": 3,
+    "taste": 2,
     "note": null
   },
   {
@@ -4408,6 +4464,34 @@
     "currency": "CNY",
     "taste": 3,
     "note": null
+  },
+  {
+    "store_slug": "dssj",
+    "store_name_zh": "读酥世家(徐汇万科广场)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "云南滇红玫瑰挞挞酥",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "12.9",
+    "currency": "CNY",
+    "taste": 3,
+    "note": "果酱也太甜了！"
+  },
+  {
+    "store_slug": "dssj",
+    "store_name_zh": "读酥世家(徐汇万科广场)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "云南滇红玫瑰经典鲜花饼",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "15.9/2个",
+    "currency": "CNY",
+    "taste": 4,
+    "note": "非常貌美"
   },
   {
     "store_slug": "escf",
@@ -4896,8 +4980,8 @@
     "dish_name_local": null,
     "price": "59",
     "currency": "CNY",
-    "taste": 4,
-    "note": null
+    "taste": 3,
+    "note": "油超多"
   },
   {
     "store_slug": "gml",
@@ -4953,7 +5037,7 @@
     "price": "28",
     "currency": "CNY",
     "taste": 4,
-    "note": null
+    "note": "超级无敌下饭"
   },
   {
     "store_slug": "gq",
@@ -5037,7 +5121,7 @@
     "price": "38/斤",
     "currency": "CNY",
     "taste": 1,
-    "note": null
+    "note": "什么怪味儿"
   },
   {
     "store_slug": "hebspc",
@@ -5051,7 +5135,7 @@
     "price": "60/斤",
     "currency": "CNY",
     "taste": 4,
-    "note": null
+    "note": "是我心目中上海蝴蝶酥top1"
   },
   {
     "store_slug": "hebspc",
@@ -5065,7 +5149,7 @@
     "price": "69/斤",
     "currency": "CNY",
     "taste": 3,
-    "note": null
+    "note": "脆脆的"
   },
   {
     "store_slug": "hey-guac",
@@ -5149,7 +5233,7 @@
     "price": null,
     "currency": "",
     "taste": 5,
-    "note": null
+    "note": "0次 or 无数次"
   },
   {
     "store_slug": "hj",
@@ -5191,7 +5275,7 @@
     "price": null,
     "currency": "",
     "taste": 4,
-    "note": null
+    "note": "量超级大"
   },
   {
     "store_slug": "hj",
@@ -5205,7 +5289,7 @@
     "price": null,
     "currency": "",
     "taste": 5,
-    "note": null
+    "note": "全世界最好吃的淀粉肠"
   },
   {
     "store_slug": "hj",
@@ -5373,7 +5457,7 @@
     "price": null,
     "currency": "",
     "taste": 1,
-    "note": null
+    "note": "歹毒的味道"
   },
   {
     "store_slug": "hm",
@@ -5555,7 +5639,7 @@
     "price": null,
     "currency": "",
     "taste": 4,
-    "note": null
+    "note": "糯叽叽"
   },
   {
     "store_slug": "hsdys",
@@ -5611,7 +5695,7 @@
     "price": "36",
     "currency": "CNY",
     "taste": 4,
-    "note": null
+    "note": "无敌下饭"
   },
   {
     "store_slug": "hxllt",
@@ -5723,7 +5807,7 @@
     "price": "7",
     "currency": "CNY",
     "taste": 3,
-    "note": null
+    "note": "有点甜"
   },
   {
     "store_slug": "jmwx",
@@ -5765,7 +5849,7 @@
     "price": "7",
     "currency": "CNY",
     "taste": 3,
-    "note": null
+    "note": "油油的"
   },
   {
     "store_slug": "jmwx",
@@ -6185,7 +6269,7 @@
     "price": "19.9",
     "currency": "CNY",
     "taste": 3,
-    "note": null
+    "note": "“童心童趣，快乐六一”"
   },
   {
     "store_slug": "lldt",
@@ -6272,6 +6356,20 @@
     "note": null
   },
   {
+    "store_slug": "lldt",
+    "store_name_zh": "莉莲蛋挞",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "蕉个朋友",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "12.9",
+    "currency": "CNY",
+    "taste": 4,
+    "note": "相当丑萌哈哈哈哈"
+  },
+  {
     "store_slug": "lokal",
     "store_name_zh": "LOKAL(东湖路店)",
     "store_name_en": null,
@@ -6282,8 +6380,8 @@
     "dish_name_local": null,
     "price": null,
     "currency": "",
-    "taste": 2,
-    "note": null
+    "taste": 1,
+    "note": "难吃"
   },
   {
     "store_slug": "lokal",
@@ -6395,7 +6493,7 @@
     "price": "38",
     "currency": "CNY",
     "taste": 4,
-    "note": null
+    "note": "真的很想知道酱汁是怎么调的 太好吃了"
   },
   {
     "store_slug": "mill-hill",
@@ -6521,7 +6619,7 @@
     "price": "38",
     "currency": "CNY",
     "taste": 5,
-    "note": null
+    "note": "哇塞"
   },
   {
     "store_slug": "mini-rest",
@@ -6633,7 +6731,7 @@
     "price": "78",
     "currency": "CNY",
     "taste": 3,
-    "note": null
+    "note": "颜值大于味道"
   },
   {
     "store_slug": "msj",
@@ -6675,7 +6773,7 @@
     "price": "108",
     "currency": "CNY",
     "taste": 4,
-    "note": null
+    "note": "哇塞好好吃"
   },
   {
     "store_slug": "nlsf",
@@ -6787,7 +6885,7 @@
     "price": "49",
     "currency": "CNY",
     "taste": 5,
-    "note": null
+    "note": "非常妙"
   },
   {
     "store_slug": "nlsf",
@@ -6857,7 +6955,7 @@
     "price": "78",
     "currency": "CNY",
     "taste": 5,
-    "note": null
+    "note": "每次去一定会点这道菜"
   },
   {
     "store_slug": "nlsf",
@@ -6899,7 +6997,7 @@
     "price": "10/位",
     "currency": "CNY",
     "taste": 3,
-    "note": null
+    "note": "很清淡"
   },
   {
     "store_slug": "nlsf",
@@ -7067,7 +7165,7 @@
     "price": "29",
     "currency": "CNY",
     "taste": 1,
-    "note": null
+    "note": "还我钱啊啊啊啊啊啊啊"
   },
   {
     "store_slug": "otf",
@@ -7641,7 +7739,7 @@
     "price": "98",
     "currency": "CNY",
     "taste": 3,
-    "note": null
+    "note": "好喝 奶味和果味重"
   },
   {
     "store_slug": "pluto",
@@ -7683,7 +7781,7 @@
     "price": null,
     "currency": "",
     "taste": 4,
-    "note": null
+    "note": "必须竖大拇指"
   },
   {
     "store_slug": "poets",
@@ -7809,7 +7907,7 @@
     "price": null,
     "currency": "",
     "taste": 4,
-    "note": null
+    "note": "早上吃开启幸福的一天"
   },
   {
     "store_slug": "pulltab",
@@ -7865,7 +7963,7 @@
     "price": "16.9",
     "currency": "CNY",
     "taste": 4,
-    "note": null
+    "note": "特别扎实的内馅"
   },
   {
     "store_slug": "punch-monday",
@@ -8061,7 +8159,7 @@
     "price": null,
     "currency": "",
     "taste": 1,
-    "note": null
+    "note": "赔我钱行不行 太难喝了"
   },
   {
     "store_slug": "qcs",
@@ -8117,7 +8215,7 @@
     "price": null,
     "currency": "",
     "taste": 4,
-    "note": null
+    "note": "怎么就闭店了TAT \n我还想再和hmy一起去吃牛肉汤"
   },
   {
     "store_slug": "rolling",
@@ -8139,13 +8237,13 @@
     "store_name_en": null,
     "store_name_local": null,
     "city_en": "shanghai",
-    "dish_name_zh": "6060%至臻至臻生巧瑞士卷",
+    "dish_name_zh": "60%至臻至臻生巧瑞士卷",
     "dish_name_en": null,
     "dish_name_local": null,
     "price": "49",
     "currency": "CNY",
     "taste": 4,
-    "note": null
+    "note": "谢谢小西！"
   },
   {
     "store_slug": "roots",
@@ -8243,7 +8341,7 @@
     "price": "20",
     "currency": "CNY",
     "taste": 5,
-    "note": null
+    "note": "不是这面也太好吃了吧\n同门怎么那么会找店！"
   },
   {
     "store_slug": "sghsnrm",
@@ -8326,8 +8424,8 @@
     "dish_name_local": null,
     "price": "19",
     "currency": "CNY",
-    "taste": 2,
-    "note": null
+    "taste": 1,
+    "note": "甜甜甜甜甜甜甜"
   },
   {
     "store_slug": "sly",
@@ -8369,7 +8467,7 @@
     "price": null,
     "currency": "",
     "taste": 2,
-    "note": null
+    "note": "吃这道菜口棕都不用补"
   },
   {
     "store_slug": "sly",
@@ -8523,7 +8621,7 @@
     "price": null,
     "currency": "",
     "taste": 4,
-    "note": null
+    "note": "感觉外卖的牛肉粉比店里的更好吃"
   },
   {
     "store_slug": "ssw",
@@ -8537,7 +8635,7 @@
     "price": null,
     "currency": "",
     "taste": 4,
-    "note": null
+    "note": "在奉贤的时候这家店去过不下五次"
   },
   {
     "store_slug": "tbn",
@@ -8565,7 +8663,7 @@
     "price": null,
     "currency": "",
     "taste": 4,
-    "note": null
+    "note": "夯"
   },
   {
     "store_slug": "tnrzf",
@@ -8663,7 +8761,7 @@
     "price": null,
     "currency": "",
     "taste": 2,
-    "note": null
+    "note": "没想到会有这么一般的火锅"
   },
   {
     "store_slug": "tqzpc",
@@ -8971,7 +9069,7 @@
     "price": null,
     "currency": "",
     "taste": 4,
-    "note": null
+    "note": "欢送实习生搭子们"
   },
   {
     "store_slug": "wooden-paradise",
@@ -9125,7 +9223,7 @@
     "price": "18",
     "currency": "CNY",
     "taste": 2,
-    "note": null
+    "note": "麻酱太多了 所以特别容易腻"
   },
   {
     "store_slug": "xsn",
@@ -9251,7 +9349,7 @@
     "price": "18",
     "currency": "CNY",
     "taste": 4,
-    "note": null
+    "note": "好好吃啊"
   },
   {
     "store_slug": "ycg",
@@ -9433,7 +9531,7 @@
     "price": "88",
     "currency": "CNY",
     "taste": 4,
-    "note": null
+    "note": "请点！"
   },
   {
     "store_slug": "ylxl",
@@ -9530,8 +9628,8 @@
     "dish_name_local": null,
     "price": null,
     "currency": "",
-    "taste": 2,
-    "note": null
+    "taste": 1,
+    "note": "非常一般"
   },
   {
     "store_slug": "yx",
@@ -9615,7 +9713,7 @@
     "price": null,
     "currency": "",
     "taste": 5,
-    "note": null
+    "note": "震撼美味"
   },
   {
     "store_slug": "zafferano",
@@ -9643,7 +9741,7 @@
     "price": null,
     "currency": "",
     "taste": 4,
-    "note": null
+    "note": "太好吃了太好吃了太好吃了"
   },
   {
     "store_slug": "zafferano",
@@ -9671,34 +9769,6 @@
     "price": "22",
     "currency": "CNY",
     "taste": 3,
-    "note": null
-  },
-  {
-    "store_slug": "bonjour",
-    "store_name_zh": "本就(苏州十全街店)",
-    "store_name_en": "BONJOUR",
-    "store_name_local": null,
-    "city_en": "suzhou",
-    "dish_name_zh": "浮云鲜牛乳",
-    "dish_name_en": null,
-    "dish_name_local": null,
-    "price": "22",
-    "currency": "CNY",
-    "taste": 3,
-    "note": null
-  },
-  {
-    "store_slug": "dnnts",
-    "store_name_zh": "大孃孃糖水铺(双塔市集店)",
-    "store_name_en": null,
-    "store_name_local": null,
-    "city_en": "suzhou",
-    "dish_name_zh": "芋泥麻薯丸子",
-    "dish_name_en": null,
-    "dish_name_local": null,
-    "price": "18",
-    "currency": "CNY",
-    "taste": 2,
     "note": null
   },
   {
@@ -9980,5 +10050,271 @@
     "currency": "CNY",
     "taste": 3,
     "note": null
+  },
+  {
+    "store_slug": "njdpd",
+    "store_name_zh": "南京大牌档",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "nanjing",
+    "dish_name_zh": "天王烤鸭包",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "12",
+    "currency": "",
+    "taste": 3,
+    "note": null
+  },
+  {
+    "store_slug": "njdpd",
+    "store_name_zh": "南京大牌档",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "nanjing",
+    "dish_name_zh": "金陵烤鸭",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "58",
+    "currency": "",
+    "taste": 3,
+    "note": null
+  },
+  {
+    "store_slug": "njdpd",
+    "store_name_zh": "南京大牌档",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "nanjing",
+    "dish_name_zh": "民国美龄粥",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": null,
+    "currency": "",
+    "taste": 4,
+    "note": null
+  },
+  {
+    "store_slug": "njdpd",
+    "store_name_zh": "南京大牌档",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "nanjing",
+    "dish_name_zh": "鸭血粉丝汤",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "24",
+    "currency": "",
+    "taste": 3,
+    "note": null
+  },
+  {
+    "store_slug": "njdpd",
+    "store_name_zh": "南京大牌档",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "nanjing",
+    "dish_name_zh": "脆皮臭豆腐",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": null,
+    "currency": "",
+    "taste": 3,
+    "note": null
+  },
+  {
+    "store_slug": "njdpd",
+    "store_name_zh": "南京大牌档",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "nanjing",
+    "dish_name_zh": "桂花糖芋苗",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "5",
+    "currency": "",
+    "taste": 3,
+    "note": null
+  },
+  {
+    "store_slug": "njdpd",
+    "store_name_zh": "南京大牌档",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "nanjing",
+    "dish_name_zh": "招牌虾黄豆腐",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": null,
+    "currency": "",
+    "taste": 3,
+    "note": null
+  },
+  {
+    "store_slug": "gzwd",
+    "store_name_zh": "古早万丹传统台湾糕点(科巷店)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "nanjing",
+    "dish_name_zh": "芋泥奶冻卷",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "28",
+    "currency": "",
+    "taste": 4,
+    "note": null
+  },
+  {
+    "store_slug": "gzwd",
+    "store_name_zh": "古早万丹传统台湾糕点(科巷店)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "nanjing",
+    "dish_name_zh": "芋泥奶酪",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "39",
+    "currency": "",
+    "taste": 3,
+    "note": null
+  },
+  {
+    "store_slug": "hms",
+    "store_name_zh": "鹤鸣山·草本茶香火锅(南京首店)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "nanjing",
+    "dish_name_zh": "火锅",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": null,
+    "currency": "",
+    "taste": 4,
+    "note": "嘿嘿"
+  },
+  {
+    "store_slug": "hms",
+    "store_name_zh": "鹤鸣山·草本茶香火锅(南京首店)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "nanjing",
+    "dish_name_zh": "招牌紫米糍粑",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "20",
+    "currency": "",
+    "taste": 4,
+    "note": null
+  },
+  {
+    "store_slug": "hms",
+    "store_name_zh": "鹤鸣山·草本茶香火锅(南京首店)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "nanjing",
+    "dish_name_zh": "招牌8味草本吊龙串",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "28",
+    "currency": "",
+    "taste": 4,
+    "note": null
+  },
+  {
+    "store_slug": "hms",
+    "store_name_zh": "鹤鸣山·草本茶香火锅(南京首店)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "nanjing",
+    "dish_name_zh": "高山9秒鲜切吊龙",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "38",
+    "currency": "",
+    "taste": 4,
+    "note": null
+  },
+  {
+    "store_slug": "cyys",
+    "store_name_zh": "茶颜悦色(科巷北门店)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "nanjing",
+    "dish_name_zh": "抹茶菩提",
+    "dish_name_en": "Matha Raisin Latte",
+    "dish_name_local": null,
+    "price": null,
+    "currency": "",
+    "taste": 4,
+    "note": null
+  },
+  {
+    "store_slug": "cyys",
+    "store_name_zh": "茶颜悦色(科巷北门店)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "nanjing",
+    "dish_name_zh": "声声乌龙",
+    "dish_name_en": "Peach Oolong Milk Tea",
+    "dish_name_local": null,
+    "price": null,
+    "currency": "",
+    "taste": 3,
+    "note": null
+  },
+  {
+    "store_slug": "zdcb",
+    "store_name_zh": "早点吃吧(科巷店)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "nanjing",
+    "dish_name_zh": "乌饭团",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "11.5",
+    "currency": "",
+    "taste": 4,
+    "note": "碳水大满足"
+  },
+  {
+    "store_slug": "zylc",
+    "store_name_zh": "卓粤拉肠(红庙店)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "nanjing",
+    "dish_name_zh": "海苔牛肉肠粉",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "14",
+    "currency": "",
+    "taste": 3,
+    "note": null
+  },
+  {
+    "store_slug": "jfjz",
+    "store_name_zh": "卷饭家族(新街口店)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "nanjing",
+    "dish_name_zh": "豆皮包饭(玉米沙拉豆皮+金枪鱼豆皮)",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "15",
+    "currency": "",
+    "taste": 3,
+    "note": null
+  },
+  {
+    "store_slug": "mww",
+    "store_name_zh": "马伍旺饮料厂",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "nanjing",
+    "dish_name_zh": "雪顶幽兰-雪顶观音-素颜观音",
+    "dish_name_en": "Snow Top Oolong-Snow Top Tieguanyin-Plain Tieguanyin Milk Tea",
+    "dish_name_local": null,
+    "price": null,
+    "currency": "",
+    "taste": 3,
+    "note": "“三杯不过分”"
   }
 ]

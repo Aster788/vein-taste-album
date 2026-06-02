@@ -87,6 +87,13 @@ html[data-city="shanghai"],
   --city-secondary: #ece7d9;
 }
 
+html[data-city="nanjing"],
+.ffj-bookshelf-book-slot[data-city="nanjing"],
+.ffj-book-transition-book[data-city="nanjing"] {
+  --city-primary: #828588;
+  --city-secondary: #f3e6dd;
+}
+
 html[data-city="guangzhou"],
 .ffj-bookshelf-book-slot[data-city="guangzhou"],
 .ffj-book-transition-book[data-city="guangzhou"] {
@@ -2611,6 +2618,14 @@ html[data-city="melaka"],
 
 .ffj-bookshelf-book-slot .ffj-book__spine-col--en {
   font-size: clamp(0.7rem, min(2rem, 3.2vh), 1.02rem);
+}
+
+/* 南京书脊文字固定白色，提高灰/黛/红系封面上的可读性 */
+.ffj-bookshelf-book-slot[data-city="nanjing"] .ffj-book__spine-col {
+  color: #fff;
+  text-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.35),
+    0 0 2px rgba(0, 0, 0, 0.2);
 }
 
 /* 书口：纸张叠厚，色相与主色轻微混合以免跳色 */
