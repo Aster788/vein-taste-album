@@ -23,6 +23,31 @@ function buildRemotePhotoHref(cityFolder, storeFolder, filename) {
   return `${PHOTOS_BASE_URL}/${path}`;
 }
 
+/** @param {string} filename */
+function buildThumbFilename(filename) {
+  const name = String(filename ?? "").trim();
+  if (name === "") return "";
+  const lastDot = name.lastIndexOf(".");
+  const base = lastDot <= 0 ? name : name.slice(0, lastDot);
+  return `${base}.thumb.webp`;
+}
+
+/**
+ * @param {string} cityFolder
+ * @param {string} storeFolder
+ * @param {string} filename
+ * @param {string} href
+ * @returns {{ href: string, thumbHref: string, filename: string }}
+ */
+function buildPhotoRecord(cityFolder, storeFolder, filename, href) {
+  const thumbFilename = buildThumbFilename(filename);
+  const thumbHref =
+    thumbFilename !== "" && PHOTOS_BASE_URL !== ""
+      ? buildRemotePhotoHref(cityFolder, storeFolder, thumbFilename)
+      : href;
+  return { href, thumbHref, filename };
+}
+
 import { addPhotoToIndex, finalizePhotoIndex } from "./storePhotos.index.js";
 
 function buildPhotoIndexFromManifest() {
@@ -36,7 +61,8 @@ function buildPhotoIndexFromManifest() {
     if (cityFolder === "" || storeFolder === "" || filename === "") continue;
 
     const href = buildRemotePhotoHref(cityFolder, storeFolder, filename);
-    addPhotoToIndex(index, cityFolder, storeFolder, filename, href);
+    const record = buildPhotoRecord(cityFolder, storeFolder, filename, href);
+    addPhotoToIndex(index, cityFolder, storeFolder, filename, record);
   }
 
   return finalizePhotoIndex(index);
@@ -132,7 +158,9 @@ function matchDishByBasename(dishes, basenameKey) {
   if (basenameKey === "") return null;
   const tryField = (field) => {
     for (const dish of dishes) {
-      if (normalizeMatchKey(dish[field]) === basenameKey) return dish;
+      const dishNameKey = normalizeMatchKey(dish[field]);
+      if (dishNameKey === "") continue;
+      if (dishNameKey === basenameKey || basenameKey.includes(dishNameKey)) return dish;
     }
     return null;
   };
@@ -199,7 +227,12 @@ function collectStoreNameKeys(dishes, restaurant) {
  * @returns {boolean}
  */
 function matchesStoreNameByBasename(storeNameKeys, basenameKey) {
-  return basenameKey !== "" && storeNameKeys.has(basenameKey);
+  if (basenameKey === "") return false;
+  for (const storeNameKey of storeNameKeys) {
+    if (storeNameKey === "") continue;
+    if (storeNameKey === basenameKey || basenameKey.includes(storeNameKey)) return true;
+  }
+  return false;
 }
 
 const EN_LETTER_COLLATOR = new Intl.Collator("en", {
@@ -213,6 +246,14 @@ const ZH_PINYIN_COLLATOR = new Intl.Collator("zh-Hans-CN-u-co-pinyin", {
   sensitivity: "base",
   numeric: true,
 });
+
+const NON_GALLERY_BASENAME_KEYS = new Set([
+  "invoice",
+  "receipt",
+  "bill",
+  "menu",
+  "order",
+]);
 
 /** @returns {0 | 1 | 2} — 0 英文起头，1 数字起头，2 中文起头，3 其它 */
 function getMiscBasenameScriptRank(basename) {
@@ -310,6 +351,7 @@ export function getBasenameWithoutExtension(filename) {
  * 1) basename 匹配店名（`dishes.json` 的 `store_name_*` 全文 + 去括号基础名 + 同 slug 分店 `restaurants.json` 的 `name_*`）；
  * 2) 其余非中文数字序号：英文起头按英文字母序，中文起头按拼音序（数字起头介于二者之间）；
  * 3) 中文数字序号（一～九、十、十一…）最后，按数值升序。
+ * 4) 收据/菜单等非相册图最后，避免冷启动首图卡在不可展示素材上。
  * @param {ReadonlyArray<{ href: string, filename: string }>} photos
  * @param {ReadonlyArray<Record<string, unknown>>} dishes
  * @param {Record<string, unknown> | null | undefined} [restaurant]
@@ -332,8 +374,9 @@ export function sortPhotosByDishMatch(photos, dishes, restaurant = null) {
   const storeNameKeys = collectStoreNameKeys(dishes, restaurant);
 
   const getBucket = (filename) => {
-    if (findMatchedDishByFilename(filename, dishes) != null) return 0;
     const basenameKey = basenameWithoutExtension(filename);
+    if (NON_GALLERY_BASENAME_KEYS.has(basenameKey)) return 4;
+    if (findMatchedDishByFilename(filename, dishes) != null) return 0;
     if (matchesStoreNameByBasename(storeNameKeys, basenameKey)) return 1;
     const basename = getBasenameWithoutExtension(filename).trim();
     if (isChineseNumeralBasename(basename)) return 3;

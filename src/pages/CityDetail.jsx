@@ -1,4 +1,13 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Navigate, useParams } from "react-router-dom";
 import {
   pickByDetailLocale,
@@ -11,7 +20,9 @@ import {
   isValidCitySlug,
   normalizeCitySlug,
 } from "../utils/citySlugs.js";
-import MapPanel from "../components/MapPanel.jsx";
+import "../styles/fonts-muyao.css";
+
+const MapPanel = lazy(() => import("../components/MapPanel.jsx"));
 import clickCursorStickerUrl from "../assets/stickers/page/click.svg?url";
 import paperAirplaneCursorStickerUrl from "../assets/stickers/page/paper-airplane.svg?url";
 import spoonAndForkStickerUrl from "../assets/stickers/page/spoon-and-fork.svg?url";
@@ -38,7 +49,7 @@ import DishInfo from "../components/DishInfo.jsx";
 import NotePanel from "../components/NotePanel.jsx";
 import PhotoPanel from "../components/PhotoPanel.jsx";
 import { getPhotoNetworkProfile } from "../utils/photoNetworkProfile.js";
-import { preloadLeadPhotos } from "../utils/preloadImage.js";
+import { hintPreloadImageLink, preloadLeadPhotos } from "../utils/preloadImage.js";
 import { getSortedStorePhotos } from "../utils/storePhotos.js";
 
 function splitCuisineLabelLines(label, detailLocale) {
@@ -424,10 +435,18 @@ export default function CityDetail() {
   );
 
   useEffect(() => {
+    if (!valid || cuisineStoreGroups.length === 0) return;
+    prefetchStoreLeadPhotos(cuisineStoreGroups[0]);
+  }, [valid, slug, cuisineStoreGroups, prefetchStoreLeadPhotos]);
+
+  useEffect(() => {
     if (!selectedCuisineStore) return;
     const photos = getSortedStorePhotos(slug, selectedCuisineStore);
     const { leadPhotoCount } = getPhotoNetworkProfile();
     preloadLeadPhotos(photos, leadPhotoCount);
+    const lead = photos[0];
+    if (lead?.thumbHref) hintPreloadImageLink(lead.thumbHref);
+    else if (lead?.href) hintPreloadImageLink(lead.href);
   }, [slug, selectedCuisineStore]);
 
   useEffect(() => {
@@ -824,15 +843,17 @@ export default function CityDetail() {
             className="ffj-city-book-page ffj-city-book-page--left ffj-city-book-page--map"
             aria-label={pickUiText("左页占位", "Left page placeholder", nativeLeftPageText)}
           >
-            <MapPanel
-              citySlug={slug}
-              cityLabel={cityDisplay}
-              isVisible={activeSection === "map"}
-              activeCuisine={activeCuisine}
-              onSelectStore={setSelectedStore}
-              onInteractiveHoverChange={handleMapInteractiveHoverChange}
-              onContinueWithoutMap={() => setActiveSection("cuisine")}
-            />
+            <Suspense fallback={null}>
+              <MapPanel
+                citySlug={slug}
+                cityLabel={cityDisplay}
+                isVisible={activeSection === "map"}
+                activeCuisine={activeCuisine}
+                onSelectStore={setSelectedStore}
+                onInteractiveHoverChange={handleMapInteractiveHoverChange}
+                onContinueWithoutMap={() => setActiveSection("cuisine")}
+              />
+            </Suspense>
           </article>
 
           <div className="ffj-city-book-gutter" aria-hidden="true" />

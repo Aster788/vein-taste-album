@@ -31,12 +31,42 @@ export function walkStorePhotos(onPhoto) {
         if (!fileEntry.isFile()) continue;
         const absPath = path.join(storeDir, fileEntry.name);
         if (!isPhotoFile(absPath)) continue;
+        if (/\.thumb\.webp$/i.test(fileEntry.name)) continue;
 
         onPhoto({
           city: cityEntry.name,
           store: storeEntry.name,
           filename: fileEntry.name,
           absPath,
+        });
+      }
+    }
+  }
+}
+
+/**
+ * Walk generated thumbnail files only: photos/{city}/{store}/*.thumb.webp
+ * @param {(entry: { city: string, store: string, filename: string, absPath: string }) => void} onPhoto
+ */
+export function walkStoreThumbs(onPhoto) {
+  if (!fs.existsSync(PHOTOS_ROOT)) return;
+
+  for (const cityEntry of fs.readdirSync(PHOTOS_ROOT, { withFileTypes: true })) {
+    if (!cityEntry.isDirectory()) continue;
+    const cityDir = path.join(PHOTOS_ROOT, cityEntry.name);
+
+    for (const storeEntry of fs.readdirSync(cityDir, { withFileTypes: true })) {
+      if (!storeEntry.isDirectory()) continue;
+      const storeDir = path.join(cityDir, storeEntry.name);
+
+      for (const fileEntry of fs.readdirSync(storeDir, { withFileTypes: true })) {
+        if (!fileEntry.isFile()) continue;
+        if (!/\.thumb\.webp$/i.test(fileEntry.name)) continue;
+        onPhoto({
+          city: cityEntry.name,
+          store: storeEntry.name,
+          filename: fileEntry.name,
+          absPath: path.join(storeDir, fileEntry.name),
         });
       }
     }

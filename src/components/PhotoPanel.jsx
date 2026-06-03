@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import heic2any from "heic2any";
 import {
-  hintPreloadImageLink,
+  getPreloadedDisplayUrl,
+  isPhotoDisplayReady,
   preloadImage,
   preloadImages,
+  revokePreloadedBlobUrls,
 } from "../utils/preloadImage.js";
 import { getSortedStorePhotos } from "../utils/storePhotos.js";
 
@@ -23,7 +24,6 @@ export default function PhotoPanel({
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isPhotoLoading, setIsPhotoLoading] = useState(false);
-  const [isPhotoLoadingSlow, setIsPhotoLoadingSlow] = useState(false);
   const [displaySrc, setDisplaySrc] = useState("");
   const [isRecoveringBrokenImage, setIsRecoveringBrokenImage] = useState(false);
   const transitionTimerRef = useRef(/** @type {number | null} */ (null));
@@ -64,8 +64,13 @@ export default function PhotoPanel({
   );
 
   useEffect(() => {
-    const href = activePhoto?.href ?? "";
-    if (href === "") {
+    const fullHref = activePhoto?.href ?? "";
+    const thumbHref =
+      activePhoto?.thumbHref && activePhoto.thumbHref !== fullHref
+        ? activePhoto.thumbHref
+        : "";
+
+    if (fullHref === "") {
       displayRequestRef.current += 1;
       setDisplaySrc("");
       setIsPhotoLoading(false);
@@ -75,48 +80,77 @@ export default function PhotoPanel({
 
     const requestId = displayRequestRef.current + 1;
     displayRequestRef.current = requestId;
-    setIsPhotoLoading(true);
-    setIsPhotoLoadingSlow(false);
     setIsRecoveringBrokenImage(false);
-    hintPreloadImageLink(href);
 
-    preloadImage(href, { priority: "high" })
-      .then(() => {
-        if (displayRequestRef.current !== requestId) return;
-        commitDisplayPhoto(href, safeIndex);
-      })
-      .catch(() => {
-        if (displayRequestRef.current !== requestId) return;
-        commitDisplayPhoto(href, safeIndex);
-      });
-  }, [activePhoto?.href, commitDisplayPhoto, onDisplayPhotoIndexChange, safeIndex]);
-
-  useEffect(() => {
-    if (!isPhotoLoading) {
-      setIsPhotoLoadingSlow(false);
-      return undefined;
+    if (isPhotoDisplayReady(fullHref)) {
+      commitDisplayPhoto(getPreloadedDisplayUrl(fullHref), safeIndex);
+      return;
     }
-    const timer = window.setTimeout(() => {
-      setIsPhotoLoadingSlow(true);
-    }, 450);
-    return () => {
-      window.clearTimeout(timer);
+
+    let cancelled = false;
+
+    const loadFull = () =>
+      preloadImage(fullHref, { priority: "high" })
+        .then((displayUrl) => {
+          if (cancelled || displayRequestRef.current !== requestId) return;
+          commitDisplayPhoto(displayUrl ?? fullHref, safeIndex);
+        })
+        .catch(() => {
+          if (cancelled || displayRequestRef.current !== requestId) return;
+          commitDisplayPhoto(fullHref, safeIndex);
+        });
+
+    const run = async () => {
+      if (thumbHref !== "") {
+        if (isPhotoDisplayReady(thumbHref)) {
+          commitDisplayPhoto(getPreloadedDisplayUrl(thumbHref), safeIndex);
+          await loadFull();
+          return;
+        }
+        try {
+          const thumbUrl = await preloadImage(thumbHref, { priority: "high" });
+          if (cancelled || displayRequestRef.current !== requestId) return;
+          commitDisplayPhoto(thumbUrl ?? thumbHref, safeIndex);
+          await loadFull();
+          return;
+        } catch {
+          // Thumb missing on CDN — fall through to full image.
+        }
+      }
+      await loadFull();
     };
-  }, [isPhotoLoading, activePhoto?.href]);
+
+    run();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    activePhoto?.href,
+    activePhoto?.thumbHref,
+    commitDisplayPhoto,
+    onDisplayPhotoIndexChange,
+    safeIndex,
+  ]);
 
   useEffect(() => {
     if (!photos.length) return;
     const priority = [];
     const current = photos[safeIndex];
+    if (current?.thumbHref) priority.push(current.thumbHref);
     if (current?.href) priority.push(current.href);
-    const prev = photos[(safeIndex - 1 + photoCount) % photoCount];
-    const next = photos[(safeIndex + 1) % photoCount];
-    if (prev?.href) priority.push(prev.href);
-    if (next?.href) priority.push(next.href);
-    preloadImages(
-      photos.map((photo) => photo.href),
-      { prioritize: priority },
+    for (let offset = 1; offset <= 2; offset += 1) {
+      const prev = photos[(safeIndex - offset + photoCount) % photoCount];
+      const next = photos[(safeIndex + offset) % photoCount];
+      if (prev?.thumbHref) priority.push(prev.thumbHref);
+      if (prev?.href) priority.push(prev.href);
+      if (next?.thumbHref) priority.push(next.thumbHref);
+      if (next?.href) priority.push(next.href);
+    }
+    const allHrefs = photos.flatMap((photo) =>
+      [photo.thumbHref, photo.href].filter((href) => String(href ?? "").trim() !== ""),
     );
+    preloadImages(allHrefs, { prioritize: priority });
   }, [photos, photoCount, safeIndex]);
 
   useEffect(() => {
@@ -136,6 +170,7 @@ export default function PhotoPanel({
       }
       convertedUrlCacheRef.current.forEach((url) => URL.revokeObjectURL(url));
       convertedUrlCacheRef.current.clear();
+      revokePreloadedBlobUrls();
     };
   }, []);
 
@@ -302,7 +337,7 @@ export default function PhotoPanel({
               </svg>
             </button>
             <figure
-              className={`ffj-photo-polaroid ffj-photo-polaroid--clickable ${isPhotoLoading ? "is-loading" : ""} ${isPhotoLoadingSlow ? "is-loading-slow" : ""}`}
+              className={`ffj-photo-polaroid ffj-photo-polaroid--clickable ${isPhotoLoading ? "is-loading" : ""}`}
               role="button"
               tabIndex={0}
               aria-label={labels.expandPhoto}
@@ -338,11 +373,11 @@ export default function PhotoPanel({
                       return;
                     }
                     setIsRecoveringBrokenImage(true);
-                    setIsPhotoLoading(true);
                     try {
                       const response = await fetch(activePhoto.href);
                       const blob = await response.blob();
                       const heicBlob = new Blob([blob], { type: "image/heic" });
+                      const { default: heic2any } = await import("heic2any");
                       const converted = await heic2any({
                         blob: heicBlob,
                         toType: "image/jpeg",
@@ -352,9 +387,9 @@ export default function PhotoPanel({
                       if (!(convertedBlob instanceof Blob)) return;
                       const convertedUrl = URL.createObjectURL(convertedBlob);
                       convertedUrlCacheRef.current.set(activePhoto.href, convertedUrl);
-                      await preloadImage(convertedUrl);
+                      const displayUrl = await preloadImage(convertedUrl, { priority: "high" });
                       if (displayRequestRef.current !== requestId) return;
-                      commitDisplayPhoto(convertedUrl, safeIndex);
+                      commitDisplayPhoto(displayUrl ?? convertedUrl, safeIndex);
                     } catch (_error) {
                       conversionFailedRef.current.add(activePhoto.href);
                       if (displayRequestRef.current !== requestId) return;
