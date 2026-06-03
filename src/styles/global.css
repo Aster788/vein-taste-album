@@ -1717,6 +1717,17 @@ html[data-city="melaka"],
   transform: translateY(1px) scale(0.995);
 }
 
+html.is-safari-webkit .ffj-photo-polaroid-image {
+  transition:
+    opacity 140ms ease,
+    transform 160ms ease;
+}
+
+html.is-safari-webkit .ffj-photo-polaroid-image.is-transitioning {
+  opacity: 0.88;
+  transform: none;
+}
+
 .ffj-photo-polaroid.is-loading .ffj-photo-polaroid-image {
   opacity: 0.72;
 }

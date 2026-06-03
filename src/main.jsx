@@ -2,12 +2,16 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { LanguageProvider } from "./context/LanguageContext.jsx";
+import { isSafariWebKit } from "./utils/browserPlatform.js";
 import { warmPhotosOrigin } from "./utils/preloadImage.js";
 import App from "./App.jsx";
 import "./styles/global.css";
 
 if (typeof window !== "undefined") {
   warmPhotosOrigin();
+  if (isSafariWebKit()) {
+    document.documentElement.classList.add("is-safari-webkit");
+  }
 }
 
 async function bootstrap() {

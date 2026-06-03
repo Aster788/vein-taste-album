@@ -1,3 +1,4 @@
+import { isSafariWebKit } from "./browserPlatform.js";
 import { getPhotoNetworkProfile } from "./photoNetworkProfile.js";
 
 /** @type {Map<string, Promise<string | null>>} */
@@ -19,6 +20,9 @@ const waitQueue = [];
 /** @type {Set<string>} */
 const warmedOrigins = new Set();
 
+/** Bumped when the active cuisine store changes — stale idle album preloads are skipped. */
+let photoPreloadSession = 0;
+
 function getMaxConcurrent() {
   return getPhotoNetworkProfile().maxConcurrent;
 }
@@ -37,23 +41,52 @@ function pumpQueue() {
 }
 
 /**
+ * Drop queued low-priority preloads so the newly selected store's images can start sooner.
+ */
+export function reprioritizeBackgroundPhotoPreloads() {
+  for (let i = waitQueue.length - 1; i >= 0; i -= 1) {
+    if (waitQueue[i].priority === PRIORITY_LOW) {
+      waitQueue.splice(i, 1);
+    }
+  }
+  pumpQueue();
+}
+
+/**
+ * Invalidate deferred album preloads and clear background queue (call on cuisine store change).
+ * @returns {number} current session id
+ */
+export function bumpPhotoPreloadSession() {
+  photoPreloadSession += 1;
+  reprioritizeBackgroundPhotoPreloads();
+  return photoPreloadSession;
+}
+
+/**
  * @param {() => Promise<string | null>} task
  * @param {number} priority
  * @returns {Promise<string | null>}
  */
 function schedulePreload(task, priority = PRIORITY_LOW) {
+  const runTask = () => {
+    activeCount += 1;
+    return task().finally(() => {
+      activeCount -= 1;
+      pumpQueue();
+    });
+  };
+
+  // High-priority loads (active store) must never wait behind background album preloads.
+  if (priority === PRIORITY_HIGH) {
+    return runTask();
+  }
+
   return new Promise((resolve, reject) => {
     const run = () => {
-      activeCount += 1;
-      task()
-        .then(resolve, reject)
-        .finally(() => {
-          activeCount -= 1;
-          pumpQueue();
-        });
+      runTask().then(resolve, reject);
     };
 
-    if (priority === PRIORITY_HIGH || activeCount < getMaxConcurrent()) {
+    if (activeCount < getMaxConcurrent()) {
       run();
       return;
     }
@@ -62,12 +95,18 @@ function schedulePreload(task, priority = PRIORITY_LOW) {
   });
 }
 
+const MAX_HINT_PRELOAD_LINKS = isSafariWebKit() ? 6 : 4;
+
 /**
  * @param {HTMLImageElement} img
+ * @returns {Promise<void>}
  */
-function decodeImage(img) {
-  if (typeof img.decode === "function") {
-    img.decode().catch(() => undefined);
+async function decodeImage(img) {
+  if (typeof img.decode !== "function") return;
+  try {
+    await img.decode();
+  } catch {
+    // decode() rejects for broken images; onload already validated this URL.
   }
 }
 
@@ -87,22 +126,44 @@ function rememberDisplayUrl(href, displayUrl) {
  * @param {string} href
  * @returns {Promise<string>}
  */
-async function resolveDisplayUrl(href) {
+/**
+ * @param {string} href
+ * @param {{ awaitDecode?: boolean }} [options]
+ */
+async function resolveDisplayUrl(href, options = {}) {
   const cached = displayUrlCache.get(href);
   if (cached) return cached;
+
+  const awaitDecode = options.awaitDecode !== false;
 
   await new Promise((resolve, reject) => {
     const img = new Image();
     img.decoding = "async";
     img.onload = () => {
-      decodeImage(img);
-      resolve();
+      if (awaitDecode) {
+        decodeImage(img).then(resolve, resolve);
+      } else {
+        resolve();
+      }
     };
     img.onerror = () => reject(new Error(`Failed to preload image: ${href}`));
     img.src = href;
   });
 
   return rememberDisplayUrl(href, href);
+}
+
+/**
+ * Mark a URL as displayable (e.g. after the visible `<img>` fires `onload`).
+ * @param {string} href
+ */
+export function markPhotoDisplayReady(href) {
+  const url = String(href ?? "").trim();
+  if (url === "") return;
+  rememberDisplayUrl(url, url);
+  if (!preloadCache.has(url)) {
+    preloadCache.set(url, Promise.resolve(url));
+  }
 }
 
 /**
@@ -134,13 +195,23 @@ export function hintPreloadImageLink(href) {
   const url = String(href ?? "").trim();
   if (url === "" || typeof document === "undefined") return;
 
-  document.querySelectorAll("link[data-ffj-photo-preload]").forEach((node) => node.remove());
+  const attrValue =
+    typeof CSS !== "undefined" && typeof CSS.escape === "function"
+      ? CSS.escape(url)
+      : url.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+  const existing = document.querySelector(`link[data-ffj-photo-preload="${attrValue}"]`);
+  if (existing) return;
+
+  const links = [...document.querySelectorAll("link[data-ffj-photo-preload]")];
+  while (links.length >= MAX_HINT_PRELOAD_LINKS) {
+    links.shift()?.remove();
+  }
 
   const link = document.createElement("link");
   link.rel = "preload";
   link.as = "image";
   link.href = url;
-  link.setAttribute("data-ffj-photo-preload", "1");
+  link.setAttribute("data-ffj-photo-preload", url);
   document.head.appendChild(link);
 }
 
@@ -157,7 +228,11 @@ export function preloadImage(href, options = {}) {
   const cached = preloadCache.get(url);
   if (cached) return cached;
 
-  const promise = schedulePreload(() => resolveDisplayUrl(url), priority).catch((error) => {
+  const awaitDecode = priority === PRIORITY_LOW;
+  const promise = schedulePreload(
+    () => resolveDisplayUrl(url, { awaitDecode }),
+    priority,
+  ).catch((error) => {
     preloadCache.delete(url);
     displayUrlCache.delete(url);
     throw error;
@@ -182,6 +257,7 @@ function preloadLowPriorityBatch(hrefs) {
  * @param {{ prioritize?: ReadonlyArray<string> }} [options]
  */
 export function preloadImages(hrefs, options = {}) {
+  const session = photoPreloadSession;
   const profile = getPhotoNetworkProfile();
   const prioritize = new Set(
     (options.prioritize ?? [])
@@ -201,10 +277,14 @@ export function preloadImages(hrefs, options = {}) {
   if (!profile.preloadAlbum || rest.length === 0) return;
 
   const deferRest = () => {
+    const runBatch = () => {
+      if (session !== photoPreloadSession) return;
+      preloadLowPriorityBatch(rest);
+    };
     if (typeof requestIdleCallback === "function") {
-      requestIdleCallback(() => preloadLowPriorityBatch(rest), { timeout: 4000 });
+      requestIdleCallback(runBatch, { timeout: 4000 });
     } else {
-      window.setTimeout(() => preloadLowPriorityBatch(rest), 250);
+      window.setTimeout(runBatch, 250);
     }
   };
 
@@ -224,29 +304,39 @@ export function preloadImages(hrefs, options = {}) {
  * @param {number} count
  */
 export function preloadLeadPhotos(photos, count) {
-  const limit = Math.max(1, count);
-  const slice = photos.slice(0, limit);
-  const prioritize = [];
-  const all = [];
+  preloadStoreThumbs(photos, { limit: count, includeLeadFull: true });
+}
 
-  for (const photo of slice) {
-    const thumb = String(photo.thumbHref ?? "").trim();
-    const full = String(photo.href ?? "").trim();
-    if (thumb !== "") {
-      all.push(thumb);
-      prioritize.push(thumb);
-    }
-    if (full !== "") {
-      all.push(full);
-      if (prioritize.length === 0 || !prioritize.includes(full)) {
-        prioritize.push(full);
-      }
-    }
+/**
+ * Preload WebP thumbs (small) for a store; full-size originals stay low priority.
+ * @param {ReadonlyArray<{ href?: string, thumbHref?: string }>} photos
+ * @param {{ limit?: number, includeLeadFull?: boolean, priority?: 'high' | 'low' }} [options]
+ */
+export function preloadStoreThumbs(photos, options = {}) {
+  const limit = Math.max(1, options.limit ?? photos.length);
+  const slice = photos.slice(0, limit);
+  const priority = options.priority === "low" ? PRIORITY_LOW : PRIORITY_HIGH;
+  const priorityLabel = priority === PRIORITY_HIGH ? "high" : "low";
+
+  const thumbs = [
+    ...new Set(
+      slice
+        .map((photo) => String(photo.thumbHref ?? "").trim())
+        .filter((href) => href !== ""),
+    ),
+  ];
+
+  for (const href of thumbs) {
+    preloadImage(href, { priority: priorityLabel }).catch(() => undefined);
+    hintPreloadImageLink(href);
   }
 
-  const unique = [...new Set(all)];
-  const priorityUnique = [...new Set(prioritize)];
-  preloadImages(unique, { prioritize: priorityUnique });
+  if (!options.includeLeadFull) return;
+
+  const leadFull = String(slice[0]?.href ?? "").trim();
+  if (leadFull !== "") {
+    preloadImage(leadFull, { priority: "low" }).catch(() => undefined);
+  }
 }
 
 /**

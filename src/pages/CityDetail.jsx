@@ -49,7 +49,8 @@ import DishInfo from "../components/DishInfo.jsx";
 import NotePanel from "../components/NotePanel.jsx";
 import PhotoPanel from "../components/PhotoPanel.jsx";
 import { getPhotoNetworkProfile } from "../utils/photoNetworkProfile.js";
-import { hintPreloadImageLink, preloadLeadPhotos } from "../utils/preloadImage.js";
+import { isSafariWebKit } from "../utils/browserPlatform.js";
+import { bumpPhotoPreloadSession, preloadStoreThumbs } from "../utils/preloadImage.js";
 import { getSortedStorePhotos } from "../utils/storePhotos.js";
 
 function splitCuisineLabelLines(label, detailLocale) {
@@ -425,29 +426,74 @@ export default function CityDetail() {
     : "";
 
   const prefetchStoreLeadPhotos = useCallback(
-    (group) => {
+    (group, { urgent = false, allThumbs = false } = {}) => {
       const store = getCuisineGroupRepresentativeBranch(group);
       const photos = getSortedStorePhotos(slug, store);
       const { leadPhotoCount } = getPhotoNetworkProfile();
-      preloadLeadPhotos(photos, leadPhotoCount);
+      const count = isSafariWebKit()
+        ? Math.min(photos.length, Math.max(leadPhotoCount + 2, 4))
+        : leadPhotoCount;
+      const limit = allThumbs ? photos.length : count;
+      if (urgent) bumpPhotoPreloadSession();
+      preloadStoreThumbs(photos, {
+        limit,
+        includeLeadFull: !urgent,
+        priority: urgent ? "high" : "low",
+      });
     },
     [slug],
   );
 
+  const selectCuisineGroup = useCallback(
+    (group) => {
+      prefetchStoreLeadPhotos(group, { urgent: true, allThumbs: true });
+      setActivePhotoIndex(0);
+      setDisplayPhotoIndex(0);
+      setDisplayedCuisineStore(getCuisineGroupRepresentativeBranch(group));
+      setSelectedCuisineGroup(group);
+    },
+    [prefetchStoreLeadPhotos],
+  );
+
   useEffect(() => {
     if (!valid || cuisineStoreGroups.length === 0) return;
-    prefetchStoreLeadPhotos(cuisineStoreGroups[0]);
+    prefetchStoreLeadPhotos(cuisineStoreGroups[0], { urgent: true });
+    const warmCount = isSafariWebKit() ? 10 : 6;
+    cuisineStoreGroups.slice(1, warmCount).forEach((group) => {
+      prefetchStoreLeadPhotos(group);
+    });
   }, [valid, slug, cuisineStoreGroups, prefetchStoreLeadPhotos]);
 
   useEffect(() => {
-    if (!selectedCuisineStore) return;
-    const photos = getSortedStorePhotos(slug, selectedCuisineStore);
-    const { leadPhotoCount } = getPhotoNetworkProfile();
-    preloadLeadPhotos(photos, leadPhotoCount);
-    const lead = photos[0];
-    if (lead?.thumbHref) hintPreloadImageLink(lead.thumbHref);
-    else if (lead?.href) hintPreloadImageLink(lead.href);
-  }, [slug, selectedCuisineStore]);
+    if (activeSection !== "cuisine") return undefined;
+    const listNode = storeListRef.current;
+    if (!listNode || cuisineStoreGroups.length === 0) return undefined;
+
+    const observed = new WeakSet();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const target = entry.target;
+          if (!(target instanceof HTMLElement) || observed.has(target)) return;
+          observed.add(target);
+          const index = Number(target.dataset.storeIndex ?? NaN);
+          if (!Number.isFinite(index) || index < 0) return;
+          const group = cuisineStoreGroups[index];
+          if (group) prefetchStoreLeadPhotos(group, { allThumbs: true });
+        });
+      },
+      { root: listNode, rootMargin: "120px 0px", threshold: 0.01 },
+    );
+
+    listNode.querySelectorAll("[data-store-index]").forEach((node) => {
+      observer.observe(node);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [activeSection, cuisineStoreGroups, prefetchStoreLeadPhotos]);
 
   useEffect(() => {
     if (!valid) return;
@@ -502,7 +548,9 @@ export default function CityDetail() {
 
   useEffect(() => {
     setActivePhotoIndex(0);
-  }, [selectedCuisineGroup]);
+    setDisplayPhotoIndex(0);
+    setDisplayedCuisineStore(selectedCuisineStore);
+  }, [selectedCuisineGroup, selectedCuisineStore]);
 
   const handleDisplayPhotoIndexChange = useCallback(
     (index) => {
@@ -562,7 +610,7 @@ export default function CityDetail() {
       }
 
       const nextGroup = cuisineStoreGroups[nextIndex];
-      setSelectedCuisineGroup(nextGroup);
+      selectCuisineGroup(nextGroup);
 
       // 焦点跟随：切换后将焦点设置到新选中的店铺项
       window.requestAnimationFrame(() => {
@@ -577,7 +625,7 @@ export default function CityDetail() {
     return () => {
       document.removeEventListener("keydown", onKeyDown);
     };
-  }, [activeSection, cuisineStoreGroups, selectedCuisineGroup]);
+  }, [activeSection, cuisineStoreGroups, selectCuisineGroup, selectedCuisineGroup]);
 
   useDismissOnOutsideAndEscape(isCuisineSortHintOpen, cuisineSortHintRef, () => {
     setCuisineSortHintOpen(false);
@@ -1108,10 +1156,11 @@ export default function CityDetail() {
                       return (
                         <button
                           key={`${group.city_en}-${group.store_slug ?? index}`}
+                          data-store-index={index}
                           ref={(el) => { storeItemRefs.current[index] = el; }}
                           type="button"
                           className={`ffj-store-playlist-item ${isActive ? "is-active" : ""}`}
-                          onClick={() => setSelectedCuisineGroup(group)}
+                          onClick={() => selectCuisineGroup(group)}
                           onMouseEnter={() => prefetchStoreLeadPhotos(group)}
                           onFocus={() => prefetchStoreLeadPhotos(group)}
                           aria-pressed={isActive}
