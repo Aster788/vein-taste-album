@@ -11,4 +11,15 @@ export default defineConfig({
     "**/*.HEIC",
     "**/*.heic",
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules/mapbox-gl")) return "mapbox-gl";
+          if (id.includes("node_modules/heic2any")) return "heic2any";
+          if (id.includes("node_modules/framer-motion")) return "framer-motion";
+        },
+      },
+    },
+  },
 });

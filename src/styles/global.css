@@ -609,6 +609,8 @@ html[data-city="melaka"],
 .ffj-map-canvas {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .ffj-map-loading {
@@ -2774,21 +2776,11 @@ html[data-city="melaka"],
     );
 }
 
-/* 霞鹜文楷（LXGW WenKai Regular，简体正文） */
+/* 霞鹜文楷：站点文案子集 WOFF2（见 scripts/generate-font-subsets.mjs） */
 @font-face {
   font-family: "LXGW WenKai";
-  src: url("../assets/fonts/LXGWWenKai/LXGWWenKai-Regular.ttf")
-    format("truetype");
+  src: url("/fonts/LXGWWenKai-Regular.subset.woff2") format("woff2");
   font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* 沐瑶软笔：本地 TTF */
-@font-face {
-  font-family: "MuYao Soft Brush";
-  src: url("../assets/fonts/MuYao-SoftBrush.ttf") format("truetype");
-  font-weight: normal;
   font-style: normal;
   font-display: swap;
 }

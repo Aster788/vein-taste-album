@@ -6,7 +6,7 @@ const PROFILES = /** @type {const} */ ({
   fast: {
     tier: "fast",
     maxConcurrent: 4,
-    leadPhotoCount: 1,
+    leadPhotoCount: 3,
     preloadAlbum: true,
   },
   medium: {
@@ -18,7 +18,7 @@ const PROFILES = /** @type {const} */ ({
   slow: {
     tier: "slow",
     maxConcurrent: 1,
-    leadPhotoCount: 3,
+    leadPhotoCount: 1,
     preloadAlbum: false,
   },
 });

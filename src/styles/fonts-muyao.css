@@ -1,0 +1,8 @@
+/* 沐瑶软笔：仅书架 Slogan / 地图引导等手写区；由 Bookshelf、CityDetail 按需引入 */
+@font-face {
+  font-family: "MuYao Soft Brush";
+  src: url("/fonts/MuYao-SoftBrush.subset.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}

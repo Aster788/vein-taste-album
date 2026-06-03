@@ -1,8 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import sharp from "sharp";
 import { loadEnvLocal } from "./load-env-local.mjs";
-import { photoObjectKey, walkStorePhotos } from "./photo-manifest-utils.mjs";
+import { photoObjectKey, walkStorePhotos, walkStoreThumbs } from "./photo-manifest-utils.mjs";
 
 loadEnvLocal();
 
@@ -26,6 +27,11 @@ if (missing.length > 0) {
 
 const concurrency = Math.max(1, Number(process.env.PHOTO_UPLOAD_CONCURRENCY ?? "4") || 4);
 const dryRun = process.argv.includes("--dry-run");
+const skipThumbs = process.argv.includes("--skip-thumbs");
+const thumbsOnly = process.argv.includes("--thumbs-only");
+
+const THUMB_MAX_WIDTH = 800;
+const THUMB_QUALITY = 82;
 
 const client = new S3Client({
   region: "auto",
@@ -35,10 +41,14 @@ const client = new S3Client({
 
 /** @type {Array<{ city: string, store: string, filename: string, absPath: string }>} */
 const queue = [];
-walkStorePhotos((entry) => queue.push(entry));
+if (thumbsOnly) {
+  walkStoreThumbs((entry) => queue.push(entry));
+} else {
+  walkStorePhotos((entry) => queue.push(entry));
+}
 
 console.log(
-  `[photos:upload-r2] ${dryRun ? "Dry run — " : ""}${queue.length} files, bucket=${bucket}, concurrency=${concurrency}`,
+  `[photos:upload-r2] ${dryRun ? "Dry run — " : ""}${queue.length} files, bucket=${bucket}, concurrency=${concurrency}${thumbsOnly ? ", thumbs-only" : skipThumbs ? ", skip-thumbs" : ""}`,
 );
 
 let uploaded = 0;
@@ -58,23 +68,78 @@ function contentTypeForFile(filename) {
   return map[ext] ?? "application/octet-stream";
 }
 
-async function uploadOne(entry) {
-  const key = photoObjectKey(entry.city, entry.store, entry.filename);
-  if (dryRun) {
-    console.log(`[dry-run] ${key}`);
-    return;
-  }
+/** @param {string} filename */
+function thumbFilenameFor(filename) {
+  const name = String(filename ?? "").trim();
+  if (name === "") return "";
+  const lastDot = name.lastIndexOf(".");
+  const base = lastDot <= 0 ? name : name.slice(0, lastDot);
+  return `${base}.thumb.webp`;
+}
 
-  const body = fs.readFileSync(entry.absPath);
+/**
+ * @param {string} key
+ * @param {Buffer} body
+ * @param {string} contentType
+ */
+async function putObject(key, body, contentType) {
   await client.send(
     new PutObjectCommand({
       Bucket: bucket,
       Key: key,
       Body: body,
-      ContentType: contentTypeForFile(entry.filename),
+      ContentType: contentType,
       CacheControl: "public, max-age=31536000, immutable",
     }),
   );
+}
+
+async function uploadOne(entry) {
+  const key = photoObjectKey(entry.city, entry.store, entry.filename);
+  if (dryRun) {
+    console.log(`[dry-run] ${key}`);
+    if (!thumbsOnly && !skipThumbs) {
+      const thumbName = thumbFilenameFor(entry.filename);
+      if (thumbName !== "") {
+        console.log(`[dry-run] ${photoObjectKey(entry.city, entry.store, thumbName)}`);
+      }
+    }
+    return;
+  }
+
+  if (thumbsOnly) {
+    const body = fs.readFileSync(entry.absPath);
+    await putObject(key, body, "image/webp");
+    return;
+  }
+
+  const body = fs.readFileSync(entry.absPath);
+  await putObject(key, body, contentTypeForFile(entry.filename));
+
+  if (!skipThumbs) {
+    const thumbName = thumbFilenameFor(entry.filename);
+    if (thumbName !== "") {
+      const thumbPath = path.join(path.dirname(entry.absPath), thumbName);
+      if (fs.existsSync(thumbPath)) {
+        await putObject(
+          photoObjectKey(entry.city, entry.store, thumbName),
+          fs.readFileSync(thumbPath),
+          "image/webp",
+        );
+      } else {
+        const thumbBuffer = await sharp(entry.absPath)
+          .rotate()
+          .resize({ width: THUMB_MAX_WIDTH, withoutEnlargement: true })
+          .webp({ quality: THUMB_QUALITY })
+          .toBuffer();
+        await putObject(
+          photoObjectKey(entry.city, entry.store, thumbName),
+          thumbBuffer,
+          "image/webp",
+        );
+      }
+    }
+  }
 }
 
 async function worker() {

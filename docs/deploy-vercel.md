@@ -67,3 +67,35 @@ Token URL restrictions 添加（不要带 `/*` 路径通配）：
 
 - **站点**：Vercel → Settings → Domains（如 `www.veintastealbum.com`）
 - **照片**：Cloudflare R2 bucket → Custom Domains（如 `photos.veintastealbum.com`），与 Vercel 无关；改域名后更新 `VITE_PHOTOS_BASE_URL` 并 Redeploy
+
+## R2 CORS（相册预加载 / Safari）
+
+若启用 `preloadImage` 的 blob 缓存（跨子域 `www` → `photos`），在 Cloudflare R2 bucket **Settings → CORS** 增加一条规则，例如：
+
+| 字段 | 值 |
+| --- | --- |
+| Allowed Origins | `https://www.veintastealbum.com`（以及 Vercel 预览域，如需） |
+| Allowed Methods | `GET`, `HEAD` |
+| Allowed Headers | `*` |
+| Max Age | `86400` |
+
+未配置 CORS 时站点仍可正常显示图片（`<img>` 不需 CORS）；仅 blob 复用与部分 preload 优化会回退到原始 URL。
+
+## 三浏览器验收（桌面 Chrome / Safari / Edge）
+
+每次 Production 部署后，用**无痕窗口**、Network **不要**勾 Disable cache：
+
+1. 打开 https://www.veintastealbum.com/ — 书架应可滚动，Network **不应**出现 `mapbox-gl`（未进城市页前）。
+2. 进入任意城市 → 先停留在美食 Tab，确认仍未加载 Mapbox；再切到地图 Tab，此时才应加载 `mapbox-gl` chunk。
+3. 美食页：切 3 家店、同店连点 5 张图 — 菜名与大图应同步，无明显长期错位。
+4. Safari → 开发 → 显示 Web 检查器 → 切一张**未看过**的店图：同一图片 URL 不应出现两次完整下载（若已配 R2 CORS，应看到 blob 显示或单次 GET）。
+5. 对比 Chrome：主观延迟 Safari 不应明显长于 Chrome 的约 1.2 倍。
+
+文案或数据变更后若出现「缺字」，在本机执行 `npm run fonts:subset` 后提交 `public/fonts/*.woff2`。
+
+## 相册缩略图（首图零转圈）
+
+- 本地生成：`npm run photos:thumbs`（产出 `{原名}.thumb.webp`，宽 ≤800px）
+- 上传 R2 原图+缩略图：`npm run photos:upload-r2`（仅原图可加 `--skip-thumbs`）
+- 仅补传缩略图：`npm run photos:upload-thumbs-r2`（需先 `npm run photos:thumbs`）
+- 线上 URL 约定：`photos/{city}/{store}/{basename}.thumb.webp`；前端先显缩略图再换高清原图

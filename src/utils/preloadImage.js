@@ -1,7 +1,13 @@
 import { getPhotoNetworkProfile } from "./photoNetworkProfile.js";
 
-/** @type {Map<string, Promise<HTMLImageElement | null>>} */
+/** @type {Map<string, Promise<string | null>>} */
 const preloadCache = new Map();
+
+/** @type {Map<string, string>} */
+const displayUrlCache = new Map();
+
+/** @type {Set<string>} */
+const blobUrls = new Set();
 
 const PRIORITY_HIGH = 0;
 const PRIORITY_LOW = 10;
@@ -31,9 +37,9 @@ function pumpQueue() {
 }
 
 /**
- * @param {() => Promise<HTMLImageElement | null>} task
+ * @param {() => Promise<string | null>} task
  * @param {number} priority
- * @returns {Promise<HTMLImageElement | null>}
+ * @returns {Promise<string | null>}
  */
 function schedulePreload(task, priority = PRIORITY_LOW) {
   return new Promise((resolve, reject) => {
@@ -59,36 +65,89 @@ function schedulePreload(task, priority = PRIORITY_LOW) {
 /**
  * @param {HTMLImageElement} img
  */
-async function decodeImage(img) {
+function decodeImage(img) {
   if (typeof img.decode === "function") {
-    try {
-      await img.decode();
-    } catch {
-      // decode() can reject for oversized images; load event still fired.
-    }
+    img.decode().catch(() => undefined);
   }
 }
 
 /**
  * @param {string} href
- * @returns {Promise<HTMLImageElement>}
+ * @returns {Promise<string>}
  */
-function loadImageElement(href) {
-  return new Promise((resolve, reject) => {
+function rememberDisplayUrl(href, displayUrl) {
+  displayUrlCache.set(href, displayUrl);
+  return displayUrl;
+}
+
+/**
+ * Preload through the browser image pipeline and return the URL when it is renderable.
+ * Avoid fetch/blob for remote R2 images until CORS is configured; otherwise every
+ * cold image pays an extra failed CORS request before the actual image load.
+ * @param {string} href
+ * @returns {Promise<string>}
+ */
+async function resolveDisplayUrl(href) {
+  const cached = displayUrlCache.get(href);
+  if (cached) return cached;
+
+  await new Promise((resolve, reject) => {
     const img = new Image();
     img.decoding = "async";
     img.onload = () => {
-      decodeImage(img).then(() => resolve(img));
+      decodeImage(img);
+      resolve();
     };
     img.onerror = () => reject(new Error(`Failed to preload image: ${href}`));
     img.src = href;
   });
+
+  return rememberDisplayUrl(href, href);
+}
+
+/**
+ * URL safe to assign to `<img src>` after preload (blob URL when available).
+ * @param {string} href
+ * @returns {string}
+ */
+export function getPreloadedDisplayUrl(href) {
+  const url = String(href ?? "").trim();
+  if (url === "") return "";
+  return displayUrlCache.get(url) ?? url;
+}
+
+/**
+ * Whether a URL finished preload and is safe to assign synchronously (zero-spinner path).
+ * @param {string} href
+ * @returns {boolean}
+ */
+export function isPhotoDisplayReady(href) {
+  const url = String(href ?? "").trim();
+  return url !== "" && displayUrlCache.has(url);
+}
+
+/**
+ * Single image preload hint (no crossOrigin — R2 may omit CORS).
+ * @param {string} href
+ */
+export function hintPreloadImageLink(href) {
+  const url = String(href ?? "").trim();
+  if (url === "" || typeof document === "undefined") return;
+
+  document.querySelectorAll("link[data-ffj-photo-preload]").forEach((node) => node.remove());
+
+  const link = document.createElement("link");
+  link.rel = "preload";
+  link.as = "image";
+  link.href = url;
+  link.setAttribute("data-ffj-photo-preload", "1");
+  document.head.appendChild(link);
 }
 
 /**
  * @param {string} href
  * @param {{ priority?: 'high' | 'low' }} [options]
- * @returns {Promise<HTMLImageElement | null>}
+ * @returns {Promise<string | null>}
  */
 export function preloadImage(href, options = {}) {
   const url = String(href ?? "").trim();
@@ -98,8 +157,9 @@ export function preloadImage(href, options = {}) {
   const cached = preloadCache.get(url);
   if (cached) return cached;
 
-  const promise = schedulePreload(() => loadImageElement(url), priority).catch((error) => {
+  const promise = schedulePreload(() => resolveDisplayUrl(url), priority).catch((error) => {
     preloadCache.delete(url);
+    displayUrlCache.delete(url);
     throw error;
   });
   preloadCache.set(url, promise);
@@ -165,33 +225,43 @@ export function preloadImages(hrefs, options = {}) {
  */
 export function preloadLeadPhotos(photos, count) {
   const limit = Math.max(1, count);
-  const hrefs = photos
-    .slice(0, limit)
-    .map((photo) => String(photo.href ?? "").trim())
-    .filter(Boolean);
-  preloadImages(hrefs, { prioritize: hrefs });
+  const slice = photos.slice(0, limit);
+  const prioritize = [];
+  const all = [];
+
+  for (const photo of slice) {
+    const thumb = String(photo.thumbHref ?? "").trim();
+    const full = String(photo.href ?? "").trim();
+    if (thumb !== "") {
+      all.push(thumb);
+      prioritize.push(thumb);
+    }
+    if (full !== "") {
+      all.push(full);
+      if (prioritize.length === 0 || !prioritize.includes(full)) {
+        prioritize.push(full);
+      }
+    }
+  }
+
+  const unique = [...new Set(all)];
+  const priorityUnique = [...new Set(prioritize)];
+  preloadImages(unique, { prioritize: priorityUnique });
 }
 
 /**
- * Hint the browser to fetch the active polaroid URL early.
- * @param {string} href
+ * Revoke blob URLs created by preload (e.g. on panel unmount).
  */
-export function hintPreloadImageLink(href) {
-  const url = String(href ?? "").trim();
-  if (url === "" || typeof document === "undefined") return;
-
-  document.querySelectorAll("link[data-ffj-photo-preload]").forEach((node) => node.remove());
-
-  const link = document.createElement("link");
-  link.rel = "preload";
-  link.as = "image";
-  link.href = url;
-  link.crossOrigin = "anonymous";
-  link.setAttribute("data-ffj-photo-preload", "1");
-  if ("fetchPriority" in link) {
-    /** @type {HTMLLinkElement & { fetchPriority?: string }} */ (link).fetchPriority = "high";
+export function revokePreloadedBlobUrls() {
+  for (const blobUrl of blobUrls) {
+    URL.revokeObjectURL(blobUrl);
   }
-  document.head.appendChild(link);
+  blobUrls.clear();
+  for (const [href, displayUrl] of displayUrlCache.entries()) {
+    if (displayUrl.startsWith("blob:")) {
+      displayUrlCache.delete(href);
+    }
+  }
 }
 
 /**

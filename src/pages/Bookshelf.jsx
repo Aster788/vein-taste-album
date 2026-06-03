@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import "../styles/fonts-muyao.css";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Book from "../components/Book.jsx";

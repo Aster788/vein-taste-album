@@ -29,6 +29,30 @@ import jejuStaticMapUrl from "../assets/fallback-maps/jeju-static-map.png?url";
 const FALLBACK_CITY_SLUG = "shanghai";
 const MAPBOX_STYLE = "mapbox://styles/mapbox/light-v11";
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
+const MAP_LOAD_TIMEOUT_MS = 25_000;
+
+/**
+ * Mapbox fires `error` for non-fatal tile/sprite issues; only treat auth/style failures as fatal.
+ * @param {unknown} event
+ * @returns {boolean}
+ */
+function isFatalMapError(event) {
+  const message = String(
+    /** @type {{ error?: { message?: string }, message?: string }} */ (event)?.error?.message ??
+      /** @type {{ message?: string }} */ (event)?.message ??
+      "",
+  ).trim();
+  const status = Number(
+    /** @type {{ error?: { status?: number }, status?: number }} */ (event)?.error?.status ??
+      /** @type {{ status?: number }} */ (event)?.status ??
+      0,
+  );
+  if (status === 401 || status === 403) return true;
+  if (message === "") return false;
+  return /unauthorized|forbidden|invalid.*token|access token|could not load style|style.*failed|failed to load/i.test(
+    message,
+  );
+}
 const MAP_PAPER_BACKGROUND = "#F7F3EE";
 const MAP_ROAD_WARM_GRAY = "#D8CEC2";
 const MAP_WATER_LIGHT_BLUE = "#DDE8EF";
@@ -927,6 +951,7 @@ export default function MapPanel({
 }) {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
+  const isMapReadyRef = useRef(false);
   const [isMapReady, setIsMapReady] = useState(false);
   const [mapInitError, setMapInitError] = useState("");
   const [restaurantTagLayouts, setRestaurantTagLayouts] = useState([]);
@@ -965,39 +990,84 @@ export default function MapPanel({
   const continueLabel = pickUiText("继续浏览店铺内容", "Continue without map", "");
 
   useEffect(() => {
-    if (missingToken || mapRef.current || !mapContainerRef.current) {
-      return;
+    if (missingToken || mapRef.current || !mapContainerRef.current || !isVisible) {
+      return undefined;
     }
 
-    mapboxgl.accessToken = MAPBOX_TOKEN;
-    setMapInitError("");
+    const container = mapContainerRef.current;
+    let disposed = false;
+    let map = null;
+    let loadTimeoutId = 0;
+    let resizeObserver = null;
 
-    const map = new mapboxgl.Map({
-      container: mapContainerRef.current,
-      style: MAPBOX_STYLE,
-      center: cityView.center,
-      zoom: cityView.zoom,
-      attributionControl: false,
-    });
-
-    map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), "bottom-right");
-    map.once("load", () => {
-      overrideMapPaperPalette(map);
-      hideBaseAdminNoiseLayers(map);
-      setIsMapReady(true);
-    });
-    map.on("error", (event) => {
-      const message = String(event?.error?.message ?? "").trim();
-      setMapInitError(message || "Mapbox 初始化失败，请检查 Token 与网络连接。");
-    });
-    mapRef.current = map;
-
-    return () => {
+    const teardown = () => {
+      disposed = true;
+      window.clearTimeout(loadTimeoutId);
+      resizeObserver?.disconnect();
+      resizeObserver = null;
+      isMapReadyRef.current = false;
       setIsMapReady(false);
-      map.remove();
+      if (map) {
+        map.remove();
+        map = null;
+      }
       mapRef.current = null;
     };
-  }, [cityView.center, cityView.zoom, missingToken, mapBootVersion]);
+
+    const bootMap = () => {
+      if (disposed || mapRef.current || container.clientWidth < 1 || container.clientHeight < 1) {
+        return false;
+      }
+
+      mapboxgl.accessToken = MAPBOX_TOKEN;
+      setMapInitError("");
+
+      map = new mapboxgl.Map({
+        container,
+        style: MAPBOX_STYLE,
+        center: cityView.center,
+        zoom: cityView.zoom,
+        attributionControl: false,
+      });
+
+      map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), "bottom-right");
+      map.once("load", () => {
+        if (disposed) return;
+        window.clearTimeout(loadTimeoutId);
+        overrideMapPaperPalette(map);
+        hideBaseAdminNoiseLayers(map);
+        map.resize();
+        requestAnimationFrame(() => map?.resize());
+        isMapReadyRef.current = true;
+        setMapInitError("");
+        setIsMapReady(true);
+      });
+      map.on("error", (event) => {
+        if (disposed || isMapReadyRef.current || !isFatalMapError(event)) return;
+        const message = String(
+          /** @type {{ error?: { message?: string } }} */ (event)?.error?.message ?? "",
+        ).trim();
+        setMapInitError(message || "Mapbox 初始化失败，请检查 Token 与网络连接。");
+      });
+      mapRef.current = map;
+
+      loadTimeoutId = window.setTimeout(() => {
+        if (disposed || isMapReadyRef.current) return;
+        setMapInitError("地图加载超时，请检查网络后重试。");
+      }, MAP_LOAD_TIMEOUT_MS);
+
+      return true;
+    };
+
+    if (!bootMap()) {
+      resizeObserver = new ResizeObserver(() => {
+        if (bootMap()) resizeObserver?.disconnect();
+      });
+      resizeObserver.observe(container);
+    }
+
+    return teardown;
+  }, [cityView.center, cityView.zoom, isVisible, missingToken, mapBootVersion]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -1015,8 +1085,18 @@ export default function MapPanel({
     if (!map || !isVisible) return;
     const resizeMap = () => map.resize();
     resizeMap();
-    requestAnimationFrame(resizeMap);
-  }, [isVisible]);
+    const frameId = requestAnimationFrame(resizeMap);
+    const container = mapContainerRef.current;
+    if (!container || typeof ResizeObserver === "undefined") {
+      return () => cancelAnimationFrame(frameId);
+    }
+    const observer = new ResizeObserver(() => resizeMap());
+    observer.observe(container);
+    return () => {
+      cancelAnimationFrame(frameId);
+      observer.disconnect();
+    };
+  }, [isVisible, isMapReady]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -1274,7 +1354,7 @@ export default function MapPanel({
           <p className="ffj-body-text">地图加载中...</p>
         </div>
       ) : null}
-      {mapInitError !== "" ? (
+      {mapInitError !== "" && !isMapReady ? (
         <div className="ffj-map-error" role="alert" aria-live="polite">
           <img className="ffj-map-error-image" src={fallbackImageUrl} alt="" aria-hidden="true" />
           <div className="ffj-map-error-copy">
@@ -1288,6 +1368,7 @@ export default function MapPanel({
               className="ffj-map-error-btn is-primary"
               onClick={() => {
                 setMapInitError("");
+                isMapReadyRef.current = false;
                 setIsMapReady(false);
                 if (mapRef.current) {
                   mapRef.current.remove();
