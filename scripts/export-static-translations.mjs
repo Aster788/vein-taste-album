@@ -1,12 +1,15 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { loadEnvLocal } from "./load-env-local.mjs";
+
+loadEnvLocal();
 
 const root = process.cwd();
 const dataDir = path.join(root, "src", "data");
 const restaurantsPath = path.join(dataDir, "restaurants.json");
 const cityMetaPath = path.join(dataDir, "city_meta.json");
 const outputPath = path.join(dataDir, "translations.static.json");
-const envPath = path.join(root, ".env");
+const envPath = path.join(root, ".env.local");
 
 function normalizeLangCode(langCode) {
   const code = String(langCode ?? "").trim().toLowerCase();
@@ -116,7 +119,7 @@ async function main() {
     "";
 
   if (!String(apiKey).trim()) {
-    throw new Error("Missing VITE_GOOGLE_TRANSLATE_API_KEY in .env");
+    throw new Error("Missing VITE_GOOGLE_TRANSLATE_API_KEY in .env.local");
   }
 
   const restaurants = await readJson(restaurantsPath);

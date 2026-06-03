@@ -10,10 +10,11 @@
 
 1. 运行 `npm run data:sync`
 2. 若需要补齐非名称类文案翻译（静态落盘）：
-  - 临时在 `.env` 设 `VITE_ENABLE_MT=true`
+  - 临时在 `.env.local` 设 `VITE_ENABLE_MT=true`
   - 运行 `npm run data:export-translations`
-  - 完成后把 `.env` 改回 `VITE_ENABLE_MT=false`
-3. 运行 `npm run build` 验证可构建
+  - 完成后把 `.env.local` 改回 `VITE_ENABLE_MT=false`
+3. 若新增/变更了 `src/assets/photos/` 下图片：见 **§9 同步照片到 Vercel Blob**（合并 PR 并部署后也要做）
+4. 运行 `npm run build` 验证可构建
 
 ---
 
@@ -61,7 +62,7 @@ npm run data:sync
 
 ### 前置
 
-- `.env` 中具备：
+- `.env.local` 中具备：
   - `VITE_GOOGLE_TRANSLATE_API_KEY`
   - `VITE_ENABLE_MT=true`（临时）
 - 已先执行 `npm run data:sync`
@@ -79,7 +80,7 @@ npm run data:export-translations
 
 ### 收口（必须）
 
-- `.env` 设回 `VITE_ENABLE_MT=false`（生产默认关闭 MT）
+- `.env.local` 设回 `VITE_ENABLE_MT=false`（生产默认关闭 MT）
 
 ---
 
@@ -102,6 +103,7 @@ npm run data:export-translations
 7. 需要时跑静态翻译导出：`npm run data:export-translations`
 8. 跑边界审计：`npm run audit:boundary-offsets`
 9. 跑构建验证：`npm run build`
+10. 合并 PR、Vercel 部署后：§9 同步照片到 Blob
 
 ---
 
@@ -156,6 +158,23 @@ npm run audit:multi-branch
 
 触发：你有城市来源 xlsx（`Title`/`URL`）要批量补店铺信息。
 
+### 前置
+
+- `.env.local` 中配置 **`GOOGLE_MAPS_API_KEY`**（Google Cloud 启用 **Places API**，与翻译用的 `VITE_GOOGLE_TRANSLATE_API_KEY` 是**两把不同的 key**）。
+- 代码里只有 `scripts/fill-city-restaurants.mjs` 读取该变量（调用 `maps.googleapis.com` 的 Place Find/Details）。前端与其它 Node 脚本**不会**用到它。
+- 模板见 `.env.example`；填好后可用下面命令自检（应输出 `Places API status: OK`）：
+
+```bash
+node -e "
+import { loadEnvLocal } from './scripts/load-env-local.mjs';
+loadEnvLocal();
+const k = process.env.GOOGLE_MAPS_API_KEY?.trim();
+const u = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=Starbucks&inputtype=textquery&fields=place_id&key=' + encodeURIComponent(k);
+const j = await (await fetch(u)).json();
+console.log('Places API status:', j.status, j.error_message ?? '');
+"
+```
+
 ### 执行
 
 ```bash
@@ -208,7 +227,7 @@ npm run audit:boundary-offsets
 - 非中国城市语言按钮不对
   - 检查 `src/data/city_meta.json` 的 `detail_locale_mode` 与 `native_*` 字段
 - 翻译落盘没有变化
-  - 检查 `.env` key 与 `VITE_ENABLE_MT=true` 是否开启（仅导出时临时开启）
+  - 检查 `.env.local` key 与 `VITE_ENABLE_MT=true` 是否开启（仅导出时临时开启）
 - 菜系筛选无贴纸或显示 `other`
   - 检查 `cuisine_en` 是否与 `src/assets/stickers/cuisine/{cuisine_en}.svg` 文件名一致
   - 检查 `src/utils/cuisineSlugs.js` 的 `CUISINE_BY_EN` 是否含该 slug；DEV 控制台会有 Missing sticker 警告
@@ -236,3 +255,68 @@ npm run audit:photo-magic
 
 - 若报“HEIC disguised as JPG/JPEG”，说明文件扩展名与真实编码不一致。
 - 先在本地把该图片转换为真实 JPEG（不要只改文件后缀），再重新运行自检直到通过。
+
+---
+
+## 9) 同步照片到 Vercel Blob（线上相册必做）
+
+触发：新增或替换了 `src/assets/photos/{city}/{store_slug}/` 下任意图片，且需要 Production / Preview 站点显示相册。
+
+说明：**合并 PR 后 Vercel 只会部署前端与 `photo-manifest.json`，不会自动把图片上传到 Blob。** 未上传时线上相册会裂图。
+
+### 前置
+
+- 本机 `.env.local` 含有效的 `BLOB_READ_WRITE_TOKEN` 与其它自管密钥（**勿提交 Git**）
+- 若 token 只在 Vercel 控制台、本机还没有：先执行 **§9.1** `npm run env:pull-vercel`，或把 Storage 里 read-write token 手抄进 `.env.local`
+- Vercel 环境变量已配置 `VITE_PHOTOS_BASE_URL`（Public Blob 根 URL，无末尾 `/`）
+- 建议先完成 §8 `npm run audit:photo-magic` 与 `npm run audit:filenames`
+
+### 9.1) `npm run env:pull-vercel` 何时需要？
+
+命令等价于 `vercel env pull .env.vercel --environment=preview`，把已 link 的 Vercel 项目 **Preview** 环境变量写入 **`.env.vercel`**（**不会**改写 `.env.local`）。
+
+| 场景 | 要不要跑 |
+| --- | --- |
+| 新机 / 新 clone，还没有 `.env.vercel`，需要从团队 Vercel 同步 `BLOB_*`、`VERCEL_*` 等 | **要** |
+| 在 Vercel 控制台刚轮换过 Blob read-write token，本机 `.env.vercel` 还是旧的 | **要**（或改 `.env.local`） |
+| `.env.local` 里已有你自己维护的、已验证可用的 `BLOB_READ_WRITE_TOKEN` | **不必** |
+| 每次 `photos:upload-blob`、每次 `data:sync` | **不必** |
+| 想用 `vercel env pull .env.local` 覆盖整份本地 env | **禁止**（会冲掉手改密钥；本项目用 `.env.vercel` + `.env.local` 分层） |
+
+加载顺序（所有带 `loadEnvLocal()` 的 Node 脚本）：先 `.env.vercel`，再 `.env.local`，**同名变量以 `.env.local` 为准**。因此你可以把 Mapbox / 高德 / `GOOGLE_MAPS_API_KEY` 等长期放在 `.env.local`，只把 Vercel 托管项交给 pull。
+
+**注意：** 若终端里直接 `npm run photos:upload-blob` 却报 `Access denied`，多半是 `BLOB_READ_WRITE_TOKEN` 过期或填错；更新 token 后**只保留一个上传进程**再重跑。详见 [deploy-vercel.md](deploy-vercel.md)。
+
+### 执行
+
+```bash
+npm run photos:manifest
+npm run photos:upload-blob
+```
+
+可选预览路径（不上传）：`npm run photos:upload-blob -- --dry-run`
+
+上传路径规则：`photos/{city}/{store}/{filename}`，与本地目录一致。脚本会扫描全量文件并上传（已存在路径会覆盖）。
+
+### 推荐节奏（与 Git / Vercel 配合）
+
+1. 本地加图 → `data:sync` → 自检 → 分支 → PR
+2. 本地 `npm run dev`（默认读本机 `photos/`，不必配 CDN）确认 UI
+3. 合并 PR → Vercel 自动部署
+4. **本机执行 §9 上传**（与部署并列，不可省略）
+5. 打开 Production 验收城市页相册；可选在 `.env.local` 设 `VITE_PHOTOS_BASE_URL` 做 CDN 对齐抽查
+
+### 通过标准
+
+- 命令结束输出 `Done. Uploaded N file(s).` 且无 failure
+- 浏览器打开线上城市页，店铺相册可加载
+- 可选：`curl -I` 抽查一条 Blob URL 返回 `200`
+
+### 失败处理
+
+- `Missing BLOB_READ_WRITE_TOKEN`：在 `.env.local` 填写，或 `npm run env:pull-vercel` 后确认 `.env.vercel` 含该键（`.env.local` 可覆盖）
+- `Access denied, please provide a valid token`：token 无效/过期，或**同时开了两个上传进程**且其中一个用了旧环境；结束多余进程，更新 token 后只跑一条 `npm run photos:upload-blob`
+- 单文件失败：看终端报错文件名，检查 URL 非法字符（见静态资源命名规则，禁止裸 `%` 等）
+- 上传很慢：全量约 1290 张 / 1.7GB，属正常；可调 `PHOTO_UPLOAD_CONCURRENCY`（默认 4）
+
+详见 [deploy-vercel.md](deploy-vercel.md)。

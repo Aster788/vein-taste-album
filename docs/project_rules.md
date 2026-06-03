@@ -195,7 +195,7 @@ src/assets/photos/{city-folder}/{store_slug}/{dish-file}.{jpg|jpeg|png|webp|heic
 | `docs/agent_rules.md`     | Agent 行为约束，自检流程，汇报格式                |
 | `docs/project_rules.md`   | 本文件，项目背景和技术决策说明                     |
 | `docs/data-workflow.md`   | 数据与翻译固定流程手册（xlsx->json、MT落盘、新增城市清单） |
-| `.env`                    | API Key 和 Access Token（不得上传 GitHub） |
+| `.env.local`              | API Key 和 Access Token（不得上传 GitHub；`.env.example` 仅模板可提交） |
 
 
 ---

@@ -2,10 +2,13 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import xlsx from "xlsx";
 import { BOOKSHELF_CITY_DISPLAY_BY_SLUG, normalizeCitySlug } from "../src/utils/citySlugs.js";
+import { loadEnvLocal } from "./load-env-local.mjs";
+
+loadEnvLocal();
 
 const API_KEY = process.env.GOOGLE_MAPS_API_KEY?.trim();
 if (!API_KEY) {
-  throw new Error("Missing GOOGLE_MAPS_API_KEY environment variable.");
+  throw new Error("Missing GOOGLE_MAPS_API_KEY in .env.local");
 }
 
 const root = process.cwd();
