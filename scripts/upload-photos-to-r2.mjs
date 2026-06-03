@@ -72,6 +72,7 @@ async function uploadOne(entry) {
       Key: key,
       Body: body,
       ContentType: contentTypeForFile(entry.filename),
+      CacheControl: "public, max-age=31536000, immutable",
     }),
   );
 }

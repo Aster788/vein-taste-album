@@ -3,11 +3,13 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import mapboxgl from "mapbox-gl";
 import { LanguageProvider } from "./context/LanguageContext.jsx";
+import { warmPhotosOrigin } from "./utils/preloadImage.js";
 import App from "./App.jsx";
 import "./styles/global.css";
 
 if (typeof window !== "undefined") {
   mapboxgl.prewarm();
+  warmPhotosOrigin();
 }
 
 async function bootstrap() {

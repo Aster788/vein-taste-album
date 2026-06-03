@@ -37,6 +37,9 @@ import { comparePinyinWithNumericRule, normalizeSortText } from "../utils/sortTe
 import DishInfo from "../components/DishInfo.jsx";
 import NotePanel from "../components/NotePanel.jsx";
 import PhotoPanel from "../components/PhotoPanel.jsx";
+import { getPhotoNetworkProfile } from "../utils/photoNetworkProfile.js";
+import { preloadLeadPhotos } from "../utils/preloadImage.js";
+import { getSortedStorePhotos } from "../utils/storePhotos.js";
 
 function splitCuisineLabelLines(label, detailLocale) {
   const text = String(label ?? "").trim();
@@ -153,6 +156,8 @@ export default function CityDetail() {
   const storeListRef = useRef(null);
   const [activeCuisine, setActiveCuisine] = useState("");
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
+  const [displayPhotoIndex, setDisplayPhotoIndex] = useState(0);
+  const [displayedCuisineStore, setDisplayedCuisineStore] = useState(null);
   const [mapCursorUi, setMapCursorUi] = useState({
     visible: false,
     isInteractive: false,
@@ -408,6 +413,23 @@ export default function CityDetail() {
     ? getCuisineAddressBlock(selectedCuisineGroup)
     : "";
 
+  const prefetchStoreLeadPhotos = useCallback(
+    (group) => {
+      const store = getCuisineGroupRepresentativeBranch(group);
+      const photos = getSortedStorePhotos(slug, store);
+      const { leadPhotoCount } = getPhotoNetworkProfile();
+      preloadLeadPhotos(photos, leadPhotoCount);
+    },
+    [slug],
+  );
+
+  useEffect(() => {
+    if (!selectedCuisineStore) return;
+    const photos = getSortedStorePhotos(slug, selectedCuisineStore);
+    const { leadPhotoCount } = getPhotoNetworkProfile();
+    preloadLeadPhotos(photos, leadPhotoCount);
+  }, [slug, selectedCuisineStore]);
+
   useEffect(() => {
     if (!valid) return;
     document.documentElement.dataset.city = slug;
@@ -439,6 +461,8 @@ export default function CityDetail() {
     setSelectedCuisineGroup(null);
     setActiveCuisine("");
     setActivePhotoIndex(0);
+    setDisplayPhotoIndex(0);
+    setDisplayedCuisineStore(null);
     setCuisineMenuOpen(false);
     storeItemRefs.current = [];
   }, [slug]);
@@ -460,6 +484,14 @@ export default function CityDetail() {
   useEffect(() => {
     setActivePhotoIndex(0);
   }, [selectedCuisineGroup]);
+
+  const handleDisplayPhotoIndexChange = useCallback(
+    (index) => {
+      setDisplayPhotoIndex(index);
+      setDisplayedCuisineStore(selectedCuisineStore);
+    },
+    [selectedCuisineStore],
+  );
 
   useEffect(() => {
     storeItemRefs.current = [];
@@ -1059,6 +1091,8 @@ export default function CityDetail() {
                           type="button"
                           className={`ffj-store-playlist-item ${isActive ? "is-active" : ""}`}
                           onClick={() => setSelectedCuisineGroup(group)}
+                          onMouseEnter={() => prefetchStoreLeadPhotos(group)}
+                          onFocus={() => prefetchStoreLeadPhotos(group)}
                           aria-pressed={isActive}
                         >
                           <span className="ffj-store-playlist-item-index">
@@ -1127,6 +1161,7 @@ export default function CityDetail() {
                 selectedStore={selectedCuisineStore}
                 activePhotoIndex={activePhotoIndex}
                 onChangeActivePhotoIndex={setActivePhotoIndex}
+                onDisplayPhotoIndexChange={handleDisplayPhotoIndexChange}
                 labels={{
                   photoRegion: pickUiText("店铺图片区域", "Store photo area", nativePhotoRegionText),
                   photoPagination: pickUiText(
@@ -1149,8 +1184,8 @@ export default function CityDetail() {
                   selectedCuisineStore ? (
                     <DishInfo
                       citySlug={slug}
-                      selectedStore={selectedCuisineStore}
-                      activePhotoIndex={activePhotoIndex}
+                      selectedStore={displayedCuisineStore ?? selectedCuisineStore}
+                      activePhotoIndex={displayPhotoIndex}
                       isChina={localeConfig.isChina}
                       detailLocale={detailLocale}
                       labels={{
