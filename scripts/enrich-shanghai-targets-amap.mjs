@@ -1,10 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import xlsx from "xlsx";
+import { loadEnvLocal } from "./load-env-local.mjs";
+
+loadEnvLocal();
 
 const AMAP_KEY = process.env.AMAP_WEB_KEY?.trim();
 if (!AMAP_KEY) {
-  console.error("Set AMAP_WEB_KEY before running.");
+  console.error("Set AMAP_WEB_KEY in .env.local before running.");
   process.exit(1);
 }
 

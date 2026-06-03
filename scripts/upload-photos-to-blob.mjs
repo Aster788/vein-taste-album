@@ -1,16 +1,19 @@
 import fs from "node:fs";
 import path from "node:path";
 import { put } from "@vercel/blob";
+import { loadEnvLocal } from "./load-env-local.mjs";
 import {
   photoBlobPathname,
   walkStorePhotos,
 } from "./photo-manifest-utils.mjs";
 
+loadEnvLocal();
+
 const token = String(process.env.BLOB_READ_WRITE_TOKEN ?? "").trim();
 if (token === "") {
   console.error("[photos:upload-blob] Missing BLOB_READ_WRITE_TOKEN.");
-  console.error("Run: vercel env pull .env.local --environment=preview");
-  console.error("Or export BLOB_READ_WRITE_TOKEN before running this script.");
+  console.error("Add BLOB_READ_WRITE_TOKEN to .env.local, or run:");
+  console.error("  npm run env:pull-vercel");
   process.exit(1);
 }
 

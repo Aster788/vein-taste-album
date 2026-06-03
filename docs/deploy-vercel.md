@@ -18,10 +18,14 @@
 ## 上传照片到 Blob（本机，约 1.7GB）
 
 ```bash
-vercel env pull .env.local --environment=preview
+# 勿使用 vercel env pull .env.local（会覆盖手改密钥）
+npm run env:pull-vercel
 npm run photos:manifest
 npm run photos:upload-blob
 ```
+
+`.env.local`：你维护的密钥（Mapbox、翻译、高德等）。  
+`.env.vercel`：仅 `npm run env:pull-vercel` 写入（含 `BLOB_*`、`VERCEL_*` 等）。Node 脚本会先读 `.env.vercel` 再读 `.env.local`，**同名键以 `.env.local` 为准**。
 
 可选：`npm run photos:upload-blob -- --dry-run` 预览路径。
 

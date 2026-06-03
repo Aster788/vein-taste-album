@@ -2,5 +2,7 @@ node_modules
 dist
 .env
 .env.local
+.env.vercel
 .DS_Store
 src/data/photo-manifest.json
+.vercel
