@@ -34,7 +34,7 @@
 - **开发方式**：纯 Vibe Coding，使用 Cursor，作者无深度编程背景
 - **技术栈**：React（Vite）+ Mapbox GL JS + Chart.js + 本地 JSON 数据，无后端
 - **当前阶段**：MVP，数据全部存在本地 JSON 文件，不涉及数据库或用户系统
-- **部署目标**：Vercel 静态托管
+- **部署目标**：Vercel 静态托管；店铺照片在 **Cloudflare R2**（`VITE_PHOTOS_BASE_URL`），本机用 `npm run photos:upload-r2` 同步（见 [data-workflow.md](data-workflow.md) §9）
 
 **关键技术决策及原因：**
 

@@ -2,7 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 
 export const PHOTOS_ROOT = path.join(process.cwd(), "src/assets/photos");
-export const PHOTO_BLOB_PREFIX = "photos";
+/** R2 / CDN object key prefix (matches `src/assets/photos/` layout). */
+export const PHOTO_OBJECT_PREFIX = "photos";
 
 const PHOTO_EXT_RE = /\.(jpg|jpeg|png|webp|heic)$/i;
 
@@ -43,14 +44,14 @@ export function walkStorePhotos(onPhoto) {
 }
 
 /** @param {string} city @param {string} store @param {string} filename */
-export function photoBlobPathname(city, store, filename) {
-  return `${PHOTO_BLOB_PREFIX}/${city}/${store}/${filename}`;
+export function photoObjectKey(city, store, filename) {
+  return `${PHOTO_OBJECT_PREFIX}/${city}/${store}/${filename}`;
 }
 
 /** @param {string} baseUrl @param {string} city @param {string} store @param {string} filename */
 export function photoPublicHref(baseUrl, city, store, filename) {
   const normalizedBase = String(baseUrl ?? "").trim().replace(/\/+$/, "");
-  const segments = photoBlobPathname(city, store, filename)
+  const segments = photoObjectKey(city, store, filename)
     .split("/")
     .map((segment) => encodeURIComponent(segment));
   return `${normalizedBase}/${segments.join("/")}`;
