@@ -1,14 +1,19 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import heic2any from "heic2any";
-import { getDishesForRestaurant } from "../utils/dataLoader.js";
-import { getStorePhotos, sortPhotosByDishMatch } from "../utils/storePhotos.js";
+import {
+  hintPreloadImageLink,
+  preloadImage,
+  preloadImages,
+} from "../utils/preloadImage.js";
+import { getSortedStorePhotos } from "../utils/storePhotos.js";
 
 export default function PhotoPanel({
   citySlug,
   selectedStore,
   activePhotoIndex,
   onChangeActivePhotoIndex,
+  onDisplayPhotoIndexChange,
   labels,
   metaContent = null,
 }) {
@@ -17,40 +22,102 @@ export default function PhotoPanel({
   const lightboxOpenRef = useRef(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isPhotoLoading, setIsPhotoLoading] = useState(false);
+  const [isPhotoLoadingSlow, setIsPhotoLoadingSlow] = useState(false);
   const [displaySrc, setDisplaySrc] = useState("");
   const [isRecoveringBrokenImage, setIsRecoveringBrokenImage] = useState(false);
   const transitionTimerRef = useRef(/** @type {number | null} */ (null));
+  const displayRequestRef = useRef(0);
   const convertedUrlCacheRef = useRef(new Map());
   const conversionFailedRef = useRef(new Set());
   const transitionDurationMs = 280;
 
-  const photos = useMemo(() => {
-    const base = getStorePhotos(citySlug, selectedStore?.store_slug);
-    if (!selectedStore) return base;
-    const dishes = getDishesForRestaurant(selectedStore);
-    return sortPhotosByDishMatch(base, dishes, selectedStore);
-  }, [citySlug, selectedStore]);
+  const photos = useMemo(
+    () => getSortedStorePhotos(citySlug, selectedStore),
+    [citySlug, selectedStore],
+  );
 
   const photoCount = photos.length;
   const hasPhotos = photoCount > 0;
   const safeIndex = hasPhotos ? Math.min(activePhotoIndex, photoCount - 1) : 0;
   const activePhoto = hasPhotos ? photos[safeIndex] : null;
 
-  useEffect(() => {
-    if (!activePhoto?.href) {
-      setDisplaySrc("");
-      return;
+  const triggerTransition = useCallback(() => {
+    setIsTransitioning(true);
+    if (transitionTimerRef.current != null) {
+      window.clearTimeout(transitionTimerRef.current);
     }
-    setDisplaySrc(activePhoto.href);
-    setIsRecoveringBrokenImage(false);
-  }, [activePhoto?.href]);
+    transitionTimerRef.current = window.setTimeout(() => {
+      setIsTransitioning(false);
+      transitionTimerRef.current = null;
+    }, transitionDurationMs);
+  }, []);
+
+  const commitDisplayPhoto = useCallback(
+    (href, index) => {
+      setDisplaySrc(href);
+      setIsPhotoLoading(false);
+      triggerTransition();
+      onDisplayPhotoIndexChange?.(index);
+    },
+    [onDisplayPhotoIndexChange, triggerTransition],
+  );
 
   useEffect(() => {
-    photos.forEach((photo) => {
-      const img = new Image();
-      img.src = photo.href;
-    });
-  }, [photos]);
+    const href = activePhoto?.href ?? "";
+    if (href === "") {
+      displayRequestRef.current += 1;
+      setDisplaySrc("");
+      setIsPhotoLoading(false);
+      onDisplayPhotoIndexChange?.(0);
+      return;
+    }
+
+    const requestId = displayRequestRef.current + 1;
+    displayRequestRef.current = requestId;
+    setIsPhotoLoading(true);
+    setIsPhotoLoadingSlow(false);
+    setIsRecoveringBrokenImage(false);
+    hintPreloadImageLink(href);
+
+    preloadImage(href, { priority: "high" })
+      .then(() => {
+        if (displayRequestRef.current !== requestId) return;
+        commitDisplayPhoto(href, safeIndex);
+      })
+      .catch(() => {
+        if (displayRequestRef.current !== requestId) return;
+        commitDisplayPhoto(href, safeIndex);
+      });
+  }, [activePhoto?.href, commitDisplayPhoto, onDisplayPhotoIndexChange, safeIndex]);
+
+  useEffect(() => {
+    if (!isPhotoLoading) {
+      setIsPhotoLoadingSlow(false);
+      return undefined;
+    }
+    const timer = window.setTimeout(() => {
+      setIsPhotoLoadingSlow(true);
+    }, 450);
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [isPhotoLoading, activePhoto?.href]);
+
+  useEffect(() => {
+    if (!photos.length) return;
+    const priority = [];
+    const current = photos[safeIndex];
+    if (current?.href) priority.push(current.href);
+    const prev = photos[(safeIndex - 1 + photoCount) % photoCount];
+    const next = photos[(safeIndex + 1) % photoCount];
+    if (prev?.href) priority.push(prev.href);
+    if (next?.href) priority.push(next.href);
+    preloadImages(
+      photos.map((photo) => photo.href),
+      { prioritize: priority },
+    );
+  }, [photos, photoCount, safeIndex]);
 
   useEffect(() => {
     if (!hasPhotos) {
@@ -94,7 +161,6 @@ export default function PhotoPanel({
       clearAutoplay();
       autoplayRef.current = window.setInterval(() => {
         if (isHoveredRef.current || lightboxOpenRef.current) return;
-        setIsTransitioning(true);
         onChangeActivePhotoIndex((prev) => ((prev + 1) % photoCount));
       }, 5000);
     };
@@ -105,40 +171,26 @@ export default function PhotoPanel({
     };
   }, [hasPhotos, onChangeActivePhotoIndex, photoCount]);
 
-  const triggerTransition = useCallback(() => {
-    setIsTransitioning(true);
-    if (transitionTimerRef.current != null) {
-      window.clearTimeout(transitionTimerRef.current);
-    }
-    transitionTimerRef.current = window.setTimeout(() => {
-      setIsTransitioning(false);
-      transitionTimerRef.current = null;
-    }, transitionDurationMs);
-  }, []);
-
   const goToIndex = (nextIndex) => {
     if (!hasPhotos) return;
-    triggerTransition();
     onChangeActivePhotoIndex(nextIndex);
   };
 
   const goPrev = useCallback(() => {
     if (!hasPhotos) return;
-    triggerTransition();
     onChangeActivePhotoIndex((prev) => {
       const current = Math.min(Math.max(0, prev), photoCount - 1);
       return (current - 1 + photoCount) % photoCount;
     });
-  }, [hasPhotos, onChangeActivePhotoIndex, photoCount, triggerTransition]);
+  }, [hasPhotos, onChangeActivePhotoIndex, photoCount]);
 
   const goNext = useCallback(() => {
     if (!hasPhotos) return;
-    triggerTransition();
     onChangeActivePhotoIndex((prev) => {
       const current = Math.min(Math.max(0, prev), photoCount - 1);
       return (current + 1) % photoCount;
     });
-  }, [hasPhotos, onChangeActivePhotoIndex, photoCount, triggerTransition]);
+  }, [hasPhotos, onChangeActivePhotoIndex, photoCount]);
 
   useEffect(() => {
     if (!hasPhotos || photoCount <= 1 || isLightboxOpen) return undefined;
@@ -210,11 +262,13 @@ export default function PhotoPanel({
 
   const lightboxSrc = displaySrc || activePhoto?.href || "";
   const lightboxAlt = activePhoto?.filename ?? "";
+  const polaroidSrc = displaySrc || "";
 
   return (
     <section className="ffj-photo-panel" aria-label={labels.photoRegion}>
       <div
         className="ffj-photo-stage"
+        aria-busy={isPhotoLoading}
         onMouseEnter={() => {
           isHoveredRef.current = true;
         }}
@@ -248,7 +302,7 @@ export default function PhotoPanel({
               </svg>
             </button>
             <figure
-              className="ffj-photo-polaroid ffj-photo-polaroid--clickable"
+              className={`ffj-photo-polaroid ffj-photo-polaroid--clickable ${isPhotoLoading ? "is-loading" : ""} ${isPhotoLoadingSlow ? "is-loading-slow" : ""}`}
               role="button"
               tabIndex={0}
               aria-label={labels.expandPhoto}
@@ -260,51 +314,57 @@ export default function PhotoPanel({
                 }
               }}
             >
-              <img
-                className={`ffj-photo-polaroid-image ${isTransitioning ? "is-transitioning" : ""}`}
-                src={displaySrc || activePhoto.href}
-                alt={activePhoto.filename}
-                loading="lazy"
-                draggable={false}
-                onLoad={() => {
-                  triggerTransition();
-                }}
-                onError={async () => {
-                  if (
-                    !activePhoto?.href ||
-                    isRecoveringBrokenImage ||
-                    conversionFailedRef.current.has(activePhoto.href)
-                  ) {
-                    return;
-                  }
-                  const cached = convertedUrlCacheRef.current.get(activePhoto.href);
-                  if (cached) {
-                    setDisplaySrc(cached);
-                    return;
-                  }
-                  setIsRecoveringBrokenImage(true);
-                  try {
-                    const response = await fetch(activePhoto.href);
-                    const blob = await response.blob();
-                    const heicBlob = new Blob([blob], { type: "image/heic" });
-                    const converted = await heic2any({
-                      blob: heicBlob,
-                      toType: "image/jpeg",
-                      quality: 0.92,
-                    });
-                    const convertedBlob = Array.isArray(converted) ? converted[0] : converted;
-                    if (!(convertedBlob instanceof Blob)) return;
-                    const convertedUrl = URL.createObjectURL(convertedBlob);
-                    convertedUrlCacheRef.current.set(activePhoto.href, convertedUrl);
-                    setDisplaySrc(convertedUrl);
-                  } catch (_error) {
-                    conversionFailedRef.current.add(activePhoto.href);
-                    setDisplaySrc(activePhoto.href);
-                  } finally {
-                    setIsRecoveringBrokenImage(false);
-                  }
-                }}
-              />
+              {polaroidSrc !== "" ? (
+                <img
+                  className={`ffj-photo-polaroid-image ${isTransitioning ? "is-transitioning" : ""}`}
+                  src={polaroidSrc}
+                  alt={activePhoto.filename}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  draggable={false}
+                  onError={async () => {
+                    if (
+                      !activePhoto?.href ||
+                      isRecoveringBrokenImage ||
+                      conversionFailedRef.current.has(activePhoto.href)
+                    ) {
+                      return;
+                    }
+                    const requestId = displayRequestRef.current;
+                    const cached = convertedUrlCacheRef.current.get(activePhoto.href);
+                    if (cached) {
+                      commitDisplayPhoto(cached, safeIndex);
+                      return;
+                    }
+                    setIsRecoveringBrokenImage(true);
+                    setIsPhotoLoading(true);
+                    try {
+                      const response = await fetch(activePhoto.href);
+                      const blob = await response.blob();
+                      const heicBlob = new Blob([blob], { type: "image/heic" });
+                      const converted = await heic2any({
+                        blob: heicBlob,
+                        toType: "image/jpeg",
+                        quality: 0.92,
+                      });
+                      const convertedBlob = Array.isArray(converted) ? converted[0] : converted;
+                      if (!(convertedBlob instanceof Blob)) return;
+                      const convertedUrl = URL.createObjectURL(convertedBlob);
+                      convertedUrlCacheRef.current.set(activePhoto.href, convertedUrl);
+                      await preloadImage(convertedUrl);
+                      if (displayRequestRef.current !== requestId) return;
+                      commitDisplayPhoto(convertedUrl, safeIndex);
+                    } catch (_error) {
+                      conversionFailedRef.current.add(activePhoto.href);
+                      if (displayRequestRef.current !== requestId) return;
+                      commitDisplayPhoto(activePhoto.href, safeIndex);
+                    } finally {
+                      setIsRecoveringBrokenImage(false);
+                    }
+                  }}
+                />
+              ) : null}
             </figure>
             <button
               type="button"

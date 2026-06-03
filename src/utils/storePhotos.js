@@ -1,6 +1,6 @@
 import restaurantsData from "../data/restaurants.json";
 import photoManifest from "../data/photo-manifest.json";
-import { cityEnFromBookshelfSlug, normalizeCityEn } from "./dataLoader.js";
+import { cityEnFromBookshelfSlug, getDishesForRestaurant, normalizeCityEn } from "./dataLoader.js";
 import { stripBranchSuffix } from "./storeGroups.js";
 import { isNumericLeading, normalizeSortText } from "./sortText.js";
 
@@ -368,4 +368,21 @@ export function sortPhotosByDishMatch(photos, dishes, restaurant = null) {
     if (leftBucket !== rightBucket) return leftBucket - rightBucket;
     return compareWithinBucket(left, right, leftBucket);
   });
+}
+
+/**
+ * 当前店铺相册（含菜名/店名排序），与 PhotoPanel 展示顺序一致。
+ * @param {string} citySlug
+ * @param {Record<string, unknown> | null | undefined} selectedStore
+ * @returns {Array<{ href: string, filename: string }>}
+ */
+export function getSortedStorePhotos(citySlug, selectedStore) {
+  const base = getStorePhotos(
+    citySlug,
+    selectedStore?.store_slug,
+    selectedStore?.city_en,
+  );
+  if (!selectedStore) return base;
+  const dishes = getDishesForRestaurant(selectedStore);
+  return sortPhotosByDishMatch(base, dishes, selectedStore);
 }
