@@ -10,17 +10,26 @@ if (typeof window !== "undefined") {
   mapboxgl.prewarm();
 }
 
-createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <BrowserRouter
-      future={{
-        v7_startTransition: true,
-        v7_relativeSplatPath: true,
-      }}
-    >
-      <LanguageProvider>
-        <App />
-      </LanguageProvider>
-    </BrowserRouter>
-  </StrictMode>
-);
+async function bootstrap() {
+  if (import.meta.env.DEV && !String(import.meta.env.VITE_PHOTOS_BASE_URL ?? "").trim()) {
+    const { initDevStorePhotos } = await import("./utils/storePhotos.dev-init.js");
+    await initDevStorePhotos();
+  }
+
+  createRoot(document.getElementById("root")).render(
+    <StrictMode>
+      <BrowserRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
+        <LanguageProvider>
+          <App />
+        </LanguageProvider>
+      </BrowserRouter>
+    </StrictMode>,
+  );
+}
+
+bootstrap();

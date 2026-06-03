@@ -1,12 +1,12 @@
 import restaurantsData from "../data/restaurants.json";
+import photoManifest from "../data/photo-manifest.json";
 import { cityEnFromBookshelfSlug, normalizeCityEn } from "./dataLoader.js";
 import { stripBranchSuffix } from "./storeGroups.js";
 import { isNumericLeading, normalizeSortText } from "./sortText.js";
 
-const PHOTO_MODULES = import.meta.glob(
-  "../assets/photos/*/*/*.{jpg,jpeg,png,webp,heic,JPG,JPEG,PNG,WEBP,HEIC}",
-  { eager: true, import: "default" },
-);
+const PHOTOS_BASE_URL = String(import.meta.env.VITE_PHOTOS_BASE_URL ?? "")
+  .trim()
+  .replace(/\/+$/, "");
 
 function normalizeSegment(value) {
   return String(value ?? "")
@@ -14,31 +14,51 @@ function normalizeSegment(value) {
     .toLowerCase();
 }
 
-function buildPhotoIndex() {
+function encodePhotoPathSegments(...segments) {
+  return segments.map((segment) => encodeURIComponent(String(segment ?? ""))).join("/");
+}
+
+function buildRemotePhotoHref(cityFolder, storeFolder, filename) {
+  const path = encodePhotoPathSegments("photos", cityFolder, storeFolder, filename);
+  return `${PHOTOS_BASE_URL}/${path}`;
+}
+
+import { addPhotoToIndex, finalizePhotoIndex } from "./storePhotos.index.js";
+
+function buildPhotoIndexFromManifest() {
   /** @type {Map<string, Array<{ href: string, filename: string }>>} */
   const index = new Map();
 
-  Object.entries(PHOTO_MODULES).forEach(([path, href]) => {
-    const matched = path.match(/\/assets\/photos\/([^/]+)\/([^/]+)\/([^/]+)$/i);
-    if (!matched) return;
-    const [, cityFolder, storeFolder, filename] = matched;
-    const key = `${normalizeSegment(cityFolder)}/${normalizeSegment(storeFolder)}`;
-    const list = index.get(key) ?? [];
-    list.push({ href, filename });
-    index.set(key, list);
-  });
+  for (const entry of photoManifest.photos ?? []) {
+    const cityFolder = String(entry.city ?? "").trim();
+    const storeFolder = String(entry.store ?? "").trim();
+    const filename = String(entry.filename ?? "").trim();
+    if (cityFolder === "" || storeFolder === "" || filename === "") continue;
 
-  index.forEach((list, key) => {
-    index.set(
-      key,
-      list.sort((left, right) => left.filename.localeCompare(right.filename, "zh-Hans-CN")),
-    );
-  });
+    const href = buildRemotePhotoHref(cityFolder, storeFolder, filename);
+    addPhotoToIndex(index, cityFolder, storeFolder, filename, href);
+  }
 
-  return index;
+  return finalizePhotoIndex(index);
 }
 
-const PHOTO_INDEX = buildPhotoIndex();
+function buildPhotoIndex() {
+  if (PHOTOS_BASE_URL === "" && import.meta.env.PROD) {
+    console.warn(
+      "[storePhotos] VITE_PHOTOS_BASE_URL is empty in production; store photos will not load.",
+    );
+  }
+
+  return buildPhotoIndexFromManifest();
+}
+
+/** @type {Map<string, Array<{ href: string, filename: string }>>} */
+let PHOTO_INDEX = buildPhotoIndex();
+
+/** @param {Map<string, Array<{ href: string, filename: string }>>} index */
+export function setStorePhotoIndex(index) {
+  PHOTO_INDEX = index;
+}
 
 function normalizeMatchKey(value) {
   const s = String(value ?? "").trim();
