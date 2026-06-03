@@ -6,7 +6,7 @@
     "predev": "node scripts/generate-photo-manifest.mjs",
     "prebuild": "node scripts/generate-photo-manifest.mjs",
     "photos:manifest": "node scripts/generate-photo-manifest.mjs",
-    "photos:upload-blob": "node scripts/upload-photos-to-blob.mjs",
+    "photos:upload-r2": "node scripts/upload-photos-to-r2.mjs",
     "env:pull-vercel": "vercel env pull .env.vercel --environment=preview --yes",
     "dev": "vite",
     "build": "vite build",
@@ -36,7 +36,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
-    "@vercel/blob": "^0.27.3",
+    "@aws-sdk/client-s3": "^3.758.0",
     "@vitejs/plugin-react": "^4.3.4",
     "vercel": "^54.7.1",
     "vite": "^5.4.11"

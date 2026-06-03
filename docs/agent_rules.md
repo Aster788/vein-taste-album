@@ -96,6 +96,7 @@
 ### 3.5 资源与路径核验（避免误判文件是否存在）
 
 - 涉及 `**src/assets/`**（含 `fonts/`、`photos/`、`geojson/`、`stickers/`）、`**.env.local`** 等：在结论为「不存在 / 未放入 / 是空文件」之前，**必须用终端核对**（如 PowerShell：`Test-Path` 或 `Get-ChildItem -LiteralPath <目录> -Force`），**不得仅凭 Glob/搜索/Read 下结论**（索引、忽略规则、二进制均可能不准）。
+- **照片 CDN**：线上相册走 **Cloudflare R2**（`VITE_PHOTOS_BASE_URL`）；本机同步用 `npm run photos:upload-r2`（`R2_*` 见 `.env.example`）。**不要**再引入 Vercel Blob、`BLOB_*` 或 `photos:upload-blob`。
 - `Glob` / `rg` / Read 仅可作为**初筛**，不可作为「文件不存在 / 仅有 N 个文件」的最终依据；凡是要下此类结论，必须补做一次磁盘实查（`Get-ChildItem -LiteralPath` + `Test-Path`）。
 - 若「索引搜索结果」与「磁盘实查结果」冲突：以**磁盘实查**为准，并在汇报中写明“索引可能未刷新或受忽略规则影响”。
 - 若需说明「文件为空」：须写明**路径 + 字节大小**；Read 显示空不等于磁盘一定为空，以终端为准。

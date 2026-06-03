@@ -13,7 +13,7 @@
   - 临时在 `.env.local` 设 `VITE_ENABLE_MT=true`
   - 运行 `npm run data:export-translations`
   - 完成后把 `.env.local` 改回 `VITE_ENABLE_MT=false`
-3. 若新增/变更了 `src/assets/photos/` 下图片：见 **§9 同步照片到 Vercel Blob**（合并 PR 并部署后也要做）
+3. 若新增/变更了 `src/assets/photos/` 下图片：见 **§9 同步照片到 Cloudflare R2**（合并 PR 并部署后也要做）
 4. 运行 `npm run build` 验证可构建
 
 ---
@@ -103,7 +103,7 @@ npm run data:export-translations
 7. 需要时跑静态翻译导出：`npm run data:export-translations`
 8. 跑边界审计：`npm run audit:boundary-offsets`
 9. 跑构建验证：`npm run build`
-10. 合并 PR、Vercel 部署后：§9 同步照片到 Blob
+10. 合并 PR、Vercel 部署后：§9 同步照片到 R2
 
 ---
 
@@ -258,45 +258,48 @@ npm run audit:photo-magic
 
 ---
 
-## 9) 同步照片到 Vercel Blob（线上相册必做）
+## 9) 同步照片到 Cloudflare R2（线上相册必做）
 
 触发：新增或替换了 `src/assets/photos/{city}/{store_slug}/` 下任意图片，且需要 Production / Preview 站点显示相册。
 
-说明：**合并 PR 后 Vercel 只会部署前端与 `photo-manifest.json`，不会自动把图片上传到 Blob。** 未上传时线上相册会裂图。
+说明：**合并 PR 后 Vercel 只会部署前端与 `photo-manifest.json`，不会自动把图片上传到 R2。** 未上传时线上相册会裂图。
 
 ### 前置
 
-- 本机 `.env.local` 含有效的 `BLOB_READ_WRITE_TOKEN` 与其它自管密钥（**勿提交 Git**）
-- 若 token 只在 Vercel 控制台、本机还没有：先执行 **§9.1** `npm run env:pull-vercel`，或把 Storage 里 read-write token 手抄进 `.env.local`
-- Vercel 环境变量已配置 `VITE_PHOTOS_BASE_URL`（Public Blob 根 URL，无末尾 `/`）
+- 本机 `.env.local` 含有效的 **`R2_*`**（见 `.env.example`）与其它自管密钥（**勿提交 Git**）
+- Cloudflare R2 bucket 已开启公开访问（Custom Domain 或 `*.r2.dev`）
+- Vercel 环境变量已配置 **`VITE_PHOTOS_BASE_URL`**（与 R2 公开根一致，无末尾 `/`）
 - 建议先完成 §8 `npm run audit:photo-magic` 与 `npm run audit:filenames`
 
-### 9.1) `npm run env:pull-vercel` 何时需要？
+### 9.1) `.env.local` 与 `npm run env:pull-vercel`
 
-命令等价于 `vercel env pull .env.vercel --environment=preview`，把已 link 的 Vercel 项目 **Preview** 环境变量写入 **`.env.vercel`**（**不会**改写 `.env.local`）。
-
-| 场景 | 要不要跑 |
+| 变量 | 用途 |
 | --- | --- |
-| 新机 / 新 clone，还没有 `.env.vercel`，需要从团队 Vercel 同步 `BLOB_*`、`VERCEL_*` 等 | **要** |
-| 在 Vercel 控制台刚轮换过 Blob read-write token，本机 `.env.vercel` 还是旧的 | **要**（或改 `.env.local`） |
-| `.env.local` 里已有你自己维护的、已验证可用的 `BLOB_READ_WRITE_TOKEN` | **不必** |
-| 每次 `photos:upload-blob`、每次 `data:sync` | **不必** |
-| 想用 `vercel env pull .env.local` 覆盖整份本地 env | **禁止**（会冲掉手改密钥；本项目用 `.env.vercel` + `.env.local` 分层） |
+| `R2_ACCOUNT_ID` | Cloudflare 账号 ID（R2 Overview） |
+| `R2_ACCESS_KEY_ID` / `R2_SECRET_ACCESS_KEY` | R2 API Token（Object Read & Write，限定 bucket） |
+| `R2_BUCKET_NAME` | 如 `vein-taste-album-photos` |
+| `VITE_PHOTOS_BASE_URL` | 浏览器读图根 URL（Vercel 与本地各配一份） |
 
-加载顺序（所有带 `loadEnvLocal()` 的 Node 脚本）：先 `.env.vercel`，再 `.env.local`，**同名变量以 `.env.local` 为准**。因此你可以把 Mapbox / 高德 / `GOOGLE_MAPS_API_KEY` 等长期放在 `.env.local`，只把 Vercel 托管项交给 pull。
+`npm run env:pull-vercel` 仅写入 **`.env.vercel`**（Vercel CLI 变量），**不会**覆盖 `.env.local`。照片上传**不依赖**该命令；R2 密钥在 Cloudflare 创建后手填 `.env.local`。
 
-**注意：** 若终端里直接 `npm run photos:upload-blob` 却报 `Access denied`，多半是 `BLOB_READ_WRITE_TOKEN` 过期或填错；更新 token 后**只保留一个上传进程**再重跑。详见 [deploy-vercel.md](deploy-vercel.md)。
+加载顺序（带 `loadEnvLocal()` 的 Node 脚本）：先 `.env.vercel`，再 `.env.local`，**同名键以 `.env.local` 为准**。
+
+| 场景 | 要不要跑 `env:pull-vercel` |
+| --- | --- |
+| 需要从 Vercel 拉 `VERCEL_*` 等 CLI 变量到 `.env.vercel` | 可选 |
+| 每次 `photos:upload-r2`、每次 `data:sync` | **不必** |
+| `vercel env pull .env.local` 覆盖整份本地 env | **禁止** |
 
 ### 执行
 
 ```bash
 npm run photos:manifest
-npm run photos:upload-blob
+npm run photos:upload-r2
 ```
 
-可选预览路径（不上传）：`npm run photos:upload-blob -- --dry-run`
+可选预览（不上传）：`npm run photos:upload-r2 -- --dry-run`
 
-上传路径规则：`photos/{city}/{store}/{filename}`，与本地目录一致。脚本会扫描全量文件并上传（已存在路径会覆盖）。
+对象 Key：`photos/{city}/{store}/{filename}`，与本地目录一致；已存在 Key 会被覆盖。
 
 ### 推荐节奏（与 Git / Vercel 配合）
 
@@ -304,19 +307,21 @@ npm run photos:upload-blob
 2. 本地 `npm run dev`（默认读本机 `photos/`，不必配 CDN）确认 UI
 3. 合并 PR → Vercel 自动部署
 4. **本机执行 §9 上传**（与部署并列，不可省略）
-5. 打开 Production 验收城市页相册；可选在 `.env.local` 设 `VITE_PHOTOS_BASE_URL` 做 CDN 对齐抽查
+5. 打开 Production 验收；Network 确认图片来自 `VITE_PHOTOS_BASE_URL` 对应域名
 
 ### 通过标准
 
-- 命令结束输出 `Done. Uploaded N file(s).` 且无 failure
-- 浏览器打开线上城市页，店铺相册可加载
-- 可选：`curl -I` 抽查一条 Blob URL 返回 `200`
+- 命令结束：`Done. Uploaded N file(s).` 且无 failure
+- 线上店铺相册可加载
+- 可选：`curl -I` 抽查  
+  `https://你的照片域/photos/城市/店slug/某图.jpg` 返回 `200`
 
 ### 失败处理
 
-- `Missing BLOB_READ_WRITE_TOKEN`：在 `.env.local` 填写，或 `npm run env:pull-vercel` 后确认 `.env.vercel` 含该键（`.env.local` 可覆盖）
-- `Access denied, please provide a valid token`：token 无效/过期，或**同时开了两个上传进程**且其中一个用了旧环境；结束多余进程，更新 token 后只跑一条 `npm run photos:upload-blob`
-- 单文件失败：看终端报错文件名，检查 URL 非法字符（见静态资源命名规则，禁止裸 `%` 等）
-- 上传很慢：全量约 1290 张 / 1.7GB，属正常；可调 `PHOTO_UPLOAD_CONCURRENCY`（默认 4）
+- `Missing R2_*`：在 `.env.local` 补全四行，或到 Cloudflare R2 → API Tokens 重建
+- `AccessDenied` / 403：密钥错、bucket 名错，或 Token 未含该 bucket 的写权限
+- 单文件失败：检查文件名 URL 安全（`npm run audit:filenames`）
+- 上传很慢：全量约 1290 张 / 1.7GB 属正常；可调 `PHOTO_UPLOAD_CONCURRENCY`（默认 4）
+- 已配置 **rclone** 时可用 `rclone sync` 代替脚本，目标路径须为 `bucket/photos/...`（见 [deploy-vercel.md](deploy-vercel.md)）
 
 详见 [deploy-vercel.md](deploy-vercel.md)。
