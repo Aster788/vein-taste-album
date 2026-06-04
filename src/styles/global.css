@@ -2035,6 +2035,8 @@ html.is-safari-webkit .ffj-photo-polaroid-image.is-transitioning {
 
 /* --- 书架页：Slogan 区 + 横向滚动书排（PRD §3.1） --- */
 .ffj-bookshelf-page {
+  --ffj-bookshelf-slogan-ink: #545d67;
+  position: relative;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -2059,6 +2061,53 @@ html.is-safari-webkit .ffj-photo-polaroid-image.is-transitioning {
   width: 100%;
   align-items: center;
   justify-content: center;
+}
+
+/* 与底部脚印导航条同一水平线（--ffj-bookshelf-footprints-center-top 由 Bookshelf.jsx 测量） */
+.ffj-bookshelf-page > .ffj-bookshelf-slogan-nav {
+  position: absolute;
+  top: var(--ffj-bookshelf-footprints-center-top, auto);
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 3.75rem;
+  height: auto;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  overflow: visible;
+}
+
+.ffj-bookshelf-page > .ffj-bookshelf-slogan-nav--prev {
+  left: clamp(1rem, 3vw, 2.25rem);
+}
+
+.ffj-bookshelf-page > .ffj-bookshelf-slogan-nav--next {
+  right: clamp(1rem, 3vw, 2.25rem);
+}
+
+/* 直接按 60px 宽等比显示源 SVG，避免 transform 裁掉箭头尖角 */
+.ffj-bookshelf-page > .ffj-bookshelf-slogan-nav-icon {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  transform: none;
+  opacity: 0.82;
+  pointer-events: none;
+}
+
+.ffj-bookshelf-page > .ffj-bookshelf-slogan-nav:disabled {
+  opacity: 0.32;
+  cursor: default;
+  pointer-events: none;
+}
+
+.ffj-bookshelf-page > .ffj-bookshelf-slogan-nav:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--ffj-bookshelf-slogan-ink) 42%, transparent);
+  outline-offset: 3px;
 }
 
 /* Slogan 静态：沐瑶 + Playfair；旁侧地球贴纸（PRD §1.2、§3.1；动画后续 Phase） */
