@@ -5,4 +5,6 @@ dist
 .env.vercel
 .DS_Store
 src/data/photo-manifest.json
+# Local dev artifacts from `npm run photos:thumbs`; production serves thumbs from R2
+src/assets/photos/**/*.thumb.webp
 .vercel
