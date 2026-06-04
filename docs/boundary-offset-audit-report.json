@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-20T13:33:25.187Z",
+  "generatedAt": "2026-06-04T06:24:31.975Z",
   "cities": [
     {
       "slug": "shanghai",
@@ -20,11 +20,61 @@
         "maxLat": 31.872716,
         "coordCount": 3443
       },
-      "sampleCount": 119,
+      "sampleCount": 175,
+      "aCoveragePct": 89.14285714285714,
+      "bCoveragePct": 89.14285714285714,
+      "deltaPct": 0,
+      "meanGcjToWgsShiftMeters": 482.1754529420684
+    },
+    {
+      "slug": "nanjing",
+      "isChina": true,
+      "fileExists": true,
+      "sourceClass": "DataV-like (China district boundary schema)",
+      "health": {
+        "polygonCount": 0,
+        "multiPolygonCount": 11,
+        "closedRingCount": 16,
+        "openRingCount": 0,
+        "invalidLngLatCount": 0
+      },
+      "bounds": {
+        "minLng": 118.363373,
+        "minLat": 31.228097,
+        "maxLng": 119.241663,
+        "maxLat": 32.614363,
+        "coordCount": 2520
+      },
+      "sampleCount": 9,
+      "aCoveragePct": 88.88888888888889,
+      "bCoveragePct": 88.88888888888889,
+      "deltaPct": 0,
+      "meanGcjToWgsShiftMeters": 541.394677598136
+    },
+    {
+      "slug": "suzhou",
+      "isChina": true,
+      "fileExists": true,
+      "sourceClass": "DataV-like (China district boundary schema)",
+      "health": {
+        "polygonCount": 0,
+        "multiPolygonCount": 9,
+        "closedRingCount": 9,
+        "openRingCount": 0,
+        "invalidLngLatCount": 0
+      },
+      "bounds": {
+        "minLng": 119.920013,
+        "minLat": 30.75797,
+        "maxLng": 121.372212,
+        "maxLat": 32.045827,
+        "coordCount": 2389
+      },
+      "sampleCount": 11,
       "aCoveragePct": 100,
       "bCoveragePct": 100,
       "deltaPct": 0,
-      "meanGcjToWgsShiftMeters": 482.1754529420684
+      "meanGcjToWgsShiftMeters": 474.9309721237774
     },
     {
       "slug": "qingdao",
@@ -71,8 +121,8 @@
         "coordCount": 6607
       },
       "sampleCount": 21,
-      "aCoveragePct": 100,
-      "bCoveragePct": 100,
+      "aCoveragePct": 95.23809523809523,
+      "bCoveragePct": 95.23809523809523,
       "deltaPct": 0,
       "meanGcjToWgsShiftMeters": 498.2881452801416
     },
@@ -100,6 +150,81 @@
       "bCoveragePct": 100,
       "deltaPct": 0,
       "meanGcjToWgsShiftMeters": 619.1052454764136
+    },
+    {
+      "slug": "jeju",
+      "isChina": false,
+      "fileExists": true,
+      "sourceClass": "Minimal custom schema (likely open admin source)",
+      "health": {
+        "polygonCount": 1,
+        "multiPolygonCount": 1,
+        "closedRingCount": 3,
+        "openRingCount": 0,
+        "invalidLngLatCount": 0
+      },
+      "bounds": {
+        "minLng": 126.17247937500008,
+        "minLat": 33.193832185000076,
+        "maxLng": 126.97066721800002,
+        "maxLat": 33.56416453800006,
+        "coordCount": 275
+      },
+      "sampleCount": 17,
+      "aCoveragePct": 82.35294117647058,
+      "bCoveragePct": 82.35294117647058,
+      "deltaPct": 0,
+      "meanGcjToWgsShiftMeters": 0
+    },
+    {
+      "slug": "kuala-lumpur",
+      "isChina": false,
+      "fileExists": true,
+      "sourceClass": "TindakMalaysia parliamentary boundary schema",
+      "health": {
+        "polygonCount": 11,
+        "multiPolygonCount": 0,
+        "closedRingCount": 11,
+        "openRingCount": 0,
+        "invalidLngLatCount": 0
+      },
+      "bounds": {
+        "minLng": 101.6153618763921,
+        "minLat": 3.033255548184983,
+        "maxLng": 101.75828669616094,
+        "maxLat": 3.244428750398983,
+        "coordCount": 1570
+      },
+      "sampleCount": 7,
+      "aCoveragePct": 57.14285714285714,
+      "bCoveragePct": 57.14285714285714,
+      "deltaPct": 0,
+      "meanGcjToWgsShiftMeters": 0
+    },
+    {
+      "slug": "melaka",
+      "isChina": false,
+      "fileExists": true,
+      "sourceClass": "Minimal custom schema (likely open admin source)",
+      "health": {
+        "polygonCount": 0,
+        "multiPolygonCount": 28,
+        "closedRingCount": 34,
+        "openRingCount": 0,
+        "invalidLngLatCount": 0
+      },
+      "bounds": {
+        "minLng": 101.96853,
+        "minLat": 2.0726,
+        "maxLng": 102.59432,
+        "maxLat": 2.49886,
+        "coordCount": 1749
+      },
+      "sampleCount": 2,
+      "aCoveragePct": 100,
+      "bCoveragePct": 100,
+      "deltaPct": 0,
+      "meanGcjToWgsShiftMeters": 0
     },
     {
       "slug": "fuzhou",
@@ -200,106 +325,6 @@
       "bCoveragePct": 100,
       "deltaPct": 0,
       "meanGcjToWgsShiftMeters": 456.6789493152484
-    },
-    {
-      "slug": "suzhou",
-      "isChina": true,
-      "fileExists": true,
-      "sourceClass": "DataV-like (China district boundary schema)",
-      "health": {
-        "polygonCount": 0,
-        "multiPolygonCount": 9,
-        "closedRingCount": 9,
-        "openRingCount": 0,
-        "invalidLngLatCount": 0
-      },
-      "bounds": {
-        "minLng": 119.920013,
-        "minLat": 30.75797,
-        "maxLng": 121.372212,
-        "maxLat": 32.045827,
-        "coordCount": 2389
-      },
-      "sampleCount": 11,
-      "aCoveragePct": 100,
-      "bCoveragePct": 100,
-      "deltaPct": 0,
-      "meanGcjToWgsShiftMeters": 474.9309721237774
-    },
-    {
-      "slug": "jeju",
-      "isChina": false,
-      "fileExists": true,
-      "sourceClass": "Minimal custom schema (likely open admin source)",
-      "health": {
-        "polygonCount": 1,
-        "multiPolygonCount": 1,
-        "closedRingCount": 3,
-        "openRingCount": 0,
-        "invalidLngLatCount": 0
-      },
-      "bounds": {
-        "minLng": 126.17247937500008,
-        "minLat": 33.193832185000076,
-        "maxLng": 126.97066721800002,
-        "maxLat": 33.56416453800006,
-        "coordCount": 275
-      },
-      "sampleCount": 17,
-      "aCoveragePct": 82.35294117647058,
-      "bCoveragePct": 82.35294117647058,
-      "deltaPct": 0,
-      "meanGcjToWgsShiftMeters": 0
-    },
-    {
-      "slug": "kuala-lumpur",
-      "isChina": false,
-      "fileExists": true,
-      "sourceClass": "TindakMalaysia parliamentary boundary schema",
-      "health": {
-        "polygonCount": 11,
-        "multiPolygonCount": 0,
-        "closedRingCount": 11,
-        "openRingCount": 0,
-        "invalidLngLatCount": 0
-      },
-      "bounds": {
-        "minLng": 101.6153618763921,
-        "minLat": 3.033255548184983,
-        "maxLng": 101.75828669616094,
-        "maxLat": 3.244428750398983,
-        "coordCount": 1570
-      },
-      "sampleCount": 7,
-      "aCoveragePct": 57.14285714285714,
-      "bCoveragePct": 57.14285714285714,
-      "deltaPct": 0,
-      "meanGcjToWgsShiftMeters": 0
-    },
-    {
-      "slug": "melaka",
-      "isChina": false,
-      "fileExists": true,
-      "sourceClass": "Minimal custom schema (likely open admin source)",
-      "health": {
-        "polygonCount": 0,
-        "multiPolygonCount": 28,
-        "closedRingCount": 34,
-        "openRingCount": 0,
-        "invalidLngLatCount": 0
-      },
-      "bounds": {
-        "minLng": 101.96853,
-        "minLat": 2.0726,
-        "maxLng": 102.59432,
-        "maxLat": 2.49886,
-        "coordCount": 1749
-      },
-      "sampleCount": 2,
-      "aCoveragePct": 100,
-      "bCoveragePct": 100,
-      "deltaPct": 0,
-      "meanGcjToWgsShiftMeters": 0
     }
   ],
   "notes": [

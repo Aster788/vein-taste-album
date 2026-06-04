@@ -37,7 +37,7 @@ def title_en(par: str) -> str:
 
 
 def main() -> int:
-    req = urllib.request.Request(SOURCE_URL, headers={"User-Agent": "food-for-joy/1.0 (geojson build)"})
+    req = urllib.request.Request(SOURCE_URL, headers={"User-Agent": "vein-taste-album/1.0 (geojson build)"})
     with urllib.request.urlopen(req, timeout=120) as resp:
         raw = json.load(resp)
 
