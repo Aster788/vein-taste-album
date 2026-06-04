@@ -117,6 +117,8 @@ npm run data:export-translations
 
 `restaurants.xlsx` 可选列 `closed`：`yes` 表示已关闭；同步后写入 `restaurants.json`。
 
+`restaurants.xlsx` 可选列 `recommend`：`yes` / `no` / 空（或 `null`）——菜品页店铺列表首行名称右侧显示推荐 / 不推荐标识；空则不显示。同城同 `store_slug` 的多分店行应填相同值。
+
 ---
 
 ## 4.1) 多分店 `store_slug`（同城同品牌，通用）

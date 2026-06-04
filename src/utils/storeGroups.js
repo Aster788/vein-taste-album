@@ -213,6 +213,19 @@ export function getCuisineStoreGroupsByCity(cityEn) {
 
 /**
  * @param {CuisineStoreGroup} group
+ * @returns {"yes" | "no" | null}
+ */
+export function getStoreRecommend(group) {
+  for (const row of group.branches) {
+    const raw = String(row?.recommend ?? "").trim().toLowerCase();
+    if (raw === "yes") return "yes";
+    if (raw === "no") return "no";
+  }
+  return null;
+}
+
+/**
+ * @param {CuisineStoreGroup} group
  * @returns {string[]}
  */
 export function getCuisineDisplayNameLines(group) {

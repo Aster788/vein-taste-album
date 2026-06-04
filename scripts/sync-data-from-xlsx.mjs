@@ -54,6 +54,14 @@ function hasAnyNonNull(values) {
   return values.some((value) => normalizeNullableString(value) != null);
 }
 
+/** @returns {"yes" | "no" | null} */
+function normalizeRecommend(value) {
+  const raw = String(value ?? "").trim().toLowerCase();
+  if (raw === "yes") return "yes";
+  if (raw === "no") return "no";
+  return null;
+}
+
 function normalizeRestaurant(row) {
   const picked = pickFields(row, RESTAURANTS_HEADERS);
   const cityEn = normalizeOptionalString(picked.city_en);
@@ -113,6 +121,7 @@ function normalizeRestaurant(row) {
     score_packaging: normalizeOptionalNumber(picked.score_packaging),
     score_delivery: normalizeOptionalNumber(picked.score_delivery),
     score_personal: normalizeOptionalNumber(picked.score_personal),
+    recommend: normalizeRecommend(picked.recommend),
   };
 
   return normalized;
