@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import { Navigate, useParams } from "react-router-dom";
+import BookshelfBackButton from "../components/BookshelfBackButton.jsx";
 import {
   pickByDetailLocale,
   pickByLocale,
@@ -238,6 +239,8 @@ export default function CityDetail() {
   const nativeDishInfoRegionText = nativeIso === "ko" ? "요리 정보" : "Dish details";
   const nativeTasteStarsText = nativeIso === "ko" ? "맛 별점" : "Taste";
   const nativeCuisineSortInfoText = nativeIso === "ko" ? "요리 정렬 규칙 안내" : "Cuisine sort rules";
+  const nativeBackToBookshelfText =
+    nativeIso === "ko" ? "책장으로 돌아가기" : "Back to bookshelf";
   const pickUiText = (zhText, enText, nativeText = "") =>
     localeConfig.isChina
       ? pickByLocale(detailLocale, zhText, enText)
@@ -746,43 +749,46 @@ export default function CityDetail() {
       >
         <div className="ffj-city-detail-top-row ffj-city-detail-top-row--city">
           <p className="ffj-city-title">{cityDisplay}</p>
-          {showDetailLocaleToggle ? (
-            <div
-              className="ffj-city-locale-toggle"
-              aria-label={pickUiText("语言切换", "Language toggle", nativeLanguageToggleText)}
-            >
-              <button
-                type="button"
-                className={`ffj-city-locale-btn ${detailLocale === "en" ? "is-active" : ""}`}
-                onClick={() => setDetailLocale("en")}
-                aria-pressed={detailLocale === "en"}
+          <div className="ffj-city-detail-top-actions">
+            <BookshelfBackButton
+              ariaLabel={pickUiText("返回书架", "Back to bookshelf", nativeBackToBookshelfText)}
+            />
+            {showDetailLocaleToggle ? (
+              <div
+                className="ffj-city-locale-toggle"
+                aria-label={pickUiText("语言切换", "Language toggle", nativeLanguageToggleText)}
               >
-                EN
-              </button>
-              {!localeConfig.isChina && localeConfig.mode === "en_native_zh" ? (
                 <button
                   type="button"
-                  className={`ffj-city-locale-btn ${
-                    detailLocale === "native" ? "is-active" : ""
-                  }`}
-                  onClick={() => setDetailLocale("native")}
-                  aria-pressed={detailLocale === "native"}
+                  className={`ffj-city-locale-btn ${detailLocale === "en" ? "is-active" : ""}`}
+                  onClick={() => setDetailLocale("en")}
+                  aria-pressed={detailLocale === "en"}
                 >
-                  {nativeLocaleButtonLabel || "NATIVE"}
+                  EN
                 </button>
-              ) : null}
-              <button
-                type="button"
-                className={`ffj-city-locale-btn ${detailLocale === "zh" ? "is-active" : ""}`}
-                onClick={() => setDetailLocale("zh")}
-                aria-pressed={detailLocale === "zh"}
-              >
-                CN
-              </button>
-            </div>
-          ) : (
-            <div aria-hidden="true" />
-          )}
+                {!localeConfig.isChina && localeConfig.mode === "en_native_zh" ? (
+                  <button
+                    type="button"
+                    className={`ffj-city-locale-btn ${
+                      detailLocale === "native" ? "is-active" : ""
+                    }`}
+                    onClick={() => setDetailLocale("native")}
+                    aria-pressed={detailLocale === "native"}
+                  >
+                    {nativeLocaleButtonLabel || "NATIVE"}
+                  </button>
+                ) : null}
+                <button
+                  type="button"
+                  className={`ffj-city-locale-btn ${detailLocale === "zh" ? "is-active" : ""}`}
+                  onClick={() => setDetailLocale("zh")}
+                  aria-pressed={detailLocale === "zh"}
+                >
+                  CN
+                </button>
+              </div>
+            ) : null}
+          </div>
         </div>
 
         <div className="ffj-city-detail-top-row ffj-city-detail-top-row--section">

@@ -1,5 +1,5 @@
 {
-  "name": "food-for-joy",
+  "name": "vein-taste-album",
   "private": true,
   "type": "module",
   "scripts": {
@@ -23,6 +23,7 @@
     "audit:multi-branch": "node scripts/audit-multi-branch-groups.mjs",
     "audit:doc-links": "node scripts/audit-doc-links.mjs",
     "audit:filenames": "node scripts/audit-filenames.mjs",
+    "assets:bookshelf-back-strip": "node scripts/generate-bookshelf-back-strip.mjs",
     "audit:map-cities": "node scripts/audit-map-cities.mjs",
     "audit:all": "npm run audit:filenames && npm run audit:photo-magic && npm run audit:doc-links",
     "hooks:install": "node scripts/install-precommit-hook.mjs"

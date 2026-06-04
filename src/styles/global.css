@@ -211,6 +211,47 @@ html[data-city="melaka"],
   letter-spacing: 0.01em;
 }
 
+.ffj-city-detail-top-actions {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.ffj-city-bookshelf-back-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  /* 书脊条 168×52，高 27px 时宽按比例 ≈ 87.23px */
+  width: calc(27px * 168 / 52);
+  height: 27px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0.2rem;
+  background: transparent;
+  cursor: pointer;
+}
+
+.ffj-city-bookshelf-back-btn__strip {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  pointer-events: none;
+}
+
+.ffj-city-bookshelf-back-btn:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--city-primary) 65%, transparent);
+  outline-offset: 2px;
+}
+
+.ffj-city-bookshelf-back-btn:hover .ffj-city-bookshelf-back-btn__strip {
+  filter: brightness(1.06);
+}
+
 .ffj-city-locale-toggle {
   flex-shrink: 0;
   display: inline-flex;
@@ -2035,6 +2076,8 @@ html.is-safari-webkit .ffj-photo-polaroid-image.is-transitioning {
 
 /* --- 书架页：Slogan 区 + 横向滚动书排（PRD §3.1） --- */
 .ffj-bookshelf-page {
+  --ffj-bookshelf-slogan-ink: #545d67;
+  position: relative;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -2052,6 +2095,7 @@ html.is-safari-webkit .ffj-photo-polaroid-image.is-transitioning {
 
 .ffj-bookshelf-slogan-region {
   /* Slogan 再压缩，把竖向空间让给书架（约 12% 视口） */
+  position: relative;
   flex: 0 0 12%;
   min-height: clamp(3.25rem, 7dvh, 5.5rem);
   max-height: 16%;
@@ -2059,6 +2103,53 @@ html.is-safari-webkit .ffj-photo-polaroid-image.is-transitioning {
   width: 100%;
   align-items: center;
   justify-content: center;
+}
+
+/* 与底部脚印导航条同一水平线（--ffj-bookshelf-footprints-center-top 由 Bookshelf.jsx 测量） */
+.ffj-bookshelf-page > .ffj-bookshelf-slogan-nav {
+  position: absolute;
+  top: var(--ffj-bookshelf-footprints-center-top, auto);
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 3.75rem;
+  height: auto;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  overflow: visible;
+}
+
+.ffj-bookshelf-page > .ffj-bookshelf-slogan-nav--prev {
+  left: clamp(1rem, 3vw, 2.25rem);
+}
+
+.ffj-bookshelf-page > .ffj-bookshelf-slogan-nav--next {
+  right: clamp(1rem, 3vw, 2.25rem);
+}
+
+/* 直接按 60px 宽等比显示源 SVG，避免 transform 裁掉箭头尖角 */
+.ffj-bookshelf-page > .ffj-bookshelf-slogan-nav-icon {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  transform: none;
+  opacity: 0.82;
+  pointer-events: none;
+}
+
+.ffj-bookshelf-page > .ffj-bookshelf-slogan-nav:disabled {
+  opacity: 0.32;
+  cursor: default;
+  pointer-events: none;
+}
+
+.ffj-bookshelf-page > .ffj-bookshelf-slogan-nav:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--ffj-bookshelf-slogan-ink) 42%, transparent);
+  outline-offset: 3px;
 }
 
 /* Slogan 静态：沐瑶 + Playfair；旁侧地球贴纸（PRD §1.2、§3.1；动画后续 Phase） */
@@ -2134,7 +2225,7 @@ html.is-safari-webkit .ffj-photo-polaroid-image.is-transitioning {
 .ffj-bookshelf-slogan-cn {
   position: relative;
   margin: 0;
-  color: #545d67;
+  color: var(--ffj-bookshelf-slogan-ink);
   font-family: var(--font-handwriting);
   font-size: var(--slogan-cn);
   line-height: 1.32;
@@ -2159,7 +2250,7 @@ html.is-safari-webkit .ffj-photo-polaroid-image.is-transitioning {
   margin: 0.28rem 0 0;
   max-width: min(38rem, 88vw);
   padding-inline: 0.25rem;
-  color: #545d67;
+  color: var(--ffj-bookshelf-slogan-ink);
   font-family: var(--font-handwriting);
   font-size: calc(var(--slogan-cn) * 0.6);
   line-height: 1.42;
@@ -2245,7 +2336,6 @@ html.is-safari-webkit .ffj-photo-polaroid-image.is-transitioning {
 .ffj-bookshelf-scroll {
   /* 由 Bookshelf.jsx 按几何测量写入，补足 rotateX 后画出滚动区上沿的像素量 */
   --ffj-bookshelf-top-bleed: 0px;
-  /* 占满 Slogan 以下剩余高度（约 84–88% 量级，再扣 main 的 padding） */
   flex: 1 1 auto;
   min-height: 0;
   display: flex;

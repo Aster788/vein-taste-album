@@ -9,6 +9,8 @@ import { getBookshelfCities } from "../utils/dataLoader.js";
 /* Slogan 旁 page 贴纸须透明底、无整幅黑/白底 path（与书脊 cities 贴纸同旨，见 Book.jsx 注释） */
 import earthStickerUrl from "../assets/stickers/page/earth.svg?url";
 import footprintsStickerUrl from "../assets/stickers/page/footprints.svg?url";
+import leftArrowStickerUrl from "../assets/stickers/page/left-arrow.svg?url";
+import rightArrowStickerUrl from "../assets/stickers/page/right-arrow.svg?url";
 import evelynAvatarUrl from "../assets/photos/evelyn-transparent.png";
 
 export default function Bookshelf() {
@@ -20,6 +22,8 @@ export default function Bookshelf() {
     "I wander, I wonder, I fall in love with the world-again and again";
   const scrollRef = useRef(null);
   const trackRef = useRef(null);
+  const footprintsRef = useRef(null);
+  const sloganNavRef = useRef(null);
   const rafRef = useRef(0);
   const applyBookTransformsRef = useRef(() => {});
   const slotMetricsRef = useRef([]);
@@ -58,6 +62,20 @@ export default function Bookshelf() {
       behavior: "smooth",
     });
   };
+
+  const scrollAdjacentBook = (delta) => {
+    const count = cities.length;
+    if (count === 0) return;
+    const current =
+      activeBookIndexRef.current >= 0
+        ? activeBookIndexRef.current
+        : Math.min(count - 1, Math.max(0, Math.round((count - 1) / 2)));
+    scrollBookToCenter(Math.min(count - 1, Math.max(0, current + delta)));
+  };
+
+  const canScrollPrev = activeBookIndex > 0;
+  const canScrollNext =
+    activeBookIndex >= 0 && activeBookIndex < cities.length - 1;
 
   /**
    * 处理书本点击，触发翻书过渡动画
@@ -234,6 +252,42 @@ export default function Bookshelf() {
     return () => {
       ro.disconnect();
       scroller.style.removeProperty("--ffj-bookshelf-top-bleed");
+    };
+  }, [cities]);
+
+  useLayoutEffect(() => {
+    const footprints = footprintsRef.current;
+    const nav = sloganNavRef.current;
+    const page = footprints?.closest(".ffj-bookshelf-page");
+    if (!footprints || !nav || !page) return;
+
+    const syncSloganNavWithFootprints = () => {
+      const footprintsRect = footprints.getBoundingClientRect();
+      const pageRect = page.getBoundingClientRect();
+      const navHeight = nav.offsetHeight || 0;
+      const centerY =
+        footprintsRect.top - pageRect.top + footprintsRect.height / 2;
+      page.style.setProperty(
+        "--ffj-bookshelf-footprints-center-top",
+        `${centerY - navHeight / 2}px`,
+      );
+    };
+
+    syncSloganNavWithFootprints();
+    const ro = new ResizeObserver(() => {
+      requestAnimationFrame(syncSloganNavWithFootprints);
+    });
+    ro.observe(footprints);
+    ro.observe(nav);
+    ro.observe(page);
+    window.addEventListener("resize", syncSloganNavWithFootprints, {
+      passive: true,
+    });
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", syncSloganNavWithFootprints);
+      page.style.removeProperty("--ffj-bookshelf-footprints-center-top");
     };
   }, [cities]);
 
@@ -493,6 +547,37 @@ export default function Bookshelf() {
           />
         </section>
       </div>
+      <button
+        ref={sloganNavRef}
+        type="button"
+        className="ffj-bookshelf-slogan-nav ffj-bookshelf-slogan-nav--prev"
+        aria-label="上一本书"
+        disabled={!canScrollPrev}
+        onClick={() => scrollAdjacentBook(-1)}
+      >
+        <img
+          className="ffj-bookshelf-slogan-nav-icon"
+          src={leftArrowStickerUrl}
+          alt=""
+          decoding="async"
+          draggable={false}
+        />
+      </button>
+      <button
+        type="button"
+        className="ffj-bookshelf-slogan-nav ffj-bookshelf-slogan-nav--next"
+        aria-label="下一本书"
+        disabled={!canScrollNext}
+        onClick={() => scrollAdjacentBook(1)}
+      >
+        <img
+          className="ffj-bookshelf-slogan-nav-icon"
+          src={rightArrowStickerUrl}
+          alt=""
+          decoding="async"
+          draggable={false}
+        />
+      </button>
       <div className="ffj-bookshelf-scroll" ref={scrollRef}>
         <ul
           ref={trackRef}
@@ -529,7 +614,12 @@ export default function Bookshelf() {
           ))}
         </ul>
       </div>
-      <div className="ffj-bookshelf-footprints" aria-label="书架脚印导航" role="navigation">
+      <div
+        ref={footprintsRef}
+        className="ffj-bookshelf-footprints"
+        aria-label="书架脚印导航"
+        role="navigation"
+      >
         {cities.map((city, index) => (
           <button
             type="button"

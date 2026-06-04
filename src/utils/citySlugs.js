@@ -1,5 +1,5 @@
 /**
- * PRD 12 城 URL 段（小写 + 连字符），与 geojson 文件名、global.css `html[data-city]` 一致。
+ * PRD 13 城 URL 段（小写 + 连字符），与 geojson 文件名、global.css `html[data-city]` 一致。
  * 书架横向成书顺序与本数组顺序相同（`getBookshelfCities` 使用 `CITY_SLUGS.map`）。
  */
 export const CITY_SLUGS = Object.freeze([

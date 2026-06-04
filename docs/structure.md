@@ -1,5 +1,16 @@
 # 项目资源结构（节选）
 
+## 页面级贴纸（`stickers/page/`）
+
+| 文件 | 用途 | 代码引用 |
+| ---- | ---- | -------- |
+| `bookshelf-back-strip.webp` | 城市详情顶栏「返回书架」图标：书架视口书脊条透明底裁切（168×52） | `BookshelfBackButton.jsx` |
+| `earth.svg` | 书架 Slogan 旁地球 | `Bookshelf.jsx` |
+| `footprints.svg` | 书架底部脚印导航 | `Bookshelf.jsx` |
+| `click.svg` / `location.svg` / `paper-airplane.svg` / `spoon-and-fork.svg` 等 | 城市详情页光标、装饰 | `CityDetail.jsx` 等 |
+
+**维护 `bookshelf-back-strip.webp`**：在 dev 服务运行时用 `node scripts/generate-bookshelf-back-strip.mjs`（截取进站默认居中后**可见书脊**、抠近白底、输出 168×52 WebP；与 `Bookshelf.jsx` 的 `scrollLeft = max/2` 一致）。书架增删城市或默认视口变化后应重跑。备份第一版见同目录 `bookshelf-back-strip.v1.webp`。顶栏展示尺寸见 `global.css` `.ffj-city-bookshelf-back-btn`（高 27px、宽 `calc(27px * 168 / 52)`）。
+
 ## 城市书脊贴纸
 
 - 目录：`src/assets/stickers/cities/`
@@ -10,6 +21,7 @@
 | slug           | 贴纸语义 | 文件名                                 |
 | -------------- | ---- | ----------------------------------- |
 | `shanghai`     | 东方明珠 | `shanghai-oriental-pearl-tower.svg` |
+| `nanjing`      | 梅花   | `nanjing-plum-blossom.svg`          |
 | `suzhou`       | 虎丘塔  | `suzhou-huqiuta.svg`                |
 | `qingdao`      | 啤酒杯  | `qingdao-beer.svg`                  |
 | `chongqing`    | 辣椒   | `chongqing-chili.svg`               |

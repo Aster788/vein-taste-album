@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import gcoord from "gcoord";
+import { CITY_SLUGS, isChinaCitySlug } from "../src/utils/citySlugs.js";
 
 const ROOT = process.cwd();
 const GEOJSON_DIR = path.join(ROOT, "src", "assets", "geojson");
@@ -8,20 +9,12 @@ const RESTAURANTS_PATH = path.join(ROOT, "src", "data", "restaurants.json");
 const REPORT_JSON_PATH = path.join(ROOT, "docs", "boundary-offset-audit-report.json");
 const REPORT_MD_PATH = path.join(ROOT, "docs", "boundary-offset-audit-report.md");
 
-const CITY_CONFIG = [
-  { slug: "shanghai", cityEn: "shanghai", isChina: true },
-  { slug: "qingdao", cityEn: "qingdao", isChina: true },
-  { slug: "chongqing", cityEn: "chongqing", isChina: true },
-  { slug: "guangzhou", cityEn: "guangzhou", isChina: true },
-  { slug: "fuzhou", cityEn: "fuzhou", isChina: true },
-  { slug: "quanzhou", cityEn: "quanzhou", isChina: true },
-  { slug: "xiamen", cityEn: "xiamen", isChina: true },
-  { slug: "dalian", cityEn: "dalian", isChina: true },
-  { slug: "suzhou", cityEn: "suzhou", isChina: true },
-  { slug: "jeju", cityEn: "jeju", isChina: false },
-  { slug: "kuala-lumpur", cityEn: "kuala-lumpur", isChina: false },
-  { slug: "melaka", cityEn: "melaka", isChina: false },
-];
+/** 与书架 `CITY_SLUGS` 一致，避免审计城市清单与产品脱节。 */
+const CITY_CONFIG = CITY_SLUGS.map((slug) => ({
+  slug,
+  cityEn: slug,
+  isChina: isChinaCitySlug(slug),
+}));
 
 function parseArgs(argv) {
   const args = {
@@ -387,7 +380,7 @@ function main() {
 
   fs.writeFileSync(REPORT_JSON_PATH, `${JSON.stringify(summary, null, 2)}\n`, "utf8");
 
-  const md = `# 10城行政边界偏移审计报告\n\n${toMdTable(reportRows)}\n\n## 说明\n- A/B 指标定义：\n  - A：原始 GeoJSON 边界\n  - B：中国城市边界执行 GCJ->WGS 转换后\n- 点样本不足（N/A）说明该城当前 restaurants.json 缺少可用经纬度。\n- meanGcjToWgsShiftMeters 表示若把该城边界从 GCJ 转到 WGS，平均坐标位移量（米），用于估计潜在系统偏移规模。\n`;
+  const md = `# ${reportRows.length}城行政边界偏移审计报告\n\n${toMdTable(reportRows)}\n\n## 说明\n- A/B 指标定义：\n  - A：原始 GeoJSON 边界\n  - B：中国城市边界执行 GCJ->WGS 转换后\n- 点样本不足（N/A）说明该城当前 restaurants.json 缺少可用经纬度。\n- meanGcjToWgsShiftMeters 表示若把该城边界从 GCJ 转到 WGS，平均坐标位移量（米），用于估计潜在系统偏移规模。\n`;
   fs.writeFileSync(REPORT_MD_PATH, md, "utf8");
 
   console.log(`Wrote JSON report: ${REPORT_JSON_PATH}`);
