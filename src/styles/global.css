@@ -211,6 +211,47 @@ html[data-city="melaka"],
   letter-spacing: 0.01em;
 }
 
+.ffj-city-detail-top-actions {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.ffj-city-bookshelf-back-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  /* 书脊条 168×52，高 27px 时宽按比例 ≈ 87.23px */
+  width: calc(27px * 168 / 52);
+  height: 27px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0.2rem;
+  background: transparent;
+  cursor: pointer;
+}
+
+.ffj-city-bookshelf-back-btn__strip {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  pointer-events: none;
+}
+
+.ffj-city-bookshelf-back-btn:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--city-primary) 65%, transparent);
+  outline-offset: 2px;
+}
+
+.ffj-city-bookshelf-back-btn:hover .ffj-city-bookshelf-back-btn__strip {
+  filter: brightness(1.06);
+}
+
 .ffj-city-locale-toggle {
   flex-shrink: 0;
   display: inline-flex;
@@ -2054,6 +2095,7 @@ html.is-safari-webkit .ffj-photo-polaroid-image.is-transitioning {
 
 .ffj-bookshelf-slogan-region {
   /* Slogan 再压缩，把竖向空间让给书架（约 12% 视口） */
+  position: relative;
   flex: 0 0 12%;
   min-height: clamp(3.25rem, 7dvh, 5.5rem);
   max-height: 16%;
@@ -2183,7 +2225,7 @@ html.is-safari-webkit .ffj-photo-polaroid-image.is-transitioning {
 .ffj-bookshelf-slogan-cn {
   position: relative;
   margin: 0;
-  color: #545d67;
+  color: var(--ffj-bookshelf-slogan-ink);
   font-family: var(--font-handwriting);
   font-size: var(--slogan-cn);
   line-height: 1.32;
@@ -2208,7 +2250,7 @@ html.is-safari-webkit .ffj-photo-polaroid-image.is-transitioning {
   margin: 0.28rem 0 0;
   max-width: min(38rem, 88vw);
   padding-inline: 0.25rem;
-  color: #545d67;
+  color: var(--ffj-bookshelf-slogan-ink);
   font-family: var(--font-handwriting);
   font-size: calc(var(--slogan-cn) * 0.6);
   line-height: 1.42;
@@ -2294,7 +2336,6 @@ html.is-safari-webkit .ffj-photo-polaroid-image.is-transitioning {
 .ffj-bookshelf-scroll {
   /* 由 Bookshelf.jsx 按几何测量写入，补足 rotateX 后画出滚动区上沿的像素量 */
   --ffj-bookshelf-top-bleed: 0px;
-  /* 占满 Slogan 以下剩余高度（约 84–88% 量级，再扣 main 的 padding） */
   flex: 1 1 auto;
   min-height: 0;
   display: flex;
