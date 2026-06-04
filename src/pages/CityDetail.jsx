@@ -28,6 +28,8 @@ import clickCursorStickerUrl from "../assets/stickers/page/click.svg?url";
 import paperAirplaneCursorStickerUrl from "../assets/stickers/page/paper-airplane.svg?url";
 import spoonAndForkStickerUrl from "../assets/stickers/page/spoon-and-fork.svg?url";
 import locationStickerUrl from "../assets/stickers/page/location.svg?url";
+import thumbsUpStickerUrl from "../assets/stickers/page/thumbs-up.svg?url";
+import thumbsDownStickerUrl from "../assets/stickers/page/thumbs-down.svg?url";
 import {
   cityEnFromBookshelfSlug,
   getMappableRestaurantsByCity,
@@ -44,6 +46,7 @@ import {
   getCuisineGroupRepresentativeBranch,
   getCuisineGroupSortKey,
   getCuisineStoreGroupsByCity,
+  getStoreRecommend,
 } from "../utils/storeGroups.js";
 import { comparePinyinWithNumericRule, normalizeSortText } from "../utils/sortText.js";
 import DishInfo from "../components/DishInfo.jsx";
@@ -1159,6 +1162,7 @@ export default function CityDetail() {
                     {cuisineStoreGroups.map((group, index) => {
                       const isActive = selectedCuisineGroup === group;
                       const lines = getCuisineDisplayNameLines(group);
+                      const recommend = getStoreRecommend(group);
                       return (
                         <button
                           key={`${group.city_en}-${group.store_slug ?? index}`}
@@ -1182,7 +1186,27 @@ export default function CityDetail() {
                                   lineIndex > 0 ? "is-secondary" : ""
                                 }`}
                               >
-                                {line}
+                                <span className="ffj-store-playlist-item-name-text">
+                                  {line}
+                                </span>
+                                {lineIndex === 0 && recommend === "yes" ? (
+                                  <span
+                                    className="ffj-store-recommend-marker ffj-store-recommend-marker--up"
+                                    aria-hidden="true"
+                                    style={{
+                                      "--ffj-recommend-marker-mask": `url("${thumbsUpStickerUrl}")`,
+                                    }}
+                                  />
+                                ) : null}
+                                {lineIndex === 0 && recommend === "no" ? (
+                                  <span
+                                    className="ffj-store-recommend-marker ffj-store-recommend-marker--down"
+                                    aria-hidden="true"
+                                    style={{
+                                      "--ffj-recommend-marker-mask": `url("${thumbsDownStickerUrl}")`,
+                                    }}
+                                  />
+                                ) : null}
                               </span>
                             ))}
                           </span>

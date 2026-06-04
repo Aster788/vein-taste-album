@@ -31,7 +31,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "重庆",
@@ -65,7 +66,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "重庆",
@@ -99,7 +101,8 @@
     "score_queue": 3,
     "score_packaging": 3,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "重庆",
@@ -133,7 +136,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "重庆",
@@ -167,7 +171,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "重庆",
@@ -201,7 +206,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "重庆",
@@ -235,7 +241,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "重庆",
@@ -269,7 +276,8 @@
     "score_queue": null,
     "score_packaging": 4,
     "score_delivery": 3,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "重庆",
@@ -303,7 +311,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "重庆",
@@ -337,7 +346,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "重庆",
@@ -371,7 +381,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "重庆",
@@ -405,7 +416,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "重庆",
@@ -439,7 +451,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "重庆",
@@ -473,7 +486,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "重庆",
@@ -507,7 +521,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "重庆",
@@ -541,7 +556,8 @@
     "score_queue": null,
     "score_packaging": 4,
     "score_delivery": 3,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "重庆",
@@ -575,7 +591,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "重庆",
@@ -609,7 +626,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "重庆",
@@ -643,7 +661,8 @@
     "score_queue": 4,
     "score_packaging": 2,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "重庆",
@@ -677,7 +696,8 @@
     "score_queue": 4,
     "score_packaging": 3,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "重庆",
@@ -711,7 +731,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "大连",
@@ -745,7 +766,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "大连",
@@ -779,7 +801,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "大连",
@@ -813,7 +836,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "大连",
@@ -847,7 +871,8 @@
     "score_queue": 4,
     "score_packaging": 5,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "大连",
@@ -881,7 +906,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "大连",
@@ -915,7 +941,8 @@
     "score_queue": 4,
     "score_packaging": 1,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "大连",
@@ -949,7 +976,8 @@
     "score_queue": 1,
     "score_packaging": 2,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "大连",
@@ -983,7 +1011,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "大连",
@@ -1017,7 +1046,8 @@
     "score_queue": null,
     "score_packaging": 4,
     "score_delivery": 3,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "大连",
@@ -1051,7 +1081,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 4,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "大连",
@@ -1085,7 +1116,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "福州",
@@ -1119,7 +1151,8 @@
     "score_queue": 5,
     "score_packaging": 2,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": "yes"
   },
   {
     "city_zh": "福州",
@@ -1153,7 +1186,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "福州",
@@ -1187,7 +1221,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "福州",
@@ -1221,7 +1256,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "福州",
@@ -1255,7 +1291,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "福州",
@@ -1289,7 +1326,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "福州",
@@ -1323,7 +1361,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "福州",
@@ -1357,7 +1396,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "广州",
@@ -1391,7 +1431,8 @@
     "score_queue": 1,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "广州",
@@ -1425,7 +1466,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": "yes"
   },
   {
     "city_zh": "广州",
@@ -1459,7 +1501,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "广州",
@@ -1493,7 +1536,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "广州",
@@ -1527,7 +1571,8 @@
     "score_queue": 4,
     "score_packaging": 3,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "广州",
@@ -1561,7 +1606,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "广州",
@@ -1595,7 +1641,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "济州岛",
@@ -1629,7 +1676,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": "yes"
   },
   {
     "city_zh": "济州岛",
@@ -1663,7 +1711,8 @@
     "score_queue": 1,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "济州岛",
@@ -1697,7 +1746,8 @@
     "score_queue": 2,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "济州岛",
@@ -1731,7 +1781,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 1
+    "score_personal": 1,
+    "recommend": null
   },
   {
     "city_zh": "济州岛",
@@ -1765,7 +1816,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "济州岛",
@@ -1799,7 +1851,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "济州岛",
@@ -1833,7 +1886,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "济州岛",
@@ -1867,7 +1921,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 1
+    "score_personal": 1,
+    "recommend": "no"
   },
   {
     "city_zh": "济州岛",
@@ -1901,7 +1956,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": "yes"
   },
   {
     "city_zh": "济州岛",
@@ -1935,7 +1991,8 @@
     "score_queue": 2,
     "score_packaging": 3,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "济州岛",
@@ -1969,7 +2026,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": "no"
   },
   {
     "city_zh": "济州岛",
@@ -2003,7 +2061,8 @@
     "score_queue": 2,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "济州岛",
@@ -2037,7 +2096,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "济州岛",
@@ -2071,7 +2131,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "济州岛",
@@ -2105,7 +2166,8 @@
     "score_queue": 1,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "济州岛",
@@ -2139,7 +2201,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "济州岛",
@@ -2173,7 +2236,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "吉隆坡",
@@ -2207,7 +2271,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "吉隆坡",
@@ -2241,7 +2306,8 @@
     "score_queue": 4,
     "score_packaging": 3,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "吉隆坡",
@@ -2275,7 +2341,8 @@
     "score_queue": 1,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "吉隆坡",
@@ -2309,7 +2376,8 @@
     "score_queue": 2,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "吉隆坡",
@@ -2343,7 +2411,8 @@
     "score_queue": 2,
     "score_packaging": 3,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "吉隆坡",
@@ -2377,7 +2446,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "吉隆坡",
@@ -2411,7 +2481,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "马六甲",
@@ -2445,7 +2516,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": "no"
   },
   {
     "city_zh": "马六甲",
@@ -2479,7 +2551,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "青岛",
@@ -2513,7 +2586,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "青岛",
@@ -2547,7 +2621,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "青岛",
@@ -2581,7 +2656,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "青岛",
@@ -2615,7 +2691,8 @@
     "score_queue": 2,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "青岛",
@@ -2649,7 +2726,8 @@
     "score_queue": 5,
     "score_packaging": 2,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "青岛",
@@ -2683,7 +2761,8 @@
     "score_queue": 5,
     "score_packaging": 4,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "青岛",
@@ -2717,7 +2796,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "泉州",
@@ -2751,7 +2831,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "泉州",
@@ -2785,7 +2866,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "泉州",
@@ -2819,7 +2901,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "no"
   },
   {
     "city_zh": "泉州",
@@ -2853,7 +2936,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "泉州",
@@ -2887,7 +2971,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "泉州",
@@ -2921,7 +3006,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 1
+    "score_personal": 1,
+    "recommend": "no"
   },
   {
     "city_zh": "泉州",
@@ -2955,7 +3041,8 @@
     "score_queue": 4,
     "score_packaging": 2,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -2989,7 +3076,8 @@
     "score_queue": 1,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -3023,7 +3111,8 @@
     "score_queue": 1,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -3057,7 +3146,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -3091,7 +3181,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -3125,7 +3216,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -3159,7 +3251,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -3193,7 +3286,8 @@
     "score_queue": 4,
     "score_packaging": 3,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -3227,7 +3321,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -3261,7 +3356,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -3295,7 +3391,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -3329,7 +3426,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": "no"
   },
   {
     "city_zh": "上海",
@@ -3363,7 +3461,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -3397,7 +3496,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -3431,7 +3531,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -3465,7 +3566,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -3499,7 +3601,8 @@
     "score_queue": 1,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -3533,7 +3636,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -3567,7 +3671,8 @@
     "score_queue": 2,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -3601,7 +3706,8 @@
     "score_queue": 3,
     "score_packaging": 3,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -3635,7 +3741,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -3669,7 +3776,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -3703,7 +3811,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -3737,7 +3846,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -3771,7 +3881,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -3805,7 +3916,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -3839,7 +3951,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -3873,7 +3986,8 @@
     "score_queue": 5,
     "score_packaging": 3,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -3907,7 +4021,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -3941,7 +4056,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 1
+    "score_personal": 1,
+    "recommend": "no"
   },
   {
     "city_zh": "上海",
@@ -3975,7 +4091,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": "no"
   },
   {
     "city_zh": "上海",
@@ -4009,7 +4126,8 @@
     "score_queue": null,
     "score_packaging": 4,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -4043,7 +4161,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -4077,7 +4196,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -4111,7 +4231,8 @@
     "score_queue": 2,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -4145,7 +4266,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -4179,7 +4301,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -4213,7 +4336,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -4247,7 +4371,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -4281,7 +4406,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -4315,7 +4441,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -4349,7 +4476,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -4383,7 +4511,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -4417,7 +4546,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -4451,7 +4581,8 @@
     "score_queue": 4,
     "score_packaging": 4,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -4485,7 +4616,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -4519,7 +4651,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -4553,7 +4686,8 @@
     "score_queue": 4,
     "score_packaging": 3,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -4587,7 +4721,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -4621,7 +4756,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -4655,7 +4791,8 @@
     "score_queue": null,
     "score_packaging": 4,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -4689,7 +4826,8 @@
     "score_queue": 5,
     "score_packaging": 3,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -4723,7 +4861,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -4757,7 +4896,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -4791,7 +4931,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -4825,7 +4966,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -4859,7 +5001,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -4893,7 +5036,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -4927,7 +5071,8 @@
     "score_queue": 1,
     "score_packaging": 3,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -4961,7 +5106,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -4995,7 +5141,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -5029,7 +5176,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -5063,7 +5211,8 @@
     "score_queue": 3,
     "score_packaging": 1,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -5097,7 +5246,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -5131,7 +5281,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -5165,7 +5316,8 @@
     "score_queue": 5,
     "score_packaging": 2,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -5199,7 +5351,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -5233,7 +5386,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -5267,7 +5421,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -5301,7 +5456,8 @@
     "score_queue": 1,
     "score_packaging": 1,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -5335,7 +5491,8 @@
     "score_queue": 5,
     "score_packaging": 2,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -5369,7 +5526,8 @@
     "score_queue": 4,
     "score_packaging": 1,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -5403,7 +5561,8 @@
     "score_queue": null,
     "score_packaging": 4,
     "score_delivery": 2,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": "no"
   },
   {
     "city_zh": "上海",
@@ -5437,7 +5596,8 @@
     "score_queue": null,
     "score_packaging": 4,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -5471,7 +5631,8 @@
     "score_queue": 3,
     "score_packaging": 3,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -5505,7 +5666,8 @@
     "score_queue": 2,
     "score_packaging": 4,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -5539,7 +5701,8 @@
     "score_queue": 1,
     "score_packaging": 2,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -5573,7 +5736,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -5607,7 +5771,8 @@
     "score_queue": 1,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -5641,7 +5806,8 @@
     "score_queue": 1,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -5675,7 +5841,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -5709,7 +5876,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -5743,7 +5911,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -5777,7 +5946,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -5811,7 +5981,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -5845,7 +6016,8 @@
     "score_queue": 4,
     "score_packaging": 4,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -5879,7 +6051,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -5913,7 +6086,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -5947,7 +6121,8 @@
     "score_queue": 4,
     "score_packaging": 4,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -5981,7 +6156,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6015,7 +6191,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -6049,7 +6226,8 @@
     "score_queue": 2,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6083,7 +6261,8 @@
     "score_queue": 5,
     "score_packaging": 2,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6117,7 +6296,8 @@
     "score_queue": 5,
     "score_packaging": 3,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6151,7 +6331,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6185,7 +6366,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -6219,7 +6401,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6253,7 +6436,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -6287,7 +6471,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -6321,7 +6506,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6355,7 +6541,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -6389,7 +6576,8 @@
     "score_queue": null,
     "score_packaging": 4,
     "score_delivery": 3,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6423,7 +6611,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6457,7 +6646,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6491,7 +6681,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6525,7 +6716,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -6559,7 +6751,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -6593,7 +6786,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -6627,7 +6821,8 @@
     "score_queue": 2,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6661,7 +6856,8 @@
     "score_queue": 2,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6695,7 +6891,8 @@
     "score_queue": null,
     "score_packaging": 2,
     "score_delivery": 3,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6729,7 +6926,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6763,7 +6961,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6797,7 +6996,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6831,7 +7031,8 @@
     "score_queue": 5,
     "score_packaging": 2,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6865,7 +7066,8 @@
     "score_queue": 4,
     "score_packaging": 2,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6899,7 +7101,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -6933,7 +7136,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -6967,7 +7171,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -7001,7 +7206,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7035,7 +7241,8 @@
     "score_queue": 2,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -7069,7 +7276,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7103,7 +7311,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7137,7 +7346,8 @@
     "score_queue": 4,
     "score_packaging": 4,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7171,7 +7381,8 @@
     "score_queue": null,
     "score_packaging": 4,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7205,7 +7416,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -7239,7 +7451,8 @@
     "score_queue": null,
     "score_packaging": 2,
     "score_delivery": 3,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -7273,7 +7486,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -7307,7 +7521,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 1
+    "score_personal": 1,
+    "recommend": "no"
   },
   {
     "city_zh": "上海",
@@ -7341,7 +7556,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7375,7 +7591,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7409,7 +7626,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7443,7 +7661,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7477,7 +7696,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7511,7 +7731,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -7545,7 +7766,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7579,7 +7801,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7613,7 +7836,8 @@
     "score_queue": 2,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -7647,7 +7871,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7681,7 +7906,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7715,7 +7941,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": "no"
   },
   {
     "city_zh": "上海",
@@ -7749,7 +7976,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7783,7 +8011,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7817,7 +8046,8 @@
     "score_queue": 3,
     "score_packaging": 3,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7851,7 +8081,8 @@
     "score_queue": null,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7885,7 +8116,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7919,7 +8151,8 @@
     "score_queue": null,
     "score_packaging": 4,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7953,7 +8186,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -7987,7 +8221,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8021,7 +8256,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8055,7 +8291,8 @@
     "score_queue": null,
     "score_packaging": 4,
     "score_delivery": 2,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -8089,7 +8326,8 @@
     "score_queue": 4,
     "score_packaging": 4,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8123,7 +8361,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": "no"
   },
   {
     "city_zh": "上海",
@@ -8157,7 +8396,8 @@
     "score_queue": null,
     "score_packaging": 2,
     "score_delivery": 2,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8191,7 +8431,8 @@
     "score_queue": 3,
     "score_packaging": 3,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8225,7 +8466,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8259,7 +8501,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8293,7 +8536,8 @@
     "score_queue": 3,
     "score_packaging": 4,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -8327,7 +8571,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8361,7 +8606,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8395,7 +8641,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -8429,7 +8676,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -8463,7 +8711,8 @@
     "score_queue": 2,
     "score_packaging": 4,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8497,7 +8746,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8531,7 +8781,8 @@
     "score_queue": 5,
     "score_packaging": 3,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8565,7 +8816,8 @@
     "score_queue": 2,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8599,7 +8851,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8633,7 +8886,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "上海",
@@ -8667,7 +8921,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8701,7 +8956,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8735,7 +8991,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8769,7 +9026,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8803,7 +9061,8 @@
     "score_queue": 2,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8837,7 +9096,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8871,7 +9131,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "上海",
@@ -8905,7 +9166,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": "yes"
   },
   {
     "city_zh": "苏州",
@@ -8939,7 +9201,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "苏州",
@@ -8973,7 +9236,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "苏州",
@@ -9007,7 +9271,8 @@
     "score_queue": 5,
     "score_packaging": 2,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "苏州",
@@ -9041,7 +9306,8 @@
     "score_queue": 2,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "苏州",
@@ -9075,7 +9341,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "苏州",
@@ -9109,7 +9376,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "苏州",
@@ -9143,7 +9411,8 @@
     "score_queue": 2,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 5
+    "score_personal": 5,
+    "recommend": null
   },
   {
     "city_zh": "苏州",
@@ -9177,7 +9446,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "苏州",
@@ -9211,7 +9481,8 @@
     "score_queue": null,
     "score_packaging": 3,
     "score_delivery": 3,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "苏州",
@@ -9245,7 +9516,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": "no"
   },
   {
     "city_zh": "苏州",
@@ -9279,7 +9551,8 @@
     "score_queue": null,
     "score_packaging": 2,
     "score_delivery": 3,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "厦门",
@@ -9313,7 +9586,8 @@
     "score_queue": null,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": null
+    "score_personal": null,
+    "recommend": null
   },
   {
     "city_zh": "厦门",
@@ -9347,7 +9621,8 @@
     "score_queue": 5,
     "score_packaging": 2,
     "score_delivery": null,
-    "score_personal": 2
+    "score_personal": 2,
+    "recommend": null
   },
   {
     "city_zh": "厦门",
@@ -9381,7 +9656,8 @@
     "score_queue": null,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": null
+    "score_personal": null,
+    "recommend": null
   },
   {
     "city_zh": "厦门",
@@ -9415,7 +9691,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": null
   },
   {
     "city_zh": "南京",
@@ -9449,7 +9726,8 @@
     "score_queue": 2,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "南京",
@@ -9483,7 +9761,8 @@
     "score_queue": 2,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "南京",
@@ -9517,7 +9796,8 @@
     "score_queue": 3,
     "score_packaging": 3,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "南京",
@@ -9551,7 +9831,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "南京",
@@ -9585,7 +9866,8 @@
     "score_queue": 3,
     "score_packaging": 3,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "南京",
@@ -9619,7 +9901,8 @@
     "score_queue": 3,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 4
+    "score_personal": 4,
+    "recommend": "yes"
   },
   {
     "city_zh": "南京",
@@ -9653,7 +9936,8 @@
     "score_queue": 4,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "南京",
@@ -9687,7 +9971,8 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   },
   {
     "city_zh": "南京",
@@ -9721,6 +10006,7 @@
     "score_queue": 5,
     "score_packaging": null,
     "score_delivery": null,
-    "score_personal": 3
+    "score_personal": 3,
+    "recommend": null
   }
 ]

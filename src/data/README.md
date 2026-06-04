@@ -69,6 +69,7 @@ Slug/scope hygiene rules:
 Optional columns:
 
 - all other restaurant columns (for example: `city_en`, `city_zh`, `cuisine_zh`, `cuisine_en`, `price_per_person`, `hours`, `phone`, `map_url`)
+- `recommend`: `yes` (recommended — thumbs-up in store list), `no` (not recommended — thumbs-down), or empty / `null` (no marker). Use the same value for every `branch` row that shares a `store_slug`.
 
 ### Cuisine fields (`cuisine_zh` / `cuisine_en`)
 

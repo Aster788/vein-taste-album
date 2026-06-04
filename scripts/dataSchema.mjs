@@ -31,6 +31,7 @@ export const RESTAURANTS_HEADERS = Object.freeze([
   "score_packaging",
   "score_delivery",
   "score_personal",
+  "recommend",
 ]);
 
 export const DISHES_HEADERS = Object.freeze([

@@ -1506,15 +1506,41 @@ html[data-city="melaka"],
 }
 
 .ffj-store-playlist-item-name-line {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
   min-width: 0;
   overflow: visible;
-  text-overflow: clip;
-  white-space: nowrap;
   font-family: var(--font-body-zh);
   font-size: 0.92rem;
   line-height: 1.36;
   color: color-mix(in srgb, var(--color-text) 90%, var(--city-primary));
+}
+
+.ffj-store-playlist-item-name-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ffj-store-recommend-marker {
+  flex-shrink: 0;
+  width: 1.05em;
+  height: 0.95em;
+  background: var(--city-primary);
+  -webkit-mask-image: var(--ffj-recommend-marker-mask);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-image: var(--ffj-recommend-marker-mask);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+}
+
+.ffj-store-playlist-item.is-active .ffj-store-recommend-marker {
+  filter: drop-shadow(0 0 0.2px color-mix(in srgb, var(--city-primary) 85%, black));
 }
 
 .ffj-store-playlist-item-name-line.is-secondary {

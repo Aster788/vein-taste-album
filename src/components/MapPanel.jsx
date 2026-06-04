@@ -49,7 +49,7 @@ function isFatalMapError(event) {
   );
   if (status === 401 || status === 403) return true;
   if (message === "") return false;
-  return /unauthorized|forbidden|invalid.*token|access token|could not load style|style.*failed|failed to load/i.test(
+  return /unauthorized|forbidden|invalid.*token|access token|not authorized|could not load style|style.*failed/i.test(
     message,
   );
 }
@@ -425,6 +425,27 @@ function buildRestaurantPointsGeoJson(citySlug) {
     type: "FeatureCollection",
     features,
   };
+}
+
+function filterRestaurantGeoJsonByCuisine(geoJson, cuisineEn) {
+  const normalized = String(cuisineEn ?? "").trim();
+  if (normalized === "") return geoJson;
+  return {
+    ...geoJson,
+    features: geoJson.features.filter(
+      (feature) =>
+        String(feature.properties?.cuisine_en ?? "").trim() === normalized,
+    ),
+  };
+}
+
+function layoutMatchesActiveCuisine(layout, cuisineEn) {
+  const normalized = String(cuisineEn ?? "").trim();
+  if (normalized === "") return true;
+  const key = String(
+    layout.selectedStore?.cuisineEn ?? layout.selectedStore?.cuisine_en ?? "",
+  ).trim();
+  return key === normalized;
 }
 
 function pickRestaurantDisplayName(properties) {
@@ -1047,6 +1068,21 @@ export default function MapPanel({
         const message = String(
           /** @type {{ error?: { message?: string } }} */ (event)?.error?.message ?? "",
         ).trim();
+        const status = Number(
+          /** @type {{ error?: { status?: number }, status?: number }} */ (event)?.error
+            ?.status ??
+            /** @type {{ status?: number }} */ (event)?.status ??
+            0,
+        );
+        if (status === 401 || status === 403) {
+          setMapInitError(
+            pickUiText(
+              "Mapbox Token 无效或无权访问（请在 .env.local 配置有效的 VITE_MAPBOX_TOKEN，须为 pk. 开头的公开 Token）。",
+              "Mapbox token is invalid or unauthorized (set a valid public pk. token in .env.local as VITE_MAPBOX_TOKEN).",
+            ),
+          );
+          return;
+        }
         setMapInitError(message || "Mapbox 初始化失败，请检查 Token 与网络连接。");
       });
       mapRef.current = map;
@@ -1195,6 +1231,10 @@ export default function MapPanel({
     if (!map || !isMapReady) return;
 
     const pointGeoJson = buildRestaurantPointsGeoJson(citySlug);
+    const visibleGeoJson = filterRestaurantGeoJsonByCuisine(
+      pointGeoJson,
+      activeCuisine,
+    );
     const { primary: cityPrimaryColor } = getCityMapLineColors(citySlug);
     const normalizedCuisine = String(activeCuisine ?? "").trim();
     setRestaurantTagLayouts([]);
@@ -1202,7 +1242,7 @@ export default function MapPanel({
 
     map.addSource(RESTAURANT_POINTS_SOURCE_ID, {
       type: "geojson",
-      data: pointGeoJson,
+      data: visibleGeoJson,
     });
     map.addLayer({
       id: RESTAURANT_POINTS_LAYER_ID,
@@ -1210,24 +1250,8 @@ export default function MapPanel({
       source: RESTAURANT_POINTS_SOURCE_ID,
       paint: {
         "circle-radius": ["interpolate", ["linear"], ["zoom"], 8, 3.2, 11, 4.7, 14, 6.2],
-        "circle-color":
-          normalizedCuisine === ""
-            ? cityPrimaryColor
-            : [
-                "case",
-                ["==", ["coalesce", ["get", "cuisine_en"], ""], normalizedCuisine],
-                cityPrimaryColor,
-                "rgba(120, 108, 96, 0.34)",
-              ],
-        "circle-opacity":
-          normalizedCuisine === ""
-            ? 1
-            : [
-                "case",
-                ["==", ["coalesce", ["get", "cuisine_en"], ""], normalizedCuisine],
-                1,
-                0.56,
-              ],
+        "circle-color": cityPrimaryColor,
+        "circle-opacity": 1,
         "circle-stroke-color": "rgba(247, 243, 238, 0.96)",
         "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 8, 1.75, 11, 2.2, 14, 2.6],
       },
@@ -1250,7 +1274,7 @@ export default function MapPanel({
       if (frameId !== 0) return;
       frameId = requestAnimationFrame(() => {
         frameId = 0;
-        const baseLayouts = buildRestaurantTagLayouts(map, pointGeoJson);
+        const baseLayouts = buildRestaurantTagLayouts(map, visibleGeoJson);
         const nextLayouts = growRestaurantTagLayouts(
           baseLayouts,
           map.getZoom(),
@@ -1264,15 +1288,9 @@ export default function MapPanel({
         const filteredLayouts =
           normalizedCuisine === ""
             ? nextLayouts
-            : nextLayouts.map((layout) => ({
-                ...layout,
-                isDimmed:
-                  String(
-                    layout.selectedStore?.cuisineEn ??
-                      layout.selectedStore?.cuisine_en ??
-                      "",
-                  ).trim() !== normalizedCuisine,
-              }));
+            : nextLayouts.filter((layout) =>
+                layoutMatchesActiveCuisine(layout, normalizedCuisine),
+              );
         setRestaurantTagLayouts(filteredLayouts);
       });
     };
@@ -1331,7 +1349,7 @@ export default function MapPanel({
           <button
             key={layout.key}
             type="button"
-            className={`ffj-map-tag-bubble ${layout.isDimmed ? "is-dimmed" : ""}`}
+            className="ffj-map-tag-bubble"
             onClick={() => onSelectStore?.(layout.selectedStore)}
             onMouseEnter={() => onInteractiveHoverChange?.(true)}
             onMouseLeave={() => onInteractiveHoverChange?.(false)}

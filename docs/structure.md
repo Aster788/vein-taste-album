@@ -8,6 +8,7 @@
 | `earth.svg` | 书架 Slogan 旁地球 | `Bookshelf.jsx` |
 | `footprints.svg` | 书架底部脚印导航 | `Bookshelf.jsx` |
 | `click.svg` / `location.svg` / `paper-airplane.svg` / `spoon-and-fork.svg` 等 | 城市详情页光标、装饰 | `CityDetail.jsx` 等 |
+| `thumbs-up.svg` / `thumbs-down.svg` | 店铺列表首行推荐 / 不推荐标识（运行时 `mask` + `--city-primary` 着色） | `CityDetail.jsx` |
 
 **维护 `bookshelf-back-strip.webp`**：在 dev 服务运行时用 `node scripts/generate-bookshelf-back-strip.mjs`（截取进站默认居中后**可见书脊**、抠近白底、输出 168×52 WebP；与 `Bookshelf.jsx` 的 `scrollLeft = max/2` 一致）。书架增删城市或默认视口变化后应重跑。备份第一版见同目录 `bookshelf-back-strip.v1.webp`。顶栏展示尺寸见 `global.css` `.ffj-city-bookshelf-back-btn`（高 27px、宽 `calc(27px * 168 / 52)`）。
 
