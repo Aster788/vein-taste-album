@@ -59,8 +59,8 @@ rclone sync "src/assets/photos/" "r2vein:vein-taste-album-photos/photos/" -P --t
 
 1. Vercel 自动 `prebuild` → 生成 manifest → `vite build`
 2. 确认 `VITE_PHOTOS_BASE_URL` 指向 R2 自定义域（或 `r2.dev`）→ **Redeploy**
-3. **本机执行增量同步**（照片增删改后；见 [data-workflow.md](data-workflow.md) §9.2）
-4. 验收：首页、城市直链、地图、店铺相册；Network 里图片域名为你的 R2 公开域
+3. **本机执行增量同步**（照片增删改后；见 [data-workflow.md](data-workflow.md) §9.2；merge 后已在 `main` 上见 **§9.2.1**）
+4. 验收：首页、城市直链、地图、店铺相册（相册 CDN 细则见下方「相册 CDN 验收」）；Network 里图片域名为 R2 公开域
 
 ## Mapbox
 
@@ -88,13 +88,17 @@ Token URL restrictions 添加（不要带 `/*` 路径通配）：
 
 未配置 CORS 时站点仍可正常显示图片（`<img>` 不需 CORS）；仅 blob 复用与部分 preload 优化会回退到原始 URL。
 
+## 相册 CDN 验收（照片变更后必做）
+
+在「三浏览器验收」之前或之中执行。**完整步骤与通过标准**见 [data-workflow.md](data-workflow.md) §9.5（无痕窗口、Network Filter、R2 域名、Status 200、删图 404 等）。
+
 ## 三浏览器验收（桌面 Chrome / Safari / Edge）
 
 每次 Production 部署后，用**无痕窗口**、Network **不要**勾 Disable cache：
 
 1. 打开 https://www.veintastealbum.com/ — 书架应可滚动，Network **不应**出现 `mapbox-gl`（未进城市页前）。
 2. 进入任意城市 → 先停留在美食 Tab，确认仍未加载 Mapbox；再切到地图 Tab，此时才应加载 `mapbox-gl` chunk。
-3. 美食页：切 3 家店、同店连点 5 张图 — 菜名与大图应同步，无明显长期错位。
+3. 美食页：切 3 家店、同店连点 5 张图 — 菜名与大图应同步，无明显长期错位（含 **相册 CDN 验收** 上述步骤）。
 4. Safari → 开发 → 显示 Web 检查器 → 切一张**未看过**的店图：同一图片 URL 不应出现两次完整下载（若已配 R2 CORS，应看到 blob 显示或单次 GET）。
 5. 对比 Chrome：主观延迟 Safari 不应明显长于 Chrome 的约 1.2 倍。
 

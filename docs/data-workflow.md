@@ -30,8 +30,8 @@
 
 **阶段 C · CDN 同步（commit & push 之后；推荐 merge + Vercel 部署后）**
 
-6. **§9.2** 增量同步 R2：`photos:thumbs` → `photos:manifest` → `npm run photos:sync-r2`（默认增量，**不要**日常全量）
-7. Production 无痕验收；Network 确认图片来自 `VITE_PHOTOS_BASE_URL`
+6. **§9.2** 增量同步 R2：`photos:thumbs` → `photos:manifest` → `npm run photos:sync-r2`（默认增量，**不要**日常全量）；merge 后已在 `main` 上见 **§9.2.1**
+7. **§9.5** Production 无痕验收相册（Network 确认图片来自 `VITE_PHOTOS_BASE_URL`）；通用站点检查见 [deploy-vercel.md](deploy-vercel.md)
 
 ---
 
@@ -238,6 +238,7 @@ npm run audit:boundary-offsets
   - 先检查图片 basename 是否命中 `dish_name_local -> dish_name_en -> dish_name_zh`，其次 `store_name_local -> store_name_en -> store_name_zh`
   - 轮播顺序：菜名图 → 店名图（含 `store_name_*` 全文、基础店名、分店 `name_*`）→ 其它非序号图 → 中文序号图（数值序）
   - 代码调用约束：`sortPhotosByDishMatch` 必须传当前店铺对象（`selectedStore`）作为第 3 参数，避免店名图匹配降级为“仅 dishes 键”
+  - 精确匹配菜名才显示 `dishes.json` 菜名与价格/星级/备注；basename 仅包含菜名（如 `菜名-横截面`）时只显示完整 basename
   - 若未命中菜名：仍应展示图片；basename 为中文数字序号（`一二三四五六七八九十`）时只显示图片，否则应显示 basename（不含扩展名）作为图片名称
 - 板块②图片显示坏图标（但文件后缀是 `.jpg/.jpeg`）
   - 高概率是“扩展名是 JPG，但真实编码是 HEIC/HEIF”
@@ -357,6 +358,26 @@ npm run photos:sync-r2 -- --base origin/main     # 显式指定对比基线
 npm run photos:sync-r2 -- --skip-thumbs            # 仅原图（不推荐）
 ```
 
+#### 9.2.1) merge 后已在 `main` 上同步（常见）
+
+合并 PR 并 `git pull origin main` 后，本地 `HEAD` 往往已与 `origin/main` 一致，此时默认的 `origin/main...HEAD` **diff 为空**，`photos:sync-r2` 会输出 `Nothing to sync.`。
+
+做法：用 **合并前** 的 `main` 提交作为基线，对比本次 release 带来的照片变更：
+
+```bash
+git checkout main && git pull origin main
+# 记下 merge 前 main 的 SHA（示例：git log --oneline -3，取 merge commit 的父提交）
+npm run photos:sync-r2 -- --base <合并前main的SHA> --dry-run   # 先预览 puts/deletes
+npm run photos:thumbs
+npm run photos:manifest
+npm run photos:sync-r2 -- --base <合并前main的SHA>
+```
+
+说明：
+
+- `<合并前main的SHA>` 即 merge commit 的**第一个父提交**（`git log -1 --format=%P` 的空格前一段），或你记得的「合并前最后一笔 main」。
+- 仍在 feature 分支、尚未 merge 时：在分支上直接 `npm run photos:sync-r2`（默认 `origin/main...HEAD`）即可，无需 `--base`。
+
 **通过标准：**
 
 - 命令结束：`Done. uploaded=N deleted=M`，且无 failure
@@ -398,7 +419,33 @@ rclone sync "src/assets/photos/" "r2vein:vein-taste-album-photos/photos/" -P --t
 
 1. **阶段 A**：§8 自检 → `data:sync` → 可选 `photos:thumbs` → `dev` / `build` 验收
 2. **阶段 B**：分支 → commit → push → PR
-3. **阶段 C**：merge → Vercel 部署 → `photos:thumbs` → `photos:manifest` → `photos:sync-r2`（增量）
-4. Production 无痕验收
+3. **阶段 C**：merge → Vercel 部署 → `photos:thumbs` → `photos:manifest` → `photos:sync-r2`（增量；merge 后 on `main` 见 **§9.2.1**）
+4. **§9.5** Production 无痕验收相册
 
 详见 [deploy-vercel.md](deploy-vercel.md)。
+
+### 9.5) Production 无痕验收相册（阶段 C 收尾）
+
+触发：阶段 C `photos:sync-r2` 已成功（`uploaded` / `deleted` 符合预期），且 Vercel Production 已部署。
+
+**准备**
+
+1. Chrome / Safari / Edge 打开**无痕/隐私窗口**（避免旧缓存）。
+2. 打开开发者工具 → **Network**；**不要**勾选 Disable cache。
+3. Filter 可填 R2 照片域（如 `photos.veintastealbum.com`）或 `photos/shanghai`，便于只看相册请求。
+
+**操作**
+
+1. 打开 https://www.veintastealbum.com/ ，点书架上的目标城市（或直接 `https://www.veintastealbum.com/shanghai`）。
+2. 停留在 **美食** Tab；在左侧列表点选本次变更涉及的店（按 `name_zh` 或 `store_slug` 辨认）。
+3. 每家店：板块②应出现缩略图/轮播，**无裂图**；连点多张图，大图与菜名/图片名应同步切换。
+4. Network 中相册图片 URL 应形如  
+   `https://<VITE_PHOTOS_BASE_URL 的 host>/photos/{city}/{store_slug}/{文件名}`  
+   状态码 **200**；缩略图路径含 `.thumb.webp`。
+5. 若本次有**删图**：对应旧文件名在 R2 上应 **404**（店内不应再出现该图）。
+
+**通过标准**
+
+- 新店/变更店相册可正常浏览，无长期裂图或错位。
+- 图片请求来自 R2/CDN 域，而非主站打包的 `assets` 路径。
+- 通用站点项（地图懒加载、Safari 预加载等）见 [deploy-vercel.md](deploy-vercel.md)「三浏览器验收」。

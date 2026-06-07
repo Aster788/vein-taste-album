@@ -45,7 +45,7 @@
 | 中国城市坐标需 GCJ-02→WGS-84 转换 | 高德返回 GCJ-02，Mapbox 用 WGS-84；点图层与边界图层都必须转换，否则会出现整体偏移                                                                                             |
 | 地图加载异常需可见化反馈             | 正常加载不提示；Token 为空显示缺失提示；Token/网络/样式失败显示错误提示+细节，避免长期“地图加载中”                                                                                       |
 | 数据用本地 JSON，不用数据库         | MVP 阶段复杂度最低，静态部署足够                                                                                                                              |
-| 图片路径与文件名匹配               | 店铺目录统一用 `store_slug`；图片 basename 按 `dish_name_local`→`dish_name_en`→`dish_name_zh` 匹配 dishes.json；未命中也要展示（中文数字序号 basename 仅图，其他 basename 显示为名称） |
+| 图片路径与文件名匹配               | 店铺目录用 `store_slug`；basename **精确一致**时展示 `dishes.json` 菜名与价格/星级/备注；**包含菜名但非完全一致**（如 `菜名-横截面`）时仅显示完整 basename；详见 §五补充规则与 [storePhotos.js](../src/utils/storePhotos.js) |
 | 图片扩展名需与真实编码一致            | `.jpg/.jpeg` 必须是真实 JPEG（文件头 `FF D8 FF`）；禁止把 HEIC/HEIF 仅改后缀伪装成 JPG，避免浏览器坏图                                                                       |
 | 所有颜色用 CSS 变量（token）      | 13 个城市各有专属配色，必须通过变量统一管理，禁止硬编码色值                                                                                                                 |
 
@@ -59,7 +59,8 @@
 - **非中国城市**（济州岛、吉隆坡、马六甲；以及未来新增城市）：页面右上角显示语言切换按钮（书架页不显示；具体按钮集合见 `prd.md` §2.5，例如 `EN/KO/CN` 或 `EN/CN`）；**书脊/封面**与中国城同一套上中文、下英文「国家·城市」
 - **非中国城市配置源**：详情页语言按钮集合不写死在组件里，统一读取 `src/data/city_meta.json`
 - **新增非中国城市时必须同步补配置**：至少新增该城市的 `slug -> detail_locale_mode`；若模式为 `en_native_zh`，还必须补 `native_iso639_1` 与 `native_button_label`
-- **店铺名 / 菜品名**：始终以数据文件中的多语言字段为准（`restaurants.json`：`name_zh/name_en/name_local`；`dishes.json`：`dish_name_zh/dish_name_en/dish_name_local`），**不参与**语言切换，也**不做**机器翻译覆盖（Map 点位标签与 Cuisine 多行展示规则见 `prd.md` §2.5 / §4.2 / §4.3）
+- **店铺名**：始终以 `restaurants.json` 多语言字段为准（`name_zh/name_en/name_local`），**不参与**语言切换，也**不做**机器翻译（Map 标签规则见 [prd-i18n-locale.md](prd-i18n-locale.md)）
+- **菜品名**：basename **精确匹配**时读 `dishes.json`；中国城随 EN/CN 在 `dish_name_zh` ↔ `dish_name_en` 切换（无 MT）；非中国城固定多行三语；前缀变体图仅 basename（见 [prd-i18n-locale.md](prd-i18n-locale.md)、§五补充规则）
 - **其它可变文案**：允许「作者原文优先 + 缺失机器翻译补齐 + 失败回退：`目标语言 → 英文 → 中文`」（见 `prd.md` §2.5）
 - **数据字段 `is_china: true/false`**：代码以此判断坐标系转换需求和语言切换按钮显示逻辑（中国城市：点位与边界均转换；非中国城市：不转换）
 - **Map 右侧标签筛选区（强约束）**：
@@ -108,13 +109,13 @@ src/assets/photos/{city-folder}/{store_slug}/{dish-file}.{jpg|jpeg|png|webp|heic
 `dish-file` 可使用任一语言菜名；代码匹配顺序：dish_name_local → dish_name_en → dish_name_zh
 ```
 
-补充兜底规则（板块②）：
+补充兜底规则（板块②，实现见 `src/utils/storePhotos.js`、`src/components/DishInfo.jsx`）：
 
-- basename 未匹配到 `dishes.json` 任一菜名时，图片仍需展示在其所属店铺下（不丢图）。
-- basename 为中文数字序号（`一二三四五六七八九十`，含组合如 `十一/十二/二十`）时，仅显示图片，不显示名称文本。
-- basename 非中文数字序号时，显示 basename（不含扩展名）作为图片名称。
+- basename 与 `dishes.json` 菜名**完全一致**（归一化后）时：展示菜名及价格/星级/备注（`DishInfo` 读 `findExactMatchedDishByFilename`）。
+- basename **包含**菜名但非完全一致（如 `贵州抹茶柚子蛋糕-横截面.jpg`）时：仅展示完整 basename，不挂菜品信息；排序上仍归菜名 bucket，且紧跟该菜精确匹配图之后（`matchDishByBasename` 的 `includes()` 只用于排序分组，不决定展示文案）。
+- basename 未匹配到任何菜名时，图片仍需展示在其所属店铺下（不丢图）；basename 为中文数字序号（`一二三四五六七八九十`，含组合如 `十一/十二/二十`）时仅显示图片；其它未命中 basename 显示为图片名称。
 - 图片真实格式强约束：扩展名与文件头必须一致；导入新城市图片前先跑 `npm run audit:photo-magic`。
-- 板块②图片排序固定四段式：① basename 匹配菜名；② basename 匹配店名（`dishes.json` 的 `store_name_*` 全文、其去括号基础名、以及同城同 `store_slug` 各分店 `restaurants.json` 的 `name_*` 全文）；③ 其余非中文数字序号（英文起头字母序、数字起头介于英/中、中文起头拼音序）；④ 中文数字序号最后按数值升序（这组不显示名称）。
+- 板块②图片排序固定四段式：① basename 匹配菜名（同菜内精确先于前缀变体）；② basename 匹配店名（`dishes.json` 的 `store_name_*` 全文、其去括号基础名、以及同城同 `store_slug` 各分店 `restaurants.json` 的 `name_*` 全文）；③ 其余非中文数字序号（英文起头字母序、数字起头介于英/中、中文起头拼音序）；④ 中文数字序号最后按数值升序（这组不显示名称）。
 
 板块②排序与列表规则（已确认）：
 
@@ -145,7 +146,7 @@ src/assets/photos/{city-folder}/{store_slug}/{dish-file}.{jpg|jpeg|png|webp|heic
 ## 七、Agent 必须知道的禁区
 
 1. **不要自行决定引入新的地图库**（如 Leaflet、高德 JS SDK），地图只用 Mapbox
-2. **不要自行添加动画效果**，所有动效以 PRD_v2.md 描述为准
+2. **不要自行添加动画效果**，所有动效以 [prd-ui-spec.md](prd-ui-spec.md) 描述为准
 3. **不要修改 JSON 文件的字段名**，字段名一旦改变会破坏整个数据关联逻辑
 4. **不要把颜色值写死在组件里**，必须引用 `global.css` 中的 CSS 变量
 5. **不要自行决定字体**，字体规范见 prd.md 第二节
@@ -194,7 +195,8 @@ src/assets/photos/{city-folder}/{store_slug}/{dish-file}.{jpg|jpeg|png|webp|heic
 | `docs/prd-i18n-locale.md` | 语言切换与文案回退专题（按钮、回退链、解耦规则）            |
 | `docs/agent_rules.md`     | Agent 行为约束，自检流程，汇报格式                |
 | `docs/project_rules.md`   | 本文件，项目背景和技术决策说明                     |
-| `docs/data-workflow.md`   | 数据与翻译固定流程手册（xlsx->json、MT落盘、新增城市清单） |
+| `docs/data-workflow.md`   | 数据与翻译固定流程手册（xlsx->json、MT落盘、R2 同步、相册验收 §9.5） |
+| `docs/deploy-vercel.md`   | Vercel 部署、R2 CDN、三浏览器验收 |
 | `.env.local`              | API Key 和 Access Token（不得上传 GitHub；`.env.example` 仅模板可提交） |
 
 

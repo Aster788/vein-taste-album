@@ -35,11 +35,12 @@ function formatPrice(value, currency) {
   return text;
 }
 
+/** Multi-segment hours in xlsx/json use `|` or `｜`; see `src/data/README.md` §Hours. */
 function formatHours(value) {
   const text = String(value ?? "").trim();
   if (text === "") return "";
   const segments = text
-    .split("|")
+    .split(/[|｜]/)
     .map((segment) => segment.trim())
     .filter((segment) => segment !== "");
   if (segments.length === 0) return "";

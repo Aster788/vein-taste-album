@@ -27,7 +27,8 @@ const LanguageContext = createContext(null);
  *
  * **济州岛、吉隆坡（以及未来其它非中国城市）**
  * - 详情页语言切换与展示策略以 `prd.md` §2.5 为准（例如 `EN/KO/CN` 或 `EN/CN`）。
- * - **店铺名 / 菜品名**：以数据文件字段为准，**不参与**语言切换，也**不做**机器翻译覆盖（见 `prd.md` §2.5）。
+ * - **店铺名**：以数据文件字段为准，**不参与**语言切换，也**不做**机器翻译（见 `prd-i18n-locale.md`）。
+ * - **菜品名**：basename 精确匹配时，中国城随 EN/CN 在 `dish_name_zh` ↔ `dish_name_en` 切换（`allowMachineTranslate: false`）；非中国城固定多行；前缀变体图仅 basename。
  * - `formatFixedTriple`：保留为可选拼接工具（例如某些调试页/临时展示），**不作为**非中国城市详情页主展示规则。
  */
 
