@@ -6,15 +6,32 @@
 
 ## 0) 日常最常用流程（先看这个）
 
-适用场景：你改了 `restaurants.xlsx` / `dishes.xlsx`，要刷新站点数据。
+### 仅改 xlsx（无照片变动）
 
 1. 运行 `npm run data:sync`
 2. 若需要补齐非名称类文案翻译（静态落盘）：
   - 临时在 `.env.local` 设 `VITE_ENABLE_MT=true`
   - 运行 `npm run data:export-translations`
   - 完成后把 `.env.local` 改回 `VITE_ENABLE_MT=false`
-3. 若新增/变更了 `src/assets/photos/` 下图片：见 **§9 同步照片到 Cloudflare R2**（合并 PR 并部署后也要做）
-4. 运行 `npm run build` 验证可构建
+3. 运行 `npm run build` 验证可构建
+
+### 含照片增删改（见 §8、§9）
+
+**阶段 A · 本地编辑**
+
+1. §8 `npm run audit:photo-magic` + `npm run audit:filenames`
+2. `npm run data:sync`
+3. 可选 `npm run photos:thumbs`（仅本地 dev 首图加速，见 **§9.0**；不提交 Git）
+4. `npm run dev` / `npm run build` 验收
+
+**阶段 B · Git**
+
+5. `create branch` → `commit` → `push` → PR
+
+**阶段 C · CDN 同步（commit & push 之后；推荐 merge + Vercel 部署后）**
+
+6. **§9.2** 增量同步 R2：`photos:thumbs` → `photos:manifest` → `npm run photos:sync-r2`（默认增量，**不要**日常全量）
+7. Production 无痕验收；Network 确认图片来自 `VITE_PHOTOS_BASE_URL`
 
 ---
 
@@ -262,18 +279,32 @@ npm run audit:photo-magic
 
 ## 9) 同步照片到 Cloudflare R2（线上相册必做）
 
-触发：新增或替换了 `src/assets/photos/{city}/{store_slug}/` 下任意图片，且需要 Production / Preview 站点显示相册。
+触发：对 `src/assets/photos/{city}/{store_slug}/` 做了增删改或重命名，且需要 Production / Preview 站点显示相册。
 
-说明：**合并 PR 后 Vercel 只会部署前端与 `photo-manifest.json`，不会自动把图片上传到 R2。** 未上传时线上相册会裂图。
+说明：
 
-### 前置
+- **合并 PR 后 Vercel 只会部署前端与 `photo-manifest.json`，不会自动把图片同步到 R2。** 未同步时线上相册会裂图或残留旧图。
+- **日常默认走增量同步**（`npm run photos:sync-r2` / `npm run photos:upload-r2`），对比 `origin/main...HEAD` 的 Git 变更；**不要**每次全量上传 ~1300 张。
+- R2 同步应在 **commit & push 之后**（推荐 **merge + Vercel 部署后**）执行，确保线上 manifest 与照片变更同属一次发布。
 
-- 本机 `.env.local` 含有效的 **`R2_*`**（见 `.env.example`）与其它自管密钥（**勿提交 Git**）
-- Cloudflare R2 bucket 已开启公开访问（Custom Domain 或 `*.r2.dev`）
-- Vercel 环境变量已配置 **`VITE_PHOTOS_BASE_URL`**（与 R2 公开根一致，无末尾 `/`）
-- 建议先完成 §8 `npm run audit:photo-magic` 与 `npm run audit:filenames`
+### 9.0) 本地生成缩略图（本地 dev 可选）
 
-### 9.1) `.env.local` 与 `npm run env:pull-vercel`
+触发：向 `src/assets/photos/{city}/{store_slug}/` 放入或替换了原图，且要在本机 `npm run dev` 时让相册首图更快显示。
+
+说明：
+
+- `npm run data:sync`、`predev` / `prebuild`（`photos:manifest`）**均不会**自动生成本地缩略图。
+- 产出：`{原名}.thumb.webp`（宽 ≤800px，WebP），与原图同目录。
+- 文件在 `.gitignore` 中，**不提交 Git**；可在 **阶段 A（commit 前）** 为本地 dev 提前执行。
+- **阶段 C 上传 R2 前**建议再跑一遍，保证 CDN 缩略图与本地一致。
+
+```bash
+npm run photos:thumbs
+```
+
+通过标准：`[photos:thumbs] Done. wrote=N skipped=M`
+
+### 9.1) 环境与凭证
 
 | 变量 | 用途 |
 | --- | --- |
@@ -289,41 +320,85 @@ npm run audit:photo-magic
 | 场景 | 要不要跑 `env:pull-vercel` |
 | --- | --- |
 | 需要从 Vercel 拉 `VERCEL_*` 等 CLI 变量到 `.env.vercel` | 可选 |
-| 每次 `photos:upload-r2`、每次 `data:sync` | **不必** |
+| 每次 `photos:sync-r2`、每次 `data:sync` | **不必** |
 | `vercel env pull .env.local` 覆盖整份本地 env | **禁止** |
 
-### 执行
+前置：建议先完成 §8 `npm run audit:photo-magic` 与 `npm run audit:filenames`。
+
+### 9.2) 增量同步 R2（默认）
+
+触发：照片已 **commit & push**（或 merge 后），需要让 R2 与 Git 中本次变更一致。
 
 ```bash
+npm run photos:thumbs
 npm run photos:manifest
-npm run photos:upload-r2
+npm run photos:sync-r2
 ```
 
-可选预览（不上传）：`npm run photos:upload-r2 -- --dry-run`
+`photos:sync-r2` 与 `photos:upload-r2` 为同一脚本；**默认增量**，对比 `origin/main...HEAD` 下 `src/assets/photos/` 的 Git diff。
 
-对象 Key：`photos/{city}/{store}/{filename}`，与本地目录一致；已存在 Key 会被覆盖。
+**照片 CRUD 与 R2 行为：**
+
+| 本地操作 | Git 状态 | R2 动作 |
+| --- | --- | --- |
+| 新增图片 | `A` | 上传原图 + `{原名}.thumb.webp` |
+| 同名换图 | `M` | 覆盖原图 + 缩略图 |
+| 删除图片 | `D` | 删除原图 + 对应 `.thumb.webp` |
+| 重命名 | `R` | 删除旧 Key，上传新 Key |
+
+对象 Key：`photos/{city}/{store}/{filename}`，与本地目录一致。
+
+**常用标志：**
+
+```bash
+npm run photos:sync-r2 -- --dry-run              # 预览 puts/deletes 数量
+npm run photos:sync-r2 -- --working --dry-run    # 未 push 时：工作区 + 未跟踪文件
+npm run photos:sync-r2 -- --base origin/main     # 显式指定对比基线
+npm run photos:sync-r2 -- --skip-thumbs            # 仅原图（不推荐）
+```
+
+**通过标准：**
+
+- 命令结束：`Done. uploaded=N deleted=M`，且无 failure
+- `--dry-run` 时对象数应接近「变更原图数 × 2」，而非 ~1308 × 2
+- 线上相册可加载；已删本地图在 R2 上应 404
+- 可选：`curl -I` 抽查新图返回 `200`
+
+**失败处理：**
+
+- 线上仍显示已删图片：确认本次 sync 输出含 `deleted>0`；若变更未 push，用 `--working` 或先 push 再 sync
+- `Missing R2_*` / `AccessDenied`：检查 `.env.local` 四行 `R2_*` 与 Token 权限
+- 单文件失败：检查文件名 URL 安全（`npm run audit:filenames`）
+
+### 9.3) 全量上传（例外场景）
+
+仅用于：**首次铺库**、怀疑 R2 与本地严重漂移、灾难恢复。
+
+```bash
+npm run photos:sync-r2 -- --full
+```
+
+说明：
+
+- 遍历本地全部原图并 `PutObject`；**不会**删除 R2 上本地已不存在的孤儿对象。
+- 体量大（约 1308 张 / 1.7GB），耗时长；**不要**作为日常默认。
+- 可调 `PHOTO_UPLOAD_CONCURRENCY`（默认 4）加速。
+
+### 9.4) rclone 备选（镜像同步）
+
+已配置 **rclone** 时，可用镜像同步代替 npm 脚本（天然支持增删改）：
+
+```bash
+rclone sync "src/assets/photos/" "r2vein:vein-taste-album-photos/photos/" -P --transfers 8
+```
+
+目标路径须为 `bucket/photos/...`。`sync` 会使 R2 与本地目录一致（含删除）；操作前请确认本地目录即为期望真源。
 
 ### 推荐节奏（与 Git / Vercel 配合）
 
-1. 本地加图 → `data:sync` → 自检 → 分支 → PR
-2. 本地 `npm run dev`（默认读本机 `photos/`，不必配 CDN）确认 UI
-3. 合并 PR → Vercel 自动部署
-4. **本机执行 §9 上传**（与部署并列，不可省略）
-5. 打开 Production 验收；Network 确认图片来自 `VITE_PHOTOS_BASE_URL` 对应域名
-
-### 通过标准
-
-- 命令结束：`Done. Uploaded N file(s).` 且无 failure
-- 线上店铺相册可加载
-- 可选：`curl -I` 抽查  
-  `https://你的照片域/photos/城市/店slug/某图.jpg` 返回 `200`
-
-### 失败处理
-
-- `Missing R2_*`：在 `.env.local` 补全四行，或到 Cloudflare R2 → API Tokens 重建
-- `AccessDenied` / 403：密钥错、bucket 名错，或 Token 未含该 bucket 的写权限
-- 单文件失败：检查文件名 URL 安全（`npm run audit:filenames`）
-- 上传很慢：全量约 1290 张 / 1.7GB 属正常；可调 `PHOTO_UPLOAD_CONCURRENCY`（默认 4）
-- 已配置 **rclone** 时可用 `rclone sync` 代替脚本，目标路径须为 `bucket/photos/...`（见 [deploy-vercel.md](deploy-vercel.md)）
+1. **阶段 A**：§8 自检 → `data:sync` → 可选 `photos:thumbs` → `dev` / `build` 验收
+2. **阶段 B**：分支 → commit → push → PR
+3. **阶段 C**：merge → Vercel 部署 → `photos:thumbs` → `photos:manifest` → `photos:sync-r2`（增量）
+4. Production 无痕验收
 
 详见 [deploy-vercel.md](deploy-vercel.md)。
