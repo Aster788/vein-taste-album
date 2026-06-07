@@ -1640,9 +1640,9 @@ html[data-city="melaka"],
   font-size: 0.98rem;
   line-height: 1.38;
   color: color-mix(in srgb, var(--color-text) 92%, var(--city-primary));
-  white-space: nowrap;
+  white-space: normal;
   word-break: keep-all;
-  overflow-wrap: normal;
+  overflow-wrap: anywhere;
 }
 
 .ffj-dish-info-name-line.is-secondary {

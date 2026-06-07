@@ -163,6 +163,9 @@ Store hours text with these formatting constraints:
   - `星期二至星期日 17:00–01:00`
 - if non-adjacent ranges share the same time, merge range labels with `、`:
   - `星期一至星期二、星期六 10:00–22:00`
+- if multiple time ranges need separate lines on the site, keep one cell in Excel and separate segments with ASCII `|` or fullwidth `｜` (do not use line breaks in the cell):
+  - example: `周一至周四 09:00-21:00 | 周五至周日 10:00-22:00`
+  - `NotePanel` splits on `|` / `｜` and renders each segment on its own line
 
 ### Manual-edit protection (rerun behavior)
 
@@ -181,6 +184,18 @@ Required fields (per data row):
 - at least one of: `dish_name_zh`, `dish_name_en`, `dish_name_local`
 
 Rows with all three dish names empty are skipped on sync (they do not block photo display; see `src/assets/photos/{city}/{store_slug}/`).
+
+### One dish, multiple photos (variant filenames)
+
+When one dish needs more than one image (e.g. cross-section, detail shot), use the **exact dish name** for the primary photo and a **suffix** for variants:
+
+- Primary: `{dish_name_zh}.jpg` (or `dish_name_en` / `dish_name_local` if that is your naming convention)
+- Variant: `{dish_name_zh}-{suffix}.jpg` — use ASCII hyphen `-` between dish name and suffix (URL-safe), e.g. `贵州抹茶柚子蛋糕-横截面.jpg`
+
+Frontend rules (see [project_rules.md](../../docs/project_rules.md) §五, [storePhotos.js](../utils/storePhotos.js)):
+
+- Exact basename match → show dish row from `dishes.json` (name, price, stars, note); China cities switch `dish_name_zh` ↔ `dish_name_en` with EN/CN (see [prd-i18n-locale.md](../../docs/prd-i18n-locale.md))
+- Prefix match only (variant filename) → show full basename only; sort immediately after the exact-match photo for that dish
 
 Optional columns:
 

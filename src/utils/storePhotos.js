@@ -150,6 +150,8 @@ function basenameWithoutExtension(filename) {
 
 /**
  * basename 与 `dishes.json` 条目匹配：优先 `dish_name_local`，其次 `dish_name_en`，最后 `dish_name_zh`。
+ * 精确相等或 `basenameKey.includes(dishNameKey)` 均视为命中，用于排序分组（bucket 0）；
+ * 板块②展示文案不读本函数，见 `findExactMatchedDishByFilename` / `DishInfo.jsx`。
  * @param {ReadonlyArray<Record<string, unknown>>} dishes
  * @param {string} basenameKey
  * @returns {Record<string, unknown> | null}
@@ -323,6 +325,39 @@ export function getStorePhotos(citySlug, storeSlug, cityEn = null) {
 }
 
 /**
+ * basename 是否与某菜品菜名字段完全一致（归一化后比对，不含 includes 前缀匹配）。
+ * @param {string} filename
+ * @param {Record<string, unknown>} dish
+ * @returns {boolean}
+ */
+export function isExactDishBasenameMatch(filename, dish) {
+  const basenameKey = basenameWithoutExtension(filename);
+  if (basenameKey === "") return false;
+  for (const field of ["dish_name_local", "dish_name_en", "dish_name_zh"]) {
+    if (normalizeMatchKey(dish[field]) === basenameKey) return true;
+  }
+  return false;
+}
+
+/**
+ * basename 是否与任一菜品菜名字段完全一致（归一化后比对）。
+ * @param {string} filename
+ * @param {ReadonlyArray<Record<string, unknown>>} dishes
+ * @returns {Record<string, unknown> | null}
+ */
+export function findExactMatchedDishByFilename(filename, dishes) {
+  for (const dish of dishes) {
+    if (isExactDishBasenameMatch(filename, dish)) return dish;
+  }
+  return null;
+}
+
+/** @param {string} filename @param {ReadonlyArray<Record<string, unknown>>} dishes */
+function isExactDishBasenameMatchAny(filename, dishes) {
+  return findExactMatchedDishByFilename(filename, dishes) != null;
+}
+
+/**
  * @param {string} filename
  * @param {ReadonlyArray<Record<string, unknown>>} dishes
  * @returns {Record<string, unknown> | null}
@@ -389,6 +424,18 @@ export function sortPhotosByDishMatch(photos, dishes, restaurant = null) {
   };
 
   const compareWithinBucket = (left, right, bucket) => {
+    if (bucket === 0) {
+      const leftDish = findMatchedDishByFilename(left.filename, dishes);
+      const rightDish = findMatchedDishByFilename(right.filename, dishes);
+      const leftDishIdx = leftDish ? dishes.indexOf(leftDish) : Number.MAX_SAFE_INTEGER;
+      const rightDishIdx = rightDish ? dishes.indexOf(rightDish) : Number.MAX_SAFE_INTEGER;
+      if (leftDishIdx !== rightDishIdx) return leftDishIdx - rightDishIdx;
+
+      const leftExact = isExactDishBasenameMatchAny(left.filename, dishes) ? 0 : 1;
+      const rightExact = isExactDishBasenameMatchAny(right.filename, dishes) ? 0 : 1;
+      if (leftExact !== rightExact) return leftExact - rightExact;
+    }
+
     if (bucket === 3) {
       const leftRank = getNumeralRank(left.filename);
       const rightRank = getNumeralRank(right.filename);

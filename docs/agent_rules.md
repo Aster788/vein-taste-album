@@ -16,9 +16,9 @@
 
 ### 1.2 忠实还原原则
 
-- 所有设计细节以 `prd.md` 为唯一标准
-- 颜色值、字体、间距、交互逻辑，严格按 PRD 执行，不自行"优化"
-- 如果 PRD 描述模糊，停下来问用户，不要自己猜测填充
+- 产品总纲见 `prd.md`；UI 布局与动效见 [prd-ui-spec.md](prd-ui-spec.md)；语言策略见 [prd-i18n-locale.md](prd-i18n-locale.md)
+- 颜色值、字体、间距、交互逻辑，严格按上述文档执行，不自行"优化"
+- 如果文档描述模糊，停下来问用户，不要自己猜测填充
 
 ### 1.3 数据驱动原则
 
@@ -30,29 +30,17 @@
 
 ## 二、任务执行规范
 
-### 2.1 接到任务后，先做这三件事
+> **打磨阶段（MVP 已完成）**：下列「逐步确认」规则在大型 Phase 搭建期严格执行；日常小修、文档同步、单点 bugfix 可合并步骤执行，但仍须在汇报中说明自检结果。
 
-```
-① 复述任务：用一句话说明你理解的任务范围
-② 列出计划：写出你打算做的步骤（不超过5步）
-③ 等待确认：用户确认后再开始写代码
-```
+### 2.1 接到任务后
 
-> 不允许跳过确认直接开始写代码。
+- **大型功能 / 跨模块改动**：先复述任务、列出计划（≤5 步），等用户确认后再写代码
+- **小修、文档、单文件修复**：可直接执行，汇报时说明范围与自检即可
 
-### 2.2 分段执行，禁止一次性完成
+### 2.2 分段执行
 
-- 每个任务拆成独立的小步骤，**一次只写一个步骤**
-- 每写完一个步骤，停下来汇报，等待用户指令再继续
-- 严禁在单次回复中完成整个 Phase 的全部代码
-
-**错误示范：**
-
-> "好的，我已经完成了书架页面、第二页框架、地图组件和照片轮播，代码如下……"
-
-**正确示范：**
-
-> "第一步：书架横向布局已完成，代码如下。自检结果见下方。请确认后我再进行第二步（书本3D样式）。"
+- 大型任务拆成小步骤，每步汇报自检；避免单次回复塞满整个 Phase
+- 小范围改动可一次完成，不必人为拆步
 
 ### 2.3 不确定时的处理方式
 
@@ -79,7 +67,7 @@
 
 - 所有展示内容是否来自 `restaurants.json`？
 - 有没有硬编码的城市名、店铺名、颜色值（颜色值应来自 CSS 变量）？
-- 图片路径是否遵循 `assets/{city}/{store}/XX.jpg` 规范？
+- 图片路径是否遵循 `src/assets/photos/{city}/{store_slug}/`（线上 CDN 见 `VITE_PHOTOS_BASE_URL`）？
 
 ### 3.3 设计一致性自检
 
@@ -96,21 +84,14 @@
 ### 3.5 资源与路径核验（避免误判文件是否存在）
 
 - 涉及 `**src/assets/`**（含 `fonts/`、`photos/`、`geojson/`、`stickers/`）、`**.env.local`** 等：在结论为「不存在 / 未放入 / 是空文件」之前，**必须用终端核对**（如 PowerShell：`Test-Path` 或 `Get-ChildItem -LiteralPath <目录> -Force`），**不得仅凭 Glob/搜索/Read 下结论**（索引、忽略规则、二进制均可能不准）。
-- **照片 CDN**：线上相册走 **Cloudflare R2**（`VITE_PHOTOS_BASE_URL`）；本机同步用 `npm run photos:sync-r2`（默认增量，对比 `origin/main...HEAD`；全量仅 `--full`；`R2_*` 见 `.env.example`）。**不要**日常全量上传；**不要**再引入 Vercel Blob、`BLOB_*` 或 `photos:upload-blob`。
+- **照片 CDN / R2 同步**：见 [data-workflow.md](data-workflow.md) §9（`npm run photos:sync-r2`、增量默认、验收 §9.5）；**不要**再引入 Vercel Blob / `photos:upload-blob`。
 - `Glob` / `rg` / Read 仅可作为**初筛**，不可作为「文件不存在 / 仅有 N 个文件」的最终依据；凡是要下此类结论，必须补做一次磁盘实查（`Get-ChildItem -LiteralPath` + `Test-Path`）。
 - 若「索引搜索结果」与「磁盘实查结果」冲突：以**磁盘实查**为准，并在汇报中写明“索引可能未刷新或受忽略规则影响”。
 - 若需说明「文件为空」：须写明**路径 + 字节大小**；Read 显示空不等于磁盘一定为空，以终端为准。
-- 涉及 **任意贴纸 SVG**（`src/assets/stickers/cities/`、`page/`、`cuisine/`）：在汇报“可用”前，必须核查是否含整幅 viewBox 黑/白底框或大面积底卡 path；如存在，先清理再接入，避免在书脊/Slogan/筛选/拍立得出现黑白方块。
-- **黑/白背景一票否决**：只要存在覆盖全画布的黑色或白色背景层（含 `#000/#000000/#010000/#fff/#ffffff` 或近似纯黑纯白），即判定该 SVG 不可用，必须改成透明背景后才能合入。
-- **贴纸颜色一致性强校验**：`src/assets/stickers/`** 下 SVG 在页面展示时，禁止通过 `filter`（如 `invert()` / `hue-rotate()` / `brightness()`）进行整体改色；若页面颜色与文件不一致，优先排查并移除样式层滤镜，确保呈现为素材原色。
-- **菜系贴纸与数据列**：
-  - `cuisine_en` 必须与 `stickers/cuisine/{cuisine_en}.svg` **文件名完全一致**（小写、`[a-z0-9-]+`）；改 slug 时同步重命名 SVG，勿保留 `japanese.svg` 等旧名。
-  - `cuisine_zh` 为中文展示名（筛选、地图标签）；与 `cuisine_en` 成对维护，禁止同一 `cuisine_zh` 对应多个 `cuisine_en`。
-  - 当前约定示例：川菜 → `chuan-cuisine`；韩餐/日料 → `korean-cuisine` / `japanese-cuisine`；东南亚菜 → `southeast-asian-cuisine`；东北菜 → `northeast-cuisine`；西式 → `western-cuisine`；俄罗斯菜 → `russian-cuisine`；面食 → `noodle`。
-  - 核对前读 `src/utils/cuisineSlugs.js` 的 `CUISINE_BY_EN` 与磁盘 `stickers/cuisine/` 列表；缺 SVG 会回退 `other.svg` 并在 DEV 告警。
-  - 详见 [docs/structure.md](structure.md) §菜系筛选贴纸、[src/data/README.md](../src/data/README.md) §Cuisine fields。
+- **贴纸 SVG**（`src/assets/stickers/`）：接入前核查无整幅黑/白底、页面侧禁止 `filter` 改色；细则见 [project_rules.md](project_rules.md) §七。
+- **菜系贴纸与 `cuisine_en` 列**：slug 与 `stickers/cuisine/{cuisine_en}.svg` 文件名一致；维护约定见 [structure.md](structure.md) §菜系筛选贴纸、[src/data/README.md](../src/data/README.md) §Cuisine fields、`src/utils/cuisineSlugs.js`。
 - **非中国城市** `src/assets/geojson/<slug>.geojson`：新增或更新边界时，须符合 `prd.md` §5.3 小节 **「非中国城市：地图上『分区』边界的统一规则」**（选型优先级、块数区间、命名字段、许可与出处）；要素属性中应能识别数据源类型（如官方区划、开放 ADM、选举分区等，可与现有 `ffj_admin` / `ffj_source` 一类字段对齐）。
-- **文档内代码链接**：编辑 `docs/*.md` 时，文件路径用可点击 Markdown 链接 `[src/.../file.js](../src/.../file.js)`；**禁止**在整条链接外再包一层反引号（会变成不可点击的代码样式）。见 `project_rules.md` §八；可跑 `npm run audit:doc-links`。
+- **文档内代码链接**：见 [project_rules.md](project_rules.md) §八；改完跑 `npm run audit:doc-links`。
 
 ---
 
@@ -180,19 +161,12 @@
 
 ---
 
-## 七、Phase 边界规则
+## 七、Phase 边界规则（历史参考 · 打磨阶段放宽）
 
-每个 Phase 开始前必须确认：
+> MVP 各 Phase 已完成（见 [prd.md](prd.md) §六 历史归档）。**新任务不再按 Phase 闸门拆分**；下列规则仅作大型重构时的参考。
 
-- 上一个 Phase 的所有自检项已通过
-- 用户已明确说"可以进入下一个 Phase"
-- 当前 Phase 对应的 PRD 章节已重新阅读
-
-每个 Phase 结束时必须：
-
-- 在浏览器中演示当前效果（提示用户验收）
-- 列出本 Phase 的所有遗留问题（如有）
-- 明确说明下一个 Phase 要做什么，等待用户批准
+- 跨多模块的大改动：仍建议分步验收、浏览器演示
+- 日常维护：以 [data-workflow.md](data-workflow.md) §0 与相关专题文档为准，无需等待「进入下一 Phase」口令
 
 ---
 

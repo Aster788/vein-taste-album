@@ -3,7 +3,7 @@ import { pickByLocale } from "../context/LanguageContext.jsx";
 import { getDishesForRestaurant, getDishNoteText, getDishPriceText } from "../utils/dataLoader.js";
 import { formatDishTasteStars } from "../utils/formatDishTasteStars.js";
 import {
-  findMatchedDishByFilename,
+  findExactMatchedDishByFilename,
   getStorePhotos,
   sortPhotosByDishMatch,
   isChineseNumeralBasename,
@@ -34,21 +34,23 @@ export default function DishInfo({
     return photos[safeIndex]?.filename ?? "";
   }, [photos, activePhotoIndex]);
 
-  const matchedDish = useMemo(
-    () => findMatchedDishByFilename(activeFilename, dishes),
+  const exactMatchedDish = useMemo(
+    () => findExactMatchedDishByFilename(activeFilename, dishes),
     [activeFilename, dishes],
   );
 
-  const priceText = matchedDish ? getDishPriceText(matchedDish) : "";
+  const priceText = exactMatchedDish ? getDishPriceText(exactMatchedDish) : "";
 
   const nameLines = useMemo(() => {
-    if (matchedDish) {
-      // 匹配成功：按 PRD 规则显示菜名，首行追加价格（如有）
+    const basename = getBasenameWithoutExtension(activeFilename);
+
+    if (exactMatchedDish) {
+      // 精确匹配：按 PRD 规则显示菜名，首行追加价格（如有）
       if (isChina) {
         const line = pickByLocale(
           detailLocale,
-          matchedDish.dish_name_zh,
-          matchedDish.dish_name_en,
+          exactMatchedDish.dish_name_zh,
+          exactMatchedDish.dish_name_en,
           { allowMachineTranslate: false },
         );
         const text = String(line ?? "").trim();
@@ -57,7 +59,11 @@ export default function DishInfo({
         return [lineWithPrice];
       }
       // 非中国城市：三语菜名，仅在首行追加价格
-      const lines = [matchedDish.dish_name_zh, matchedDish.dish_name_en, matchedDish.dish_name_local]
+      const lines = [
+        exactMatchedDish.dish_name_zh,
+        exactMatchedDish.dish_name_en,
+        exactMatchedDish.dish_name_local,
+      ]
         .map((v) => String(v ?? "").trim())
         .filter((v) => v !== "");
       if (lines.length > 0 && priceText) {
@@ -66,21 +72,14 @@ export default function DishInfo({
       return lines;
     }
 
-    // 未匹配到菜品：按 Task 5.9 basename 兜底规则
-    const basename = getBasenameWithoutExtension(activeFilename);
+    // 前缀匹配或未匹配：仅展示 basename（中文数字序号除外）
     if (basename === "") return [];
-
-    // basename 为中文数字序号（含十一/二十等组合）=> 仅图不显示名
-    if (isChineseNumeralBasename(basename)) {
-      return [];
-    }
-
-    // 其他 basename => 显示 basename（不含扩展名）作为图片名称
+    if (isChineseNumeralBasename(basename)) return [];
     return [basename];
-  }, [matchedDish, isChina, detailLocale, activeFilename, priceText]);
+  }, [exactMatchedDish, isChina, detailLocale, activeFilename, priceText]);
 
-  const starsText = matchedDish ? formatDishTasteStars(matchedDish.taste) : "";
-  const noteText = matchedDish ? getDishNoteText(matchedDish) : "";
+  const starsText = exactMatchedDish ? formatDishTasteStars(exactMatchedDish.taste) : "";
+  const noteText = exactMatchedDish ? getDishNoteText(exactMatchedDish) : "";
   const noteLength = Array.from(noteText).length;
   const noteDensityClass =
     noteLength >= 220 ? "is-density-xl" : noteLength >= 150 ? "is-density-lg" : noteLength >= 90 ? "is-density-md" : "is-density-sm";
