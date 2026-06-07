@@ -1773,30 +1773,6 @@ html[data-city="melaka"],
   border-radius: 4px;
   user-select: none;
   opacity: 1;
-  transform: translateY(0) scale(1);
-  transition:
-    opacity 280ms ease,
-    transform 320ms ease;
-}
-
-.ffj-photo-polaroid-image.is-transitioning {
-  opacity: 0.74;
-  transform: translateY(1px) scale(0.995);
-}
-
-html.is-safari-webkit .ffj-photo-polaroid-image {
-  transition:
-    opacity 140ms ease,
-    transform 160ms ease;
-}
-
-html.is-safari-webkit .ffj-photo-polaroid-image.is-transitioning {
-  opacity: 0.88;
-  transform: none;
-}
-
-.ffj-photo-polaroid.is-loading .ffj-photo-polaroid-image {
-  opacity: 0.72;
 }
 
 .ffj-photo-polaroid.is-loading-slow::after {
