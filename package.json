@@ -9,6 +9,7 @@
     "photos:manifest": "node scripts/generate-photo-manifest.mjs",
     "photos:thumbs": "node scripts/generate-photo-thumbs.mjs",
     "photos:upload-r2": "node scripts/upload-photos-to-r2.mjs",
+    "photos:sync-r2": "node scripts/upload-photos-to-r2.mjs",
     "photos:upload-thumbs-r2": "node scripts/upload-photos-to-r2.mjs --thumbs-only",
     "env:pull-vercel": "vercel env pull .env.vercel --environment=preview --yes",
     "dev": "vite",

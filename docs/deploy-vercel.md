@@ -25,14 +25,21 @@
 
 本机 `.env.local` 模板见根目录 `.env.example`（`R2_*` 四行 + `VITE_PHOTOS_BASE_URL`）。
 
-## 上传照片到 R2（本机，约 1.7GB）
+## 同步照片到 R2（本机，默认增量）
+
+日常（commit & push / merge 后）：
 
 ```bash
+npm run photos:thumbs
 npm run photos:manifest
-npm run photos:upload-r2
+npm run photos:sync-r2
 ```
 
-可选预览（不上传）：`npm run photos:upload-r2 -- --dry-run`
+默认对比 `origin/main...HEAD` 的 Git 变更，仅上传/覆盖/删除本次变动的原图与缩略图。预览：`npm run photos:sync-r2 -- --dry-run`
+
+未 push 时在本地预览变更范围：`npm run photos:sync-r2 -- --working --dry-run`
+
+全量重建（首次铺库 / 灾难恢复，约 1.7GB）：`npm run photos:sync-r2 -- --full`
 
 `.env.local`：你维护的密钥（Mapbox、翻译、高德、R2 等）。  
 可选 `.env.vercel`：仅 `npm run env:pull-vercel` 写入（Vercel CLI 变量）；Node 脚本先读 `.env.vercel` 再读 `.env.local`，**同名键以 `.env.local` 为准**。
@@ -52,7 +59,7 @@ rclone sync "src/assets/photos/" "r2vein:vein-taste-album-photos/photos/" -P --t
 
 1. Vercel 自动 `prebuild` → 生成 manifest → `vite build`
 2. 确认 `VITE_PHOTOS_BASE_URL` 指向 R2 自定义域（或 `r2.dev`）→ **Redeploy**
-3. **本机执行上传**（新增/变更图片后；见 [data-workflow.md](data-workflow.md) §9）
+3. **本机执行增量同步**（照片增删改后；见 [data-workflow.md](data-workflow.md) §9.2）
 4. 验收：首页、城市直链、地图、店铺相册；Network 里图片域名为你的 R2 公开域
 
 ## Mapbox
@@ -96,6 +103,6 @@ Token URL restrictions 添加（不要带 `/*` 路径通配）：
 ## 相册缩略图（首图零转圈）
 
 - 本地生成：`npm run photos:thumbs`（产出 `{原名}.thumb.webp`，宽 ≤800px）
-- 上传 R2 原图+缩略图：`npm run photos:upload-r2`（仅原图可加 `--skip-thumbs`）
+- 同步 R2 原图+缩略图：`npm run photos:sync-r2`（默认增量；全量加 `--full`；仅原图加 `--skip-thumbs`）
 - 仅补传缩略图：`npm run photos:upload-thumbs-r2`（需先 `npm run photos:thumbs`）
 - 线上 URL 约定：`photos/{city}/{store}/{basename}.thumb.webp`；前端先显缩略图再换高清原图
