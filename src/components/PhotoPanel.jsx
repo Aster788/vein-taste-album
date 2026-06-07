@@ -2,7 +2,10 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { createPortal } from "react-dom";
 import {
   bumpPhotoPreloadSession,
+  getPreloadedDisplayUrl,
+  isPhotoDisplayReady,
   markPhotoDisplayReady,
+  preloadImage,
   preloadImages,
   revokePreloadedBlobUrls,
 } from "../utils/preloadImage.js";
@@ -17,21 +20,60 @@ function buildStoreSessionKey(citySlug, selectedStore) {
 }
 
 /** @param {{ href?: string, thumbHref?: string } | null | undefined} photo */
-function pickDisplaySrc(photo) {
-  if (!photo) return "";
-  const thumb = String(photo.thumbHref ?? "").trim();
-  const full = String(photo.href ?? "").trim();
-  if (thumb !== "" && thumb !== full) return thumb;
-  return full;
-}
-
-/** @param {{ href?: string, thumbHref?: string } | null | undefined} photo */
 function pickFullSrc(photo) {
   return String(photo?.href ?? "").trim();
 }
 
+/** @param {{ href?: string, thumbHref?: string } | null | undefined} photo */
+function pickThumbSrc(photo) {
+  const thumb = String(photo?.thumbHref ?? "").trim();
+  const full = pickFullSrc(photo);
+  if (thumb === "" || thumb === full) return "";
+  return thumb;
+}
+
 /** Neighbor window for background preload (avoids saturating Safari connection pool). */
 const NEIGHBOR_PRELOAD_RADIUS = 2;
+
+const PHOTO_LOADING_SLOW_MS = 450;
+
+/**
+ * Resolve a single display URL: prefer full-size; thumb only if full cannot load.
+ * Never returns thumb with intent to upgrade later (scheme 4).
+ * @param {{ href?: string, thumbHref?: string } | null | undefined} photo
+ * @returns {Promise<string>}
+ */
+async function resolveDisplayUrl(photo) {
+  const full = pickFullSrc(photo);
+  const thumb = pickThumbSrc(photo);
+
+  if (full !== "" && isPhotoDisplayReady(full)) {
+    return getPreloadedDisplayUrl(full);
+  }
+
+  if (full !== "") {
+    try {
+      const url = await preloadImage(full, { priority: "high" });
+      if (url) return url;
+    } catch {
+      // fall through to thumb or raw full
+    }
+  }
+
+  if (thumb !== "") {
+    if (isPhotoDisplayReady(thumb)) {
+      return getPreloadedDisplayUrl(thumb);
+    }
+    try {
+      const url = await preloadImage(thumb, { priority: "high" });
+      if (url) return url;
+    } catch {
+      return thumb;
+    }
+  }
+
+  return full;
+}
 
 export default function PhotoPanel({
   citySlug,
@@ -46,16 +88,14 @@ export default function PhotoPanel({
   const isHoveredRef = useRef(false);
   const lightboxOpenRef = useRef(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const [isPhotoLoading, setIsPhotoLoading] = useState(false);
+  const [isPhotoLoadingSlow, setIsPhotoLoadingSlow] = useState(false);
   const [displaySrc, setDisplaySrc] = useState("");
   const [displaySessionKey, setDisplaySessionKey] = useState("");
   const [isRecoveringBrokenImage, setIsRecoveringBrokenImage] = useState(false);
-  const transitionTimerRef = useRef(/** @type {number | null} */ (null));
   const displayRequestRef = useRef(0);
   const convertedUrlCacheRef = useRef(new Map());
   const conversionFailedRef = useRef(new Set());
-  const transitionDurationMs = isSafariWebKit() ? 140 : 280;
 
   const photos = useMemo(
     () => getSortedStorePhotos(citySlug, selectedStore),
@@ -68,78 +108,123 @@ export default function PhotoPanel({
   const activePhoto = hasPhotos ? photos[safeIndex] : null;
   const storeSessionKey = buildStoreSessionKey(citySlug, selectedStore);
 
-  const triggerTransition = useCallback(() => {
-    setIsTransitioning(true);
-    if (transitionTimerRef.current != null) {
-      window.clearTimeout(transitionTimerRef.current);
-    }
-    transitionTimerRef.current = window.setTimeout(() => {
-      setIsTransitioning(false);
-      transitionTimerRef.current = null;
-    }, transitionDurationMs);
-  }, []);
-
-  const showPhotoSrc = useCallback(
-    (photo, index, { animate = false } = {}) => {
-      const src = pickDisplaySrc(photo);
-      if (src === "" || storeSessionKey === "") return;
-      setDisplaySrc(src);
+  const commitDisplayPhoto = useCallback(
+    (href, index) => {
+      const url = String(href ?? "").trim();
+      if (url === "" || storeSessionKey === "") return;
+      setDisplaySrc(url);
       setDisplaySessionKey(storeSessionKey);
-      setIsPhotoLoading(true);
-      setIsRecoveringBrokenImage(false);
-      if (animate) triggerTransition();
+      setIsPhotoLoading(false);
+      setIsPhotoLoadingSlow(false);
+      onDisplayPhotoIndexChange?.(index);
     },
-    [storeSessionKey, triggerTransition],
+    [onDisplayPhotoIndexChange, storeSessionKey],
+  );
+
+  const beginPhotoRequest = useCallback(
+    (photo, index, { clearOnEmpty = false } = {}) => {
+      const fullHref = pickFullSrc(photo);
+      const thumbHref = pickThumbSrc(photo);
+
+      if (fullHref === "" && thumbHref === "") {
+        displayRequestRef.current += 1;
+        if (clearOnEmpty) {
+          setDisplaySrc("");
+          setDisplaySessionKey("");
+        }
+        setIsPhotoLoading(false);
+        setIsPhotoLoadingSlow(false);
+        onDisplayPhotoIndexChange?.(0);
+        return () => {};
+      }
+
+      const requestId = displayRequestRef.current + 1;
+      displayRequestRef.current = requestId;
+      setIsRecoveringBrokenImage(false);
+
+      if (fullHref !== "" && isPhotoDisplayReady(fullHref)) {
+        commitDisplayPhoto(getPreloadedDisplayUrl(fullHref), index);
+        return () => {};
+      }
+
+      setIsPhotoLoading(true);
+      let cancelled = false;
+
+      resolveDisplayUrl(photo)
+        .then((url) => {
+          if (cancelled || displayRequestRef.current !== requestId) return;
+          commitDisplayPhoto(url || fullHref || thumbHref, index);
+        })
+        .catch(() => {
+          if (cancelled || displayRequestRef.current !== requestId) return;
+          commitDisplayPhoto(fullHref || thumbHref, index);
+        });
+
+      return () => {
+        cancelled = true;
+      };
+    },
+    [commitDisplayPhoto, onDisplayPhotoIndexChange],
   );
 
   useLayoutEffect(() => {
     if (storeSessionKey === "") return;
-    displayRequestRef.current += 1;
     bumpPhotoPreloadSession();
-    setIsTransitioning(false);
-    const leadPhoto = photos[0] ?? null;
-    const src = pickDisplaySrc(leadPhoto);
-    if (src === "") {
-      setDisplaySrc("");
-      setDisplaySessionKey("");
-      setIsPhotoLoading(false);
-      return;
-    }
-    setDisplaySrc(src);
-    setDisplaySessionKey(storeSessionKey);
-    setIsPhotoLoading(true);
-  }, [photos, storeSessionKey]);
+    setDisplaySessionKey("");
+  }, [storeSessionKey]);
 
   useEffect(() => {
+    if (storeSessionKey === "") return undefined;
     if (!activePhoto) {
-      setDisplaySrc("");
-      setDisplaySessionKey("");
-      setIsPhotoLoading(false);
-      onDisplayPhotoIndexChange?.(0);
-      return;
+      return beginPhotoRequest(null, 0, { clearOnEmpty: true });
     }
+    return beginPhotoRequest(activePhoto, safeIndex);
+  }, [activePhoto, beginPhotoRequest, safeIndex, storeSessionKey]);
 
-    if (pickDisplaySrc(activePhoto) === "") return;
-
-    showPhotoSrc(activePhoto, safeIndex, { animate: safeIndex !== 0 });
-  }, [activePhoto, onDisplayPhotoIndexChange, safeIndex, showPhotoSrc, storeSessionKey]);
+  useEffect(() => {
+    if (!isPhotoLoading) {
+      setIsPhotoLoadingSlow(false);
+      return undefined;
+    }
+    const timer = window.setTimeout(() => {
+      setIsPhotoLoadingSlow(true);
+    }, PHOTO_LOADING_SLOW_MS);
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [isPhotoLoading, activePhoto?.href]);
 
   useEffect(() => {
     if (!photos.length) return;
     const priority = [];
-    const current = photos[safeIndex];
-    const currentDisplay = pickDisplaySrc(current);
-    if (currentDisplay !== "") priority.push(currentDisplay);
-    const neighborHrefs = [];
+    const rest = [];
+
+    const pushPhoto = (photo, asPriority) => {
+      if (!photo) return;
+      const full = pickFullSrc(photo);
+      const thumb = pickThumbSrc(photo);
+      if (full !== "") {
+        (asPriority ? priority : rest).push(full);
+      }
+      if (thumb !== "") {
+        rest.push(thumb);
+      }
+    };
+
+    pushPhoto(photos[safeIndex], true);
+    const nextPhoto = photos[(safeIndex + 1) % photoCount];
+    pushPhoto(nextPhoto, true);
+    const prevPhoto = photos[(safeIndex - 1 + photoCount) % photoCount];
+    pushPhoto(prevPhoto, true);
+
     for (let offset = -NEIGHBOR_PRELOAD_RADIUS; offset <= NEIGHBOR_PRELOAD_RADIUS; offset += 1) {
       if (offset === 0) continue;
-      const neighbor = photos[(safeIndex + offset + photoCount) % photoCount];
-      const neighborThumb = pickDisplaySrc(neighbor);
-      if (neighborThumb !== "") neighborHrefs.push(neighborThumb);
+      pushPhoto(photos[(safeIndex + offset + photoCount) % photoCount], false);
     }
+
     const hrefsToWarm = [
       ...new Set(
-        [...priority, ...neighborHrefs]
+        [...priority, ...rest]
           .map((href) => String(href ?? "").trim())
           .filter(Boolean),
       ),
@@ -159,9 +244,6 @@ export default function PhotoPanel({
 
   useEffect(() => {
     return () => {
-      if (transitionTimerRef.current != null) {
-        window.clearTimeout(transitionTimerRef.current);
-      }
       convertedUrlCacheRef.current.forEach((url) => URL.revokeObjectURL(url));
       convertedUrlCacheRef.current.clear();
       revokePreloadedBlobUrls();
@@ -191,7 +273,7 @@ export default function PhotoPanel({
       autoplayRef.current = window.setInterval(() => {
         if (isHoveredRef.current || lightboxOpenRef.current) return;
         onChangeActivePhotoIndex((prev) => ((prev + 1) % photoCount));
-      }, 5000);
+      }, 3000);
     };
 
     startAutoplay();
@@ -290,7 +372,9 @@ export default function PhotoPanel({
   };
 
   const lightboxSrc =
-    displaySessionKey === storeSessionKey ? displaySrc || activePhoto?.href || "" : "";
+    displaySessionKey === storeSessionKey
+      ? displaySrc || pickFullSrc(activePhoto) || ""
+      : "";
   const lightboxAlt = activePhoto?.filename ?? "";
   const polaroidSrc = displaySessionKey === storeSessionKey ? displaySrc : "";
   const showPolaroidImage = polaroidSrc !== "" && storeSessionKey !== "";
@@ -299,24 +383,8 @@ export default function PhotoPanel({
     if (displaySrc === "" || displaySessionKey !== storeSessionKey) return;
     markPhotoDisplayReady(displaySrc);
     setIsPhotoLoading(false);
-    setIsTransitioning(false);
-    onDisplayPhotoIndexChange?.(safeIndex);
-
-    const full = pickFullSrc(activePhoto);
-    const thumb = pickDisplaySrc(activePhoto);
-    if (full !== "" && thumb !== full && displaySrc === thumb) {
-      requestAnimationFrame(() => {
-        setDisplaySrc((current) => (current === thumb ? full : current));
-      });
-    }
-  }, [
-    activePhoto,
-    displaySessionKey,
-    displaySrc,
-    onDisplayPhotoIndexChange,
-    safeIndex,
-    storeSessionKey,
-  ]);
+    setIsPhotoLoadingSlow(false);
+  }, [displaySessionKey, displaySrc, storeSessionKey]);
 
   return (
     <section className="ffj-photo-panel" aria-label={labels.photoRegion}>
@@ -356,7 +424,7 @@ export default function PhotoPanel({
               </svg>
             </button>
             <figure
-              className={`ffj-photo-polaroid ffj-photo-polaroid--clickable ${isPhotoLoading ? "is-loading" : ""}`}
+              className={`ffj-photo-polaroid ffj-photo-polaroid--clickable ${isPhotoLoadingSlow ? "is-loading-slow" : ""}`}
               role="button"
               tabIndex={0}
               aria-label={labels.expandPhoto}
@@ -370,7 +438,7 @@ export default function PhotoPanel({
             >
               {showPolaroidImage ? (
                 <img
-                  className={`ffj-photo-polaroid-image ${isTransitioning ? "is-transitioning" : ""}`}
+                  className="ffj-photo-polaroid-image"
                   src={polaroidSrc}
                   alt={activePhoto.filename}
                   loading="eager"
@@ -385,9 +453,17 @@ export default function PhotoPanel({
                       polaroidSrc !== fullHref &&
                       !conversionFailedRef.current.has(fullHref)
                     ) {
-                      setDisplaySrc(fullHref);
-                      setDisplaySessionKey(storeSessionKey);
+                      const requestId = displayRequestRef.current + 1;
+                      displayRequestRef.current = requestId;
                       setIsPhotoLoading(true);
+                      try {
+                        const url = await resolveDisplayUrl(activePhoto);
+                        if (displayRequestRef.current !== requestId) return;
+                        commitDisplayPhoto(url || fullHref, safeIndex);
+                      } catch {
+                        if (displayRequestRef.current !== requestId) return;
+                        commitDisplayPhoto(fullHref, safeIndex);
+                      }
                       return;
                     }
                     if (
@@ -400,9 +476,7 @@ export default function PhotoPanel({
                     const requestId = displayRequestRef.current;
                     const cached = convertedUrlCacheRef.current.get(activePhoto.href);
                     if (cached) {
-                      setDisplaySrc(cached);
-                      setDisplaySessionKey(storeSessionKey);
-                      setIsPhotoLoading(false);
+                      commitDisplayPhoto(cached, safeIndex);
                       return;
                     }
                     setIsRecoveringBrokenImage(true);
@@ -421,9 +495,7 @@ export default function PhotoPanel({
                       const convertedUrl = URL.createObjectURL(convertedBlob);
                       convertedUrlCacheRef.current.set(activePhoto.href, convertedUrl);
                       if (displayRequestRef.current !== requestId) return;
-                      setDisplaySrc(convertedUrl);
-                      setDisplaySessionKey(storeSessionKey);
-                      setIsPhotoLoading(false);
+                      commitDisplayPhoto(convertedUrl, safeIndex);
                     } catch (_error) {
                       conversionFailedRef.current.add(activePhoto.href);
                     } finally {

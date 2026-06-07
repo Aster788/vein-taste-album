@@ -115,7 +115,7 @@ src/assets/photos/{city-folder}/{store_slug}/{dish-file}.{jpg|jpeg|png|webp|heic
 - basename **包含**菜名但非完全一致（如 `贵州抹茶柚子蛋糕-横截面.jpg`）时：仅展示完整 basename，不挂菜品信息；排序上仍归菜名 bucket，且紧跟该菜精确匹配图之后（`matchDishByBasename` 的 `includes()` 只用于排序分组，不决定展示文案）。
 - basename 未匹配到任何菜名时，图片仍需展示在其所属店铺下（不丢图）；basename 为中文数字序号（`一二三四五六七八九十`，含组合如 `十一/十二/二十`）时仅显示图片；其它未命中 basename 显示为图片名称。
 - 图片真实格式强约束：扩展名与文件头必须一致；导入新城市图片前先跑 `npm run audit:photo-magic`。
-- 板块②图片排序固定四段式：① basename 匹配菜名（同菜内精确先于前缀变体）；② basename 匹配店名（`dishes.json` 的 `store_name_*` 全文、其去括号基础名、以及同城同 `store_slug` 各分店 `restaurants.json` 的 `name_*` 全文）；③ 其余非中文数字序号（英文起头字母序、数字起头介于英/中、中文起头拼音序）；④ 中文数字序号最后按数值升序（这组不显示名称）。
+- 板块②图片排序固定四段式：① basename 匹配菜名（**跨菜品按菜名拼音** `A-Z`；**同菜内**精确 basename 先于前缀变体）；② basename 匹配店名（`dishes.json` 的 `store_name_*` 全文、其去括号基础名、以及同城同 `store_slug` 各分店 `restaurants.json` 的 `name_*` 全文）；③ 其余非中文数字序号（英文起头字母序、数字起头介于英/中、中文起头拼音序）；④ 中文数字序号最后按数值升序（这组不显示名称）。
 
 板块②排序与列表规则（已确认）：
 

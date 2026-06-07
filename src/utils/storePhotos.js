@@ -368,6 +368,34 @@ export function findMatchedDishByFilename(filename, dishes) {
 }
 
 /**
+ * 菜名图跨菜品排序键：优先 `dish_name_zh`，其次 `dish_name_en`，最后 `dish_name_local`。
+ * @param {Record<string, unknown> | null | undefined} dish
+ * @returns {string}
+ */
+function getDishPinyinSortKey(dish) {
+  if (!dish) return "";
+  return (
+    String(dish.dish_name_zh ?? "").trim() ||
+    String(dish.dish_name_en ?? "").trim() ||
+    String(dish.dish_name_local ?? "").trim()
+  );
+}
+
+/**
+ * bucket 0 跨菜品按拼音排序（`zh-Hans-CN-u-co-pinyin`）。
+ * @param {Record<string, unknown> | null | undefined} leftDish
+ * @param {Record<string, unknown> | null | undefined} rightDish
+ * @returns {number}
+ */
+function compareDishesByPinyin(leftDish, rightDish) {
+  const leftKey = getDishPinyinSortKey(leftDish);
+  const rightKey = getDishPinyinSortKey(rightDish);
+  const byPinyin = ZH_PINYIN_COLLATOR.compare(leftKey, rightKey);
+  if (byPinyin !== 0) return byPinyin;
+  return leftKey.localeCompare(rightKey, "zh-Hans-CN");
+}
+
+/**
  * 获取文件名 basename（不含扩展名），保留原始大小写
  * @param {string} filename
  * @returns {string}
@@ -383,6 +411,8 @@ export function getBasenameWithoutExtension(filename) {
 /**
  * 同店铺图片排序（四档）：
  * 0) basename 匹配 `dishes.json` 菜名（dish_name_local → dish_name_en → dish_name_zh）；
+ *    跨菜品按菜名拼音排序（`dish_name_zh` → `dish_name_en` → `dish_name_local` 取排序键）；
+ *    同菜品内精确 basename 先于前缀变体（如 `菜名-横截面`）；
  * 1) basename 匹配店名（`dishes.json` 的 `store_name_*` 全文 + 去括号基础名 + 同 slug 分店 `restaurants.json` 的 `name_*`）；
  * 2) 其余非中文数字序号：英文起头按英文字母序，中文起头按拼音序（数字起头介于二者之间）；
  * 3) 中文数字序号（一～九、十、十一…）最后，按数值升序。
@@ -427,9 +457,10 @@ export function sortPhotosByDishMatch(photos, dishes, restaurant = null) {
     if (bucket === 0) {
       const leftDish = findMatchedDishByFilename(left.filename, dishes);
       const rightDish = findMatchedDishByFilename(right.filename, dishes);
-      const leftDishIdx = leftDish ? dishes.indexOf(leftDish) : Number.MAX_SAFE_INTEGER;
-      const rightDishIdx = rightDish ? dishes.indexOf(rightDish) : Number.MAX_SAFE_INTEGER;
-      if (leftDishIdx !== rightDishIdx) return leftDishIdx - rightDishIdx;
+      if (leftDish !== rightDish) {
+        const byDish = compareDishesByPinyin(leftDish, rightDish);
+        if (byDish !== 0) return byDish;
+      }
 
       const leftExact = isExactDishBasenameMatchAny(left.filename, dishes) ? 0 : 1;
       const rightExact = isExactDishBasenameMatchAny(right.filename, dishes) ? 0 : 1;
