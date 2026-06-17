@@ -2236,8 +2236,8 @@
     "dish_name_local": null,
     "price": "17",
     "currency": "CNY",
-    "taste": null,
-    "note": null
+    "taste": 4,
+    "note": "特别好吃！"
   },
   {
     "store_slug": "88st",
@@ -4774,6 +4774,104 @@
     "note": "非常貌美"
   },
   {
+    "store_slug": "ecnu",
+    "store_name_zh": "华东师范大学(闵行校区)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "贝贝南瓜厚蛋三明治",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "13",
+    "currency": "CNY",
+    "taste": 4,
+    "note": "特别饱腹！喜欢关于贝贝南瓜的一切～"
+  },
+  {
+    "store_slug": "ecnu",
+    "store_name_zh": "华东师范大学(闵行校区)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "扁山楂糖葫芦",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "8",
+    "currency": "CNY",
+    "taste": 3,
+    "note": null
+  },
+  {
+    "store_slug": "ecnu",
+    "store_name_zh": "华东师范大学(闵行校区)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "韩式料理·肥牛石锅拌饭",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": null,
+    "currency": "CNY",
+    "taste": 5,
+    "note": "石锅拌饭中最好吃的一碗"
+  },
+  {
+    "store_slug": "ecnu",
+    "store_name_zh": "华东师范大学(闵行校区)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "橘柚鲸水果",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": null,
+    "currency": "CNY",
+    "taste": 3,
+    "note": null
+  },
+  {
+    "store_slug": "ecnu",
+    "store_name_zh": "华东师范大学(闵行校区)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "什锦菌菇牛肉饭",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "27.9",
+    "currency": "CNY",
+    "taste": 3,
+    "note": "牛肉每一块都很老 呜呜TAT"
+  },
+  {
+    "store_slug": "ecnu",
+    "store_name_zh": "华东师范大学(闵行校区)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "苏州枣自然(坚果枣糕-黄油年糕-椰蓉酥)",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": null,
+    "currency": "CNY",
+    "taste": 3,
+    "note": null
+  },
+  {
+    "store_slug": "ecnu",
+    "store_name_zh": "华东师范大学(闵行校区)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "中式减脂餐·低卡照烧鸡时蔬碗",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": null,
+    "currency": "CNY",
+    "taste": 4,
+    "note": "又是营养均衡的一餐耶"
+  },
+  {
     "store_slug": "escf",
     "store_name_zh": "俄士厨房(正大广场店)",
     "store_name_en": null,
@@ -4968,6 +5066,48 @@
     "currency": "CNY",
     "taste": 4,
     "note": null
+  },
+  {
+    "store_slug": "fqc",
+    "store_name_zh": "抚青橙·江西小酒馆(东海广场店)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "橙皮辣子鸡",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "69",
+    "currency": "CNY",
+    "taste": 4,
+    "note": "方便面味儿的 哈哈哈好神奇"
+  },
+  {
+    "store_slug": "fqc",
+    "store_name_zh": "抚青橙·江西小酒馆(东海广场店)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "黄豆烧鸡爪",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "60",
+    "currency": "CNY",
+    "taste": 4,
+    "note": "辣辣辣！"
+  },
+  {
+    "store_slug": "fqc",
+    "store_name_zh": "抚青橙·江西小酒馆(东海广场店)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "经典牛肉牛肚炒粉",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "58",
+    "currency": "CNY",
+    "taste": 4,
+    "note": "不油但好吃 这个很难做到哎"
   },
   {
     "store_slug": "fsyb",
@@ -5755,7 +5895,7 @@
   },
   {
     "store_slug": "holy-bagel",
-    "store_name_zh": "HOLY BAGEL(耀华店)",
+    "store_name_zh": "HOLY BAGEL",
     "store_name_en": null,
     "store_name_local": null,
     "city_en": "shanghai",
@@ -5766,6 +5906,20 @@
     "currency": "CNY",
     "taste": 4,
     "note": null
+  },
+  {
+    "store_slug": "holy-bagel",
+    "store_name_zh": "HOLY BAGEL",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "巧克力怪人",
+    "dish_name_en": "Chocolate monster",
+    "dish_name_local": null,
+    "price": "36",
+    "currency": "CNY",
+    "taste": 4,
+    "note": "法芙娜巧克力贝果·法芙娜巧克力奶油奶酪·香蕉"
   },
   {
     "store_slug": "hotcrush",
@@ -5927,6 +6081,34 @@
     "store_name_en": null,
     "store_name_local": null,
     "city_en": "shanghai",
+    "dish_name_zh": "刁氏炒方便面炒饭双拼加青菜",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": null,
+    "currency": "",
+    "taste": 14,
+    "note": "怎么越来越不好吃了"
+  },
+  {
+    "store_slug": "hsdys",
+    "store_name_zh": "华东师范大学(闵行校区)夜市",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "四川凉皮凉面双拼",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": null,
+    "currency": "",
+    "taste": 11.5,
+    "note": "一如既往地又辣又香"
+  },
+  {
+    "store_slug": "hsdys",
+    "store_name_zh": "华东师范大学(闵行校区)夜市",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
     "dish_name_zh": "老奶奶肉夹馍",
     "dish_name_en": null,
     "dish_name_local": null,
@@ -6058,7 +6240,7 @@
     "dish_name_local": null,
     "price": "59",
     "currency": "CNY",
-    "taste": null,
+    "taste": 4,
     "note": null
   },
   {
@@ -6072,7 +6254,7 @@
     "dish_name_local": null,
     "price": "29",
     "currency": "CNY",
-    "taste": null,
+    "taste": 3,
     "note": null
   },
   {
@@ -6086,8 +6268,8 @@
     "dish_name_local": null,
     "price": "12",
     "currency": "CNY",
-    "taste": null,
-    "note": null
+    "taste": 3,
+    "note": "店快打烊了 被送了两碗汤嘿嘿"
   },
   {
     "store_slug": "jdx",
@@ -6116,6 +6298,20 @@
     "currency": "",
     "taste": 2,
     "note": null
+  },
+  {
+    "store_slug": "jessy-jerry",
+    "store_name_zh": "JESSY&JERRY(前滩太古里店)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "芭提雅假日",
+    "dish_name_en": "Pattaya Holiday",
+    "dish_name_local": null,
+    "price": null,
+    "currency": "",
+    "taste": 3,
+    "note": "师兄师姐们毕业快乐～"
   },
   {
     "store_slug": "jmwx",
@@ -6678,6 +6874,34 @@
     "note": null
   },
   {
+    "store_slug": "lldt",
+    "store_name_zh": "莉莲蛋挞",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "白天使柠檬卷",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "12.9",
+    "currency": "CNY",
+    "taste": 4,
+    "note": "相当丑萌哈哈哈哈"
+  },
+  {
+    "store_slug": "lldt",
+    "store_name_zh": "莉莲蛋挞",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "蜜豆麻薯艾草香面包",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": "10.9",
+    "currency": "CNY",
+    "taste": 3,
+    "note": "端午节快乐～"
+  },
+  {
     "store_slug": "lokal",
     "store_name_zh": "LOKAL(东湖路店)",
     "store_name_en": null,
@@ -6814,8 +7038,8 @@
     "dish_name_local": null,
     "price": null,
     "currency": "",
-    "taste": null,
-    "note": null
+    "taste": 3,
+    "note": "不另外加糖仍然很甜"
   },
   {
     "store_slug": "mill-hill",
@@ -7463,8 +7687,8 @@
   },
   {
     "store_slug": "ot",
-    "store_name_zh": "另茶(城市集市上海荟聚店)",
-    "store_name_en": "OT",
+    "store_name_zh": "另茶",
+    "store_name_en": "Other Tea",
     "store_name_local": null,
     "city_en": "shanghai",
     "dish_name_zh": "泰式咸法酪",
@@ -7477,8 +7701,8 @@
   },
   {
     "store_slug": "ot",
-    "store_name_zh": "另茶(城市集市上海荟聚店)",
-    "store_name_en": "OT",
+    "store_name_zh": "另茶",
+    "store_name_en": "Other Tea",
     "store_name_local": null,
     "city_en": "shanghai",
     "dish_name_zh": "醇抹生软酪",
@@ -7488,6 +7712,20 @@
     "currency": "CNY",
     "taste": 1,
     "note": "还我钱啊啊啊啊啊啊啊"
+  },
+  {
+    "store_slug": "ot",
+    "store_name_zh": "另茶",
+    "store_name_en": "Other Tea",
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "黑金冰可可",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": null,
+    "currency": "",
+    "taste": 3,
+    "note": "味道和维他奶巧克力味很像 会更好喝那么一点点"
   },
   {
     "store_slug": "otf",
@@ -7963,7 +8201,7 @@
     "price": "4.8",
     "currency": "CNY",
     "taste": 3,
-    "note": null
+    "note": "嘻嘻"
   },
   {
     "store_slug": "pghy",
@@ -8457,7 +8695,7 @@
   },
   {
     "store_slug": "pyf",
-    "store_name_zh": "派悦坊.甜品.蛋糕(长宁龙之梦店)",
+    "store_name_zh": "派悦坊·甜品·蛋糕(长宁龙之梦店)",
     "store_name_en": null,
     "store_name_local": null,
     "city_en": "shanghai",
@@ -9366,6 +9604,20 @@
     "note": null
   },
   {
+    "store_slug": "whxhx",
+    "store_name_zh": "威海小海鲜(宝丰生活广场店)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "海鲜蒸汽锅",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": null,
+    "currency": "",
+    "taste": 3,
+    "note": "几乎每个人都被海星的味道创了下哈哈哈"
+  },
+  {
     "store_slug": "wly",
     "store_name_zh": "吴老幺火锅(海湾店)",
     "store_name_en": null,
@@ -9518,6 +9770,48 @@
     "currency": "",
     "taste": 3,
     "note": null
+  },
+  {
+    "store_slug": "xjhnb",
+    "store_name_zh": "谢记海宁煲(满天星生活广场店)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "海宁宴球煲",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": null,
+    "currency": "",
+    "taste": 3,
+    "note": null
+  },
+  {
+    "store_slug": "xjhnb",
+    "store_name_zh": "谢记海宁煲(满天星生活广场店)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "三鲜煲",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": null,
+    "currency": "",
+    "taste": 3,
+    "note": null
+  },
+  {
+    "store_slug": "xjhnb",
+    "store_name_zh": "谢记海宁煲(满天星生活广场店)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "特色鸡翅煲",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": null,
+    "currency": "",
+    "taste": 5,
+    "note": "超级无敌下饭 香香甜甜的"
   },
   {
     "store_slug": "xjmy",
@@ -9952,6 +10246,20 @@
     "currency": "",
     "taste": 1,
     "note": "非常一般"
+  },
+  {
+    "store_slug": "ymt",
+    "store_name_zh": "源麦甜·品质千层(闵行店）)",
+    "store_name_en": null,
+    "store_name_local": null,
+    "city_en": "shanghai",
+    "dish_name_zh": "榴莲芒果血糯米蛋糕",
+    "dish_name_en": null,
+    "dish_name_local": null,
+    "price": null,
+    "currency": "",
+    "taste": 4,
+    "note": "芒果很juciy 性价比之王啊啊啊"
   },
   {
     "store_slug": "yx",
